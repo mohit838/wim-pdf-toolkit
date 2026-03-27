@@ -92,6 +92,11 @@ Set these root env values before `docker compose up`:
 - `DEV_DOCKER_POSTGRES_URL`
 - `DEV_DOCKER_REDIS_URL`
 
+Recommended dev pattern (inside Docker containers):
+
+- `DEV_DOCKER_POSTGRES_URL=postgresql://<user>:<password>@host.docker.internal:5432/<db>?schema=public`
+- `DEV_DOCKER_REDIS_URL=redis://:<password>@host.docker.internal:6379/0`
+
 | Service            | URL                        |
 | ------------------ | -------------------------- |
 | Frontend           | http://localhost:3000      |
@@ -413,4 +418,4 @@ Keep SSL/TLS and proxy settings consistent with your reverse-proxy (Traefik) con
 - [ ] Replace all `replace-*` values in root `.env` (or better, inject via secret manager in CI/CD)
 - [ ] Set distinct prod secrets: `PROD_INTERNAL_API_TOKEN`, `PROD_CMS_SESSION_SECRET`, `PROD_CMS_REVALIDATE_SECRET`, `PROD_CMS_INGEST_SECRET`
 - [ ] Set SMTP credentials for prod (`PROD_SMTP_USER`, `PROD_SMTP_PASSWORD`, `PROD_SMTP_FROM_ADDRESS`)
-- [ ] Set `PROD_DOCKER_POSTGRES_URL` and `PROD_DOCKER_REDIS_URL` to real managed service endpoints
+- [ ] Set `PROD_DOCKER_POSTGRES_URL` and `PROD_DOCKER_REDIS_URL` to real docker DB URLs with explicit username/password
