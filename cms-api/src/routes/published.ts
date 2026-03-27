@@ -31,6 +31,30 @@ function getIpAddress(request: Request): string {
   return request.socket.remoteAddress || "unknown";
 }
 
+function shouldApplyIpRateLimit(ipAddress: string): boolean {
+  const ip = ipAddress.trim().toLowerCase();
+  if (!ip || ip === "unknown" || ip === "::1" || ip === "127.0.0.1") {
+    return false;
+  }
+
+  if (ip.startsWith("10.") || ip.startsWith("192.168.") || ip.startsWith("169.254.")) {
+    return false;
+  }
+
+  if (ip.startsWith("fc") || ip.startsWith("fd") || ip.startsWith("fe80:")) {
+    return false;
+  }
+
+  if (ip.startsWith("172.")) {
+    const secondOctet = Number.parseInt(ip.split(".")[1] || "", 10);
+    if (Number.isFinite(secondOctet) && secondOctet >= 16 && secondOctet <= 31) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -245,18 +269,20 @@ publishedRouter.post("/contact", async (request, response) => {
       return;
     }
 
-    const ipLimit = await checkRateLimit(
-      `contact:ip:${ipAddress}`,
-      cmsEnv.contactRateLimitIpMaxRequests,
-      cmsEnv.contactRateLimitIpWindowSeconds,
-    );
-    if (!ipLimit.allowed) {
-      response.setHeader("retry-after", ipLimit.headers["Retry-After"] || "60");
-      response.status(429).json({
-        success: false,
-        message: "Too many contact requests from this network. Please try again later.",
-      });
-      return;
+    if (shouldApplyIpRateLimit(ipAddress)) {
+      const ipLimit = await checkRateLimit(
+        `contact:ip:${ipAddress}`,
+        cmsEnv.contactRateLimitIpMaxRequests,
+        cmsEnv.contactRateLimitIpWindowSeconds,
+      );
+      if (!ipLimit.allowed) {
+        response.setHeader("retry-after", ipLimit.headers["Retry-After"] || "60");
+        response.status(429).json({
+          success: false,
+          message: "Too many contact requests from this network. Please try again later.",
+        });
+        return;
+      }
     }
 
     const emailKey = hashForRateLimit(email);

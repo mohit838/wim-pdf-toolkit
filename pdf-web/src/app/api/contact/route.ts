@@ -3,34 +3,74 @@ import { selectedCmsApiInternalOrigin } from "@/lib/server-env";
 
 ensureRootEnvLoaded();
 
-function getIpAddress(request: Request): string {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    return forwardedFor.split(",")[0]?.trim() || "unknown";
+function getForwardedForHeader(request: Request): string | null {
+  const candidates = [
+    request.headers.get("x-forwarded-for"),
+    request.headers.get("x-real-ip"),
+    request.headers.get("cf-connecting-ip"),
+    request.headers.get("true-client-ip"),
+    request.headers.get("x-client-ip"),
+    request.headers.get("x-vercel-forwarded-for"),
+  ];
+
+  for (const candidate of candidates) {
+    if (!candidate) {
+      continue;
+    }
+
+    const trimmed = candidate.trim();
+    if (!trimmed) {
+      continue;
+    }
+
+    return trimmed;
   }
 
-  return request.headers.get("x-real-ip") || "unknown";
+  return null;
+}
+
+function parseJsonSafe(value: string): { success?: boolean; message?: string; data?: { message?: string } } {
+  if (!value) {
+    return {};
+  }
+
+  try {
+    return JSON.parse(value) as { success?: boolean; message?: string; data?: { message?: string } };
+  } catch {
+    return {};
+  }
 }
 
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
-    const ipAddress = getIpAddress(request);
+    const forwardedFor = getForwardedForHeader(request);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
 
-    const response = await fetch(`${selectedCmsApiInternalOrigin}/published/v1/contact`, {
-      method: "POST",
-      headers: {
+    let response: Response;
+    try {
+      const headers: Record<string, string> = {
         "content-type": "application/json",
-        "x-forwarded-for": ipAddress,
-      },
-      body: JSON.stringify(payload),
-      cache: "no-store",
-    });
+      };
+
+      if (forwardedFor) {
+        headers["x-forwarded-for"] = forwardedFor;
+      }
+
+      response = await fetch(`${selectedCmsApiInternalOrigin}/published/v1/contact`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(payload),
+        cache: "no-store",
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
 
     const responseText = await response.text();
-    const jsonPayload = responseText
-      ? JSON.parse(responseText) as { success?: boolean; message?: string; data?: { message?: string } }
-      : {};
+    const jsonPayload = parseJsonSafe(responseText);
 
     if (!response.ok || !jsonPayload.success) {
       return Response.json(
@@ -51,13 +91,15 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Contact form proxy failed", error);
 
+    const isAbort = error instanceof Error && error.name === "AbortError";
+
     return Response.json(
       {
         ok: false,
         message: "We could not send your message right now. Please try again later or email support directly.",
       },
       {
-        status: 500,
+        status: isAbort ? 504 : 500,
       },
     );
   }
