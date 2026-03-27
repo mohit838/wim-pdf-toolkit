@@ -290,9 +290,11 @@ publishedRouter.post("/contact", async (request, response) => {
     }
 
     const siteContent = await getPublishedSiteContent();
-    const supportEmail = String(siteContent.site.contact?.email || "").trim();
+    const supportEmail = toPlainText(siteContent.site.contact?.email).toLowerCase();
+    const fallbackSupportEmail = cmsEnv.smtpFromAddress.trim().toLowerCase();
+    const deliveryEmail = supportEmail || fallbackSupportEmail;
 
-    if (!supportEmail) {
+    if (!validateEmail(deliveryEmail)) {
       throw new Error("Support email is not configured.");
     }
 
@@ -304,7 +306,7 @@ publishedRouter.post("/contact", async (request, response) => {
 
     await transporter.sendMail({
       from: cmsEnv.smtpFromAddress,
-      to: supportEmail,
+      to: deliveryEmail,
       replyTo: email,
       subject: `[PDF Toolkit Contact] ${subject}`,
       text: [

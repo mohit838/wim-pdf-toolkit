@@ -197,6 +197,8 @@ if (cmsEnv.appMode === "prod") {
   assertStrongSecret("CMS_REVALIDATE_SECRET", cmsEnv.cmsRevalidateSecret);
   assertStrongSecret("CMS_INGEST_SECRET", cmsEnv.cmsIngestSecret);
   assertStrongSecret("CMS_SUPERADMIN_PASSWORD", cmsEnv.superadminPassword);
+  assertConfigured("SMTP_HOST", cmsEnv.smtpHost);
+  assertConfigured("SMTP_FROM_ADDRESS", cmsEnv.smtpFromAddress);
 }
 
 export function getCurrentTimestamp(): string {
