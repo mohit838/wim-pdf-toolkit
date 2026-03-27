@@ -2,6 +2,8 @@
 
 This directory holds repository-level developer and deployment helpers.
 
+All infra examples should use placeholders only for hostnames, tokens, and credentials.
+
 ## Layout
 
 - `infra/scripts/` — helper scripts used by the root `Makefile`

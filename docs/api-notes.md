@@ -38,9 +38,9 @@ Combine 2+ PDF files into a single document.
 POST /api/pdf/merge
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `files` | `File[]` | ✅ | At least 2 PDF files |
+| Parameter | Type     | Required | Description          |
+| --------- | -------- | -------- | -------------------- |
+| `files`   | `File[]` | ✅       | At least 2 PDF files |
 
 **Response:**
 
@@ -64,11 +64,11 @@ Rotate all or specific pages by 90°, 180°, or 270°.
 POST /api/pdf/rotate
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
-| `rotation` | `int` | ✅ | `90`, `180`, or `270` |
-| `pages` | `string` | ❌ | Comma-separated 1-indexed pages (empty = all) |
+| Parameter  | Type     | Required | Description                                   |
+| ---------- | -------- | -------- | --------------------------------------------- |
+| `file`     | `File`   | ✅       | Single PDF file                               |
+| `rotation` | `int`    | ✅       | `90`, `180`, or `270`                         |
+| `pages`    | `string` | ❌       | Comma-separated 1-indexed pages (empty = all) |
 
 **Example:**
 
@@ -86,10 +86,10 @@ Split a PDF into multiple files by page ranges.
 POST /api/pdf/split
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
-| `ranges` | `string` | ✅ | JSON array of `[start, end]` pairs (1-indexed) |
+| Parameter | Type     | Required | Description                                    |
+| --------- | -------- | -------- | ---------------------------------------------- |
+| `file`    | `File`   | ✅       | Single PDF file                                |
+| `ranges`  | `string` | ✅       | JSON array of `[start, end]` pairs (1-indexed) |
 
 **Example:**
 
@@ -105,8 +105,14 @@ curl -F "file=@doc.pdf" -F 'ranges=[[1,3],[4,6]]' http://localhost:8000/api/pdf/
   "message": "PDF split into 2 file(s).",
   "job_id": "x1y2z3...",
   "files": [
-    { "filename": "split_part_1.pdf", "download_url": "/api/pdf/download/x1y2z3.../split_part_1.pdf" },
-    { "filename": "split_part_2.pdf", "download_url": "/api/pdf/download/x1y2z3.../split_part_2.pdf" }
+    {
+      "filename": "split_part_1.pdf",
+      "download_url": "/api/pdf/download/x1y2z3.../split_part_1.pdf"
+    },
+    {
+      "filename": "split_part_2.pdf",
+      "download_url": "/api/pdf/download/x1y2z3.../split_part_2.pdf"
+    }
   ]
 }
 ```
@@ -121,10 +127,10 @@ Extract specific pages into a new PDF.
 POST /api/pdf/extract
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
-| `pages` | `string` | ✅ | Comma-separated 1-indexed page numbers |
+| Parameter | Type     | Required | Description                            |
+| --------- | -------- | -------- | -------------------------------------- |
+| `file`    | `File`   | ✅       | Single PDF file                        |
+| `pages`   | `string` | ✅       | Comma-separated 1-indexed page numbers |
 
 **Example:**
 
@@ -142,9 +148,9 @@ Convert images to a single PDF document.
 POST /api/pdf/image-to-pdf
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `files` | `File[]` | ✅ | One or more image files |
+| Parameter | Type     | Required | Description             |
+| --------- | -------- | -------- | ----------------------- |
+| `files`   | `File[]` | ✅       | One or more image files |
 
 **Supported formats:** JPG, JPEG, PNG, GIF, BMP, TIFF, WebP
 
@@ -158,13 +164,13 @@ Apply a repeating diagonal text watermark to every page.
 POST /api/pdf/watermark
 ```
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `file` | `File` | ✅ | — | Single PDF file |
-| `text` | `string` | ✅ | — | Watermark text (e.g. "CONFIDENTIAL") |
-| `font_size` | `int` | ❌ | `48` | Font size in points |
-| `opacity` | `float` | ❌ | `0.15` | Opacity (0.01 – 0.5) |
-| `rotation` | `int` | ❌ | `45` | Text angle in degrees |
+| Parameter   | Type     | Required | Default | Description                          |
+| ----------- | -------- | -------- | ------- | ------------------------------------ |
+| `file`      | `File`   | ✅       | —       | Single PDF file                      |
+| `text`      | `string` | ✅       | —       | Watermark text (e.g. "CONFIDENTIAL") |
+| `font_size` | `int`    | ❌       | `48`    | Font size in points                  |
+| `opacity`   | `float`  | ❌       | `0.15`  | Opacity (0.01 – 0.5)                 |
+| `rotation`  | `int`    | ❌       | `45`    | Text angle in degrees                |
 
 ---
 
@@ -176,10 +182,10 @@ Reorder PDF pages in a custom sequence.
 POST /api/pdf/rearrange
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
-| `order` | `string` | ✅ | Comma-separated 1-indexed page numbers in desired order |
+| Parameter | Type     | Required | Description                                             |
+| --------- | -------- | -------- | ------------------------------------------------------- |
+| `file`    | `File`   | ✅       | Single PDF file                                         |
+| `order`   | `string` | ✅       | Comma-separated 1-indexed page numbers in desired order |
 
 **Example:** Reverse a 3-page PDF:
 
@@ -197,9 +203,9 @@ Convert PDF to editable DOCX with best-effort layout preservation.
 POST /api/pdf/pdf-to-docx
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `file`    | `File` | ✅       | Single PDF file |
 
 **Response includes** `accuracy_estimate` for user expectation.
 
@@ -211,9 +217,9 @@ POST /api/pdf/pdf-to-docx
 POST /api/pdf/docx-to-pdf
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single DOCX file |
+| Parameter | Type   | Required | Description      |
+| --------- | ------ | -------- | ---------------- |
+| `file`    | `File` | ✅       | Single DOCX file |
 
 ---
 
@@ -223,9 +229,9 @@ POST /api/pdf/docx-to-pdf
 POST /api/pdf/to-jpg
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `file`    | `File` | ✅       | Single PDF file |
 
 Returns a ZIP file containing one JPG per page.
 
@@ -237,9 +243,9 @@ Returns a ZIP file containing one JPG per page.
 POST /api/pdf/to-text
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `file`    | `File` | ✅       | Single PDF file |
 
 Returns a UTF-8 `.txt` file with per-page sections.
 
@@ -251,9 +257,9 @@ Returns a UTF-8 `.txt` file with per-page sections.
 POST /api/pdf/remove-metadata
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `file`    | `File` | ✅       | Single PDF file |
 
 Creates a clean PDF copy with metadata removed.
 
@@ -265,12 +271,12 @@ Creates a clean PDF copy with metadata removed.
 POST /api/pdf/add-page-numbers
 ```
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `file` | `File` | ✅ | — | Single PDF file |
-| `start_number` | `int` | ❌ | `1` | Starting page number |
-| `font_size` | `int` | ❌ | `11` | Page number font size |
-| `position` | `string` | ❌ | `bottom-center` | One of: `bottom-center`, `bottom-right`, `bottom-left`, `top-center`, `top-right`, `top-left` |
+| Parameter      | Type     | Required | Default         | Description                                                                                   |
+| -------------- | -------- | -------- | --------------- | --------------------------------------------------------------------------------------------- |
+| `file`         | `File`   | ✅       | —               | Single PDF file                                                                               |
+| `start_number` | `int`    | ❌       | `1`             | Starting page number                                                                          |
+| `font_size`    | `int`    | ❌       | `11`            | Page number font size                                                                         |
+| `position`     | `string` | ❌       | `bottom-center` | One of: `bottom-center`, `bottom-right`, `bottom-left`, `top-center`, `top-right`, `top-left` |
 
 ---
 
@@ -280,9 +286,9 @@ POST /api/pdf/add-page-numbers
 POST /api/pdf/repair
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `file`    | `File` | ✅       | Single PDF file |
 
 Attempts structural rewrite/repair for problematic PDFs.
 
@@ -296,9 +302,9 @@ Returns the total number of pages in a PDF. Used by the frontend for split/extra
 POST /api/pdf/page-count
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `file` | `File` | ✅ | Single PDF file |
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `file`    | `File` | ✅       | Single PDF file |
 
 **Response:**
 
@@ -328,11 +334,11 @@ All errors return standard HTTP status codes with a JSON body:
 { "detail": "Please upload at least 2 PDF files." }
 ```
 
-| Code | Meaning |
-|------|---------|
+| Code  | Meaning                        |
+| ----- | ------------------------------ |
 | `400` | Bad request (validation error) |
-| `404` | File not found or expired |
-| `500` | Internal server error |
+| `404` | File not found or expired      |
+| `500` | Internal server error          |
 
 ---
 

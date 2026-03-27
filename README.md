@@ -2,6 +2,8 @@
 
 A modular PDF platform with a private Python PDF API, a public tools frontend, and a runtime CMS layer for SEO, ads, and analytics integrations.
 
+All configuration examples in this README are placeholders only (for example, `example.com`, `replace-*`, and local dev addresses).
+
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.116-009688?logo=fastapi&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
@@ -33,10 +35,10 @@ A modular PDF platform with a private Python PDF API, a public tools frontend, a
 
 ## Apps
 
-- `backend/` — private FastAPI PDF processing service
-- `frontend/` — public PDF tools site
-- `cms-backend/` — runtime CMS API for published config, draft/publish, and admin auth
-- `cms-frontend/` — CMS admin UI for runtime SEO, ads, and integrations
+- `pdf-api/` — private FastAPI PDF processing service
+- `pdf-web/` — public PDF tools site
+- `cms-api/` — runtime CMS API for published config, draft/publish, and admin auth
+- `cms-web/` — CMS admin UI for runtime SEO, ads, and integrations
 
 ## Tech Stack
 
@@ -116,7 +118,7 @@ docker compose -f docker-compose.yml ps -a
 docker compose -f docker-compose.yml logs --tail=120
 ```
 
-If `cms-backend-api` is unhealthy with `Can't reach database server`, verify that:
+If `cms-api` is unhealthy with `Can't reach database server`, verify that:
 
 - local PostgreSQL is running and reachable from Docker via `host.docker.internal:5432`
 - local Redis is running and reachable from Docker via `host.docker.internal:6379`
@@ -155,24 +157,24 @@ make docker-down
 #### Backend
 
 ```bash
-cd backend
+cd pdf-api
 python3 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-If you start `uvicorn` from the project root instead of `backend/`, use:
+If you start `uvicorn` from the project root instead of `pdf-api/`, use:
 
 ```bash
-source backend/.venv/bin/activate
-uvicorn app.main:app --app-dir backend --reload --reload-dir backend --port 8000
+source pdf-api/.venv/bin/activate
+uvicorn app.main:app --app-dir pdf-api --reload --reload-dir pdf-api --port 8000
 ```
 
 #### Frontend
 
 ```bash
-cd frontend
+cd pdf-web
 pnpm install
 pnpm dev
 ```
@@ -182,7 +184,7 @@ The frontend dev server runs at http://localhost:3000 and proxies API requests t
 #### CMS Backend
 
 ```bash
-cd cms-backend
+cd cms-api
 pnpm install
 pnpm dev
 ```
@@ -192,7 +194,7 @@ The CMS backend runs at http://localhost:4100 and serves both admin and publishe
 #### CMS Frontend
 
 ```bash
-cd cms-frontend
+cd cms-web
 pnpm install
 pnpm dev
 ```
@@ -205,10 +207,10 @@ The CMS frontend runs at http://localhost:3100 and proxies admin requests to the
 
 ```
 pdf-toolkit/
-├── backend/
-├── frontend/
-├── cms-backend/
-├── cms-frontend/
+├── pdf-api/
+├── pdf-web/
+├── cms-api/
+├── cms-web/
 ├── infra/
 ├── docs/
 ├── docker-compose.yml
@@ -226,17 +228,17 @@ pdf-toolkit/
 | `APP_DEV`                                                          | `true`                                                                                                | Backend selector. `true` loads the `DEV_*` group, `false` loads the `PROD_*` group                  |
 | `NEXT_PUBLIC_APP_DEV`                                              | `true`                                                                                                | Frontend selector. Keep it in sync with `APP_DEV` so the browser and server use the same group      |
 | `DEV_ALLOWED_ORIGINS` / `PROD_ALLOWED_ORIGINS`                     | `http://localhost:3000` / `https://pdf.example.com`                                                   | Browser origins allowed to call the backend                                                         |
-| `DEV_ALLOWED_HOSTS` / `PROD_ALLOWED_HOSTS`                         | `localhost,127.0.0.1,pdf-toolkit-backend` / `pdf.example.com,localhost,127.0.0.1,pdf-toolkit-backend` | Trusted backend hostnames, including internal health-check hosts                                    |
+| `DEV_ALLOWED_HOSTS` / `PROD_ALLOWED_HOSTS`                         | `localhost,127.0.0.1,pdf-api` / `pdf.example.com,localhost,127.0.0.1,pdf-api`                         | Trusted backend hostnames, including internal health-check hosts                                    |
 | `DEV_TRUST_PROXY` / `PROD_TRUST_PROXY`                             | `false` / `true`                                                                                      | Whether the backend trusts forwarded proxy headers                                                  |
 | `DEV_RATE_LIMIT_MAX_REQUESTS` / `PROD_RATE_LIMIT_MAX_REQUESTS`     | `60`                                                                                                  | Max requests per rate-limit window                                                                  |
 | `DEV_RATE_LIMIT_WINDOW_SECONDS` / `PROD_RATE_LIMIT_WINDOW_SECONDS` | `60`                                                                                                  | Rate-limit window size in seconds                                                                   |
 | `DEV_MAX_UPLOAD_MB` / `PROD_MAX_UPLOAD_MB`                         | `25`                                                                                                  | Maximum upload size per file in MB                                                                  |
-| `DEV_INTERNAL_API_ORIGIN` / `PROD_INTERNAL_API_ORIGIN`             | `http://localhost:8000` / `http://pdf-toolkit-backend:8000`                                           | Server-side backend target used by Next.js rewrites                                                 |
+| `DEV_INTERNAL_API_ORIGIN` / `PROD_INTERNAL_API_ORIGIN`             | `http://localhost:8000` / `http://pdf-api:8000`                                                       | Server-side backend target used by Next.js rewrites                                                 |
 | `DEV_INTERNAL_API_TOKEN` / `PROD_INTERNAL_API_TOKEN`               | secret value                                                                                          | Shared server-only token that lets the frontend proxy reach the backend directly                    |
 | `NEXT_PUBLIC_DEV_SITE_ORIGIN` / `NEXT_PUBLIC_PROD_SITE_ORIGIN`     | `http://localhost:3000` / `https://pdf.example.com`                                                   | Public tools site origin used for canonical and metadata URLs                                       |
 | `PROD_PUBLIC_HOSTNAME`                                             | `pdf.example.com`                                                                                     | Production hostname used by the Traefik router in `docker-compose.prod.yml`                         |
 | `DEV_CMS_API_ORIGIN` / `PROD_CMS_API_ORIGIN`                       | `http://localhost:4100` / `https://cms-api.example.com`                                               | Public CMS API origin                                                                               |
-| `DEV_CMS_API_INTERNAL_ORIGIN` / `PROD_CMS_API_INTERNAL_ORIGIN`     | `http://localhost:4100` / `http://cms-backend-api:4100`                                               | Server-side runtime-config target used by the public frontend and CMS frontend                      |
+| `DEV_CMS_API_INTERNAL_ORIGIN` / `PROD_CMS_API_INTERNAL_ORIGIN`     | `http://localhost:4100` / `http://cms-api:4100`                                                       | Server-side runtime-config target used by the public frontend and CMS frontend                      |
 | `DEV_CMS_WEB_ORIGIN` / `PROD_CMS_WEB_ORIGIN`                       | `http://localhost:3100` / `https://cms.example.com`                                                   | CMS admin frontend origin                                                                           |
 | `DEV_CMS_REVALIDATE_SECRET` / `PROD_CMS_REVALIDATE_SECRET`         | secret value                                                                                          | Shared secret used when the CMS publishes a new runtime release and asks the frontend to revalidate |
 
@@ -256,19 +258,19 @@ NEXT_PUBLIC_APP_DEV=false
 
 PROD_PUBLIC_HOSTNAME=app.example.com
 PROD_ALLOWED_ORIGINS=https://app.example.com
-PROD_ALLOWED_HOSTS=app.example.com,localhost,127.0.0.1,pdf-toolkit-backend
+PROD_ALLOWED_HOSTS=app.example.com,localhost,127.0.0.1,pdf-api
 PROD_TRUST_PROXY=true
-PROD_INTERNAL_API_ORIGIN=http://pdf-toolkit-backend:8000
+PROD_INTERNAL_API_ORIGIN=http://pdf-api:8000
 PROD_INTERNAL_API_TOKEN=replace-with-prod-internal-token
 NEXT_PUBLIC_PROD_SITE_ORIGIN=https://app.example.com
 ```
 
 With this setup:
 
-- `frontend/` is the only public entrypoint for PDF processing.
+- `pdf-web/` is the only public entrypoint for PDF processing.
 - Browser requests hit the Next.js app at `/api/*`, which proxies them to the private Python backend.
-- `cms-backend/` exposes a public read-only runtime-config surface for SEO, ads, and integrations, plus protected admin routes.
-- `frontend/` reads published CMS config at runtime, so changes to GA/Bing/AdSense/verification settings do not require a new frontend build.
+- `cms-api/` exposes a public read-only runtime-config surface for SEO, ads, and integrations, plus protected admin routes.
+- `pdf-web/` reads published CMS config at runtime, so changes to GA/Bing/AdSense/verification settings do not require a new frontend build.
 
 For local Docker use, the Compose file still works with localhost defaults.
 
@@ -315,8 +317,8 @@ Per-area docs:
 
 - [docs/README.md](docs/README.md)
 - [infra/README.md](infra/README.md)
-- [cms-backend/README.md](cms-backend/README.md)
-- [cms-frontend/README.md](cms-frontend/README.md)
+- [cms-api/README.md](cms-api/README.md)
+- [cms-web/README.md](cms-web/README.md)
 
 ---
 
@@ -342,11 +344,11 @@ MIT
 
 Use this as a deployment and regression checklist. Mark each item before production releases.
 
-- [x] `pdf-toolkit-backend` (Python API) is wired to scoped envs (`DEV_*` / `PROD_*`) for origins, limits, token, and Redis
-- [x] `pdf-toolkit-frontend` (public Next.js) proxies backend via internal origin/token and reads CMS runtime config at request-time
-- [x] `cms-backend-api` (Node API) is wired to Postgres, Redis, session/auth secrets, SMTP, publish revalidate, and runtime drafts
-- [x] `cms-backend-worker` (Node worker) shares same env contract as CMS API for publish/revalidate and background jobs
-- [x] `cms-frontend` (admin Next.js) is wired to CMS API internal/public origins and auth flow
+- [x] `pdf-api` (Python API) is wired to scoped envs (`DEV_*` / `PROD_*`) for origins, limits, token, and Redis
+- [x] `pdf-web` (public Next.js) proxies backend via internal origin/token and reads CMS runtime config at request-time
+- [x] `cms-api` (Node API) is wired to Postgres, Redis, session/auth secrets, SMTP, publish revalidate, and runtime drafts
+- [x] `cms-api` worker shares the same env contract as CMS API for publish/revalidate and background jobs
+- [x] `cms-web` (admin Next.js) is wired to CMS API internal/public origins and auth flow
 - [x] Docker dev compose (`docker-compose.yml`) pins `APP_DEV=true` and maps Docker-internal API/CMS/Redis/Postgres origins
 - [x] Docker prod compose (`docker-compose.prod.yml`) pins `APP_DEV=false` and maps prod hostnames (`pdf`, `cms`, `cms-api`) through Traefik labels
 - [x] Superadmin + admin seed envs are both present in root env contract and passed into CMS backend containers

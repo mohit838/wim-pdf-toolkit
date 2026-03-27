@@ -14,7 +14,7 @@ The repo now uses a four-app layout with one shared root env contract and one sh
            │                               │                     │
            ▼                               ▼                     ▼
 ┌────────────────────┐      ┌────────────────────┐    ┌────────────────────┐
-│     frontend/      │      │   cms-frontend/    │    │   cms-backend/     │
+│     pdf-web/      │      │   cms-web/    │    │   cms-api/     │
 │  Next.js public    │      │ Next.js admin UI   │    │ Express runtime CMS│
 │  PDF tools site    │      │                    │    │ + publish API      │
 └─────────┬──────────┘      └─────────┬──────────┘    └─────────┬──────────┘
@@ -22,7 +22,7 @@ The repo now uses a four-app layout with one shared root env contract and one sh
           │ /api/* proxy              │ /api/cms/* proxy        │ published config
           ▼                           ▼                         │ admin auth/publish
 ┌────────────────────┐                                     ┌────▼─────────────┐
-│     backend/       │                                     │ PostgreSQL + Redis│
+│     pdf-api/       │                                     │ PostgreSQL + Redis│
 │ FastAPI PDF API    │                                     │ CMS persistence,  │
 │ private only       │                                     │ sessions, queues  │
 └────────────────────┘                                     └──────────────────┘
@@ -31,31 +31,31 @@ The repo now uses a four-app layout with one shared root env contract and one sh
 ## Repo Layout
 
 ```
-backend/        private Python PDF API
-frontend/       public tools frontend
-cms-backend/    runtime CMS API + worker entrypoint
-cms-frontend/   CMS admin panel
+pdf-api/        private Python PDF API
+pdf-web/       public tools frontend
+cms-api/    runtime CMS API + worker entrypoint
+cms-web/   CMS admin panel
 infra/          repo-level scripts and docker notes
 docs/           architecture, API notes, roadmap
 ```
 
 ## Runtime Responsibilities
 
-### `backend/`
+### `pdf-api/`
 
 - private PDF-processing service
 - no public production hostname
-- only `frontend/` should call it
+- only `pdf-web/` should call it
 - current backend proxy protection remains in place through the shared token flow
 
-### `frontend/`
+### `pdf-web/`
 
 - public tool UI
 - server-side proxy for `/api/*` to the private Python backend
-- server-side fetch for runtime CMS config from `cms-backend/`
+- server-side fetch for runtime CMS config from `cms-api/`
 - renders runtime SEO, verification tags, analytics tags, and ad placements without rebuilds
 
-### `cms-backend/`
+### `cms-api/`
 
 - admin auth/session API
 - published runtime config API
@@ -64,29 +64,29 @@ docs/           architecture, API notes, roadmap
 - Prisma/Postgres-backed draft and published content storage
 - Redis-backed sessions, cache invalidation, rate limiting, and publish queue worker
 
-### `cms-frontend/`
+### `cms-web/`
 
 - admin sign-in UI
 - runtime config editing UI
 - publish/release view
 - audit log view
-- proxies admin requests to `cms-backend/`
+- proxies admin requests to `cms-api/`
 
 ## Public Runtime Config Flow
 
-1. Admin edits draft runtime config in `cms-frontend/`
-2. `cms-frontend/` sends the update to `cms-backend/admin/v1/runtime-config/draft`
-3. Publish writes a new published document in `cms-backend/`
-4. `cms-backend/` clears published cache and triggers frontend revalidation immediately
-5. If immediate revalidation fails, `cms-backend/` queues retry via worker
-6. `frontend/` revalidates runtime tags and starts serving updated SEO/tag/ad data without a new build
+1. Admin edits draft runtime config in `cms-web/`
+2. `cms-web/` sends the update to `cms-api/admin/v1/runtime-config/draft`
+3. Publish writes a new published document in `cms-api/`
+4. `cms-api/` clears published cache and triggers frontend revalidation immediately
+5. If immediate revalidation fails, `cms-api/` queues retry via worker
+6. `pdf-web/` revalidates runtime tags and starts serving updated SEO/tag/ad data without a new build
 
 ## PDF Request Flow
 
-1. Browser submits a tool action to `frontend/`
-2. `frontend/src/app/api/[...path]/route.ts` proxies the request to the private Python backend
-3. `backend/` validates, processes, stores the job result, and returns the download metadata
-4. `frontend/` renders the result UI back to the user
+1. Browser submits a tool action to `pdf-web/`
+2. `pdf-web/src/app/api/[...path]/route.ts` proxies the request to the private Python backend
+3. `pdf-api/` validates, processes, stores the job result, and returns the download metadata
+4. `pdf-web/` renders the result UI back to the user
 
 ## Config Sources
 
@@ -102,7 +102,7 @@ Root `.env` stores:
 
 ### Runtime / CMS-managed
 
-`cms-backend/` published config stores:
+`cms-api/` published config stores:
 
 - SEO defaults and route-level SEO
 - Google Analytics / GTM / Bing / Search Console / Clarity / Meta Pixel IDs

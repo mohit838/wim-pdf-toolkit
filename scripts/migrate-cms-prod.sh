@@ -15,7 +15,7 @@ echo "Running CMS Prisma migrations with env file: $DEPLOY_ENV_FILE"
 docker run --rm \
   --env-file "$DEPLOY_ENV_FILE" \
   -e APP_DEV=false \
-  -v "$ROOT_DIR/cms-backend:/app" \
+  -v "$ROOT_DIR/cms-api:/app" \
   -w /app \
   node:22-alpine sh -lc '
     corepack enable &&

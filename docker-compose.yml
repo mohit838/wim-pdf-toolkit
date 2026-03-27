@@ -1,7 +1,7 @@
 services:
   pdf-toolkit-backend:
     build:
-      context: ./backend
+      context: ./pdf-api
       dockerfile: Dockerfile
     container_name: pdf-toolkit-backend
     ports:
@@ -65,13 +65,13 @@ services:
       - DEV_REDIS_CMS_PREFIX
       - PROD_REDIS_CMS_PREFIX
     volumes:
-      - ./cms-backend:/app
+      - ./cms-api:/app
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
   cms-backend-api:
     build:
-      context: ./cms-backend
+      context: ./cms-api
       dockerfile: Dockerfile
     container_name: cms-backend-api
     depends_on:
@@ -155,7 +155,7 @@ services:
 
   cms-backend-worker:
     build:
-      context: ./cms-backend
+      context: ./cms-api
       dockerfile: Dockerfile
     container_name: cms-backend-worker
     command: ["node", "dist/worker.js"]
@@ -226,7 +226,7 @@ services:
 
   pdf-toolkit-frontend:
     build:
-      context: ./frontend
+      context: ./pdf-web
       dockerfile: Dockerfile
       args:
         APP_DEV: "true"
@@ -278,7 +278,7 @@ services:
 
   cms-frontend:
     build:
-      context: ./cms-frontend
+      context: ./cms-web
       dockerfile: Dockerfile
       args:
         APP_DEV: "true"

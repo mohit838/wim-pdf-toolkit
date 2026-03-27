@@ -1,6 +1,8 @@
 # CMS Backend
 
-`cms-backend/` is the runtime CMS API for the public site and the admin control panel.
+`cms-api/` is the runtime CMS API for the public site and the admin control panel.
+
+Use placeholders only for domains, credentials, and secrets in documentation examples.
 
 ## What It Does
 
@@ -14,8 +16,8 @@
 
 ## Scope Clarification
 
-- `cms-backend/` manages runtime site content/config (SEO, ads, legal/content library, publish/releases).
-- PDF processing endpoints (`/api/pdf/*`) are provided by the separate Python `backend/` service.
+- `cms-api/` manages runtime site content/config (SEO, ads, legal/content library, publish/releases).
+- PDF processing endpoints (`/api/pdf/*`) are provided by the separate Python `pdf-api/` service.
 - When new PDF tools are added, CMS can control their copy/SEO only after the frontend tool registry includes those tool IDs.
 
 ## Commands

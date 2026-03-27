@@ -2,6 +2,8 @@
 
 This frontend now runs on Next.js with the App Router and TypeScript.
 
+Use placeholders only for any environment values in docs and examples.
+
 ## Commands
 
 ```bash
@@ -40,7 +42,7 @@ The root `docker-compose.yml` pins the frontend to the dev group, while `docker-
 - Tool screens live in `src/views`
 - API calls go through TanStack Query custom hooks
 - The frontend serves `/api/*` through an internal server-side proxy that forwards requests to the active `DEV_INTERNAL_API_ORIGIN` or `PROD_INTERNAL_API_ORIGIN`.
-- SEO defaults, page metadata, analytics IDs, verification tags, and ad placements are now loaded from `cms-backend/` at runtime with local JSON fallback.
+- SEO defaults, page metadata, analytics IDs, verification tags, and ad placements are now loaded from `cms-api/` at runtime with local JSON fallback.
 - CMS publish calls `/api/revalidate/cms`, so Google/Bing/AdSense changes go live without rebuilding the frontend.
 - The app includes `error.tsx`, `global-error.tsx`, and a custom `not-found.tsx` so broken routes and runtime failures degrade gracefully.
 

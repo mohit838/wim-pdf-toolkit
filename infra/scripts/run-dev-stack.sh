@@ -5,8 +5,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 MODE="${1:-all}"
 
-if [[ ! -d "${ROOT_DIR}/backend/.venv" ]]; then
-  echo "[error] backend/.venv is missing. Run 'make install-backend' first." >&2
+if [[ ! -d "${ROOT_DIR}/pdf-api/.venv" ]]; then
+  echo "[error] pdf-api/.venv is missing. Run 'make install-backend' first." >&2
   exit 1
 fi
 
@@ -41,20 +41,20 @@ run_service() {
 
 case "${MODE}" in
   all)
-    run_service "backend" "source backend/.venv/bin/activate && uvicorn app.main:app --app-dir backend --reload --reload-dir backend --host 0.0.0.0 --port 8000"
-    run_service "frontend" "pnpm --dir frontend dev"
-    run_service "cms-api" "pnpm --dir cms-backend dev"
-    run_service "cms-worker" "pnpm --dir cms-backend dev:worker"
-    run_service "cms-web" "pnpm --dir cms-frontend dev"
+    run_service "backend" "source pdf-api/.venv/bin/activate && uvicorn app.main:app --app-dir pdf-api --reload --reload-dir pdf-api --host 0.0.0.0 --port 8000"
+    run_service "frontend" "pnpm --dir pdf-web dev"
+    run_service "cms-api" "pnpm --dir cms-api dev"
+    run_service "cms-worker" "pnpm --dir cms-api dev:worker"
+    run_service "cms-web" "pnpm --dir cms-web dev"
     ;;
   pdf)
-    run_service "backend" "source backend/.venv/bin/activate && uvicorn app.main:app --app-dir backend --reload --reload-dir backend --host 0.0.0.0 --port 8000"
-    run_service "frontend" "pnpm --dir frontend dev"
+    run_service "backend" "source pdf-api/.venv/bin/activate && uvicorn app.main:app --app-dir pdf-api --reload --reload-dir pdf-api --host 0.0.0.0 --port 8000"
+    run_service "frontend" "pnpm --dir pdf-web dev"
     ;;
   cms)
-    run_service "cms-api" "pnpm --dir cms-backend dev"
-    run_service "cms-worker" "pnpm --dir cms-backend dev:worker"
-    run_service "cms-web" "pnpm --dir cms-frontend dev"
+    run_service "cms-api" "pnpm --dir cms-api dev"
+    run_service "cms-worker" "pnpm --dir cms-api dev:worker"
+    run_service "cms-web" "pnpm --dir cms-web dev"
     ;;
   *)
     echo "[error] Unknown mode '${MODE}'. Use: all | pdf | cms" >&2

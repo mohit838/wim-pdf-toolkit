@@ -110,7 +110,7 @@ pipeline {
       steps {
         sh '''
           echo "Building backend image ${BACKEND_IMAGE}"
-          docker build -f backend/Dockerfile -t "${BACKEND_IMAGE}" backend
+          docker build -f pdf-api/Dockerfile -t "${BACKEND_IMAGE}" pdf-api
         '''
       }
     }
@@ -124,7 +124,7 @@ pipeline {
           set +a
 
           docker build \
-            -f frontend/Dockerfile \
+            -f pdf-web/Dockerfile \
             --build-arg APP_DEV="false" \
             --build-arg NEXT_PUBLIC_APP_DEV="false" \
             --build-arg DEV_INTERNAL_API_ORIGIN="${DEV_INTERNAL_API_ORIGIN:-http://pdf-toolkit-backend:8000}" \
@@ -132,7 +132,7 @@ pipeline {
             --build-arg NEXT_PUBLIC_DEV_SITE_ORIGIN="${NEXT_PUBLIC_DEV_SITE_ORIGIN:-http://localhost:3000}" \
             --build-arg NEXT_PUBLIC_PROD_SITE_ORIGIN="${NEXT_PUBLIC_PROD_SITE_ORIGIN:-https://pdf.example.com}" \
             -t "${FRONTEND_IMAGE}" \
-            frontend
+            pdf-web
         '''
       }
     }
@@ -141,7 +141,7 @@ pipeline {
       steps {
         sh '''
           echo "Building CMS backend image ${CMS_BACKEND_IMAGE}"
-          docker build -f cms-backend/Dockerfile -t "${CMS_BACKEND_IMAGE}" cms-backend
+          docker build -f cms-api/Dockerfile -t "${CMS_BACKEND_IMAGE}" cms-api
         '''
       }
     }
@@ -151,11 +151,11 @@ pipeline {
         sh '''
           echo "Building CMS frontend image ${CMS_FRONTEND_IMAGE}"
           docker build \
-            -f cms-frontend/Dockerfile \
+            -f cms-web/Dockerfile \
             --build-arg APP_DEV="false" \
             --build-arg NEXT_PUBLIC_APP_DEV="false" \
             -t "${CMS_FRONTEND_IMAGE}" \
-            cms-frontend
+            cms-web
         '''
       }
     }

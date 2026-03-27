@@ -1,8 +1,19 @@
 {
-  "name": "cms-backend",
+  "name": "cms-api",
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "author": {
+    "name": "Mohitul Islam",
+    "url": "https://mohitul-islam.com"
+  },
+  "keywords": [
+    "cms",
+    "api",
+    "nodejs",
+    "express",
+    "prisma"
+  ],
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "dev:worker": "tsx watch src/worker.ts",

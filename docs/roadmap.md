@@ -13,7 +13,7 @@
 - [x] **PDF to text / metadata cleanup / page numbering / repair endpoints (backend)**
 - [x] **Config-driven public UI** — site copy and SEO bootstrapped from JSON
 - [x] **Public frontend runtime config fetch** — SEO, analytics tags, verification tags, ads, and `ads.txt` can change without rebuilding the frontend
-- [x] **CMS foundation** — `cms-backend/` and `cms-frontend/`
+- [x] **CMS foundation** — `cms-api/` and `cms-web/`
 - [x] **Single root deploy layer** — shared env, compose files, and Jenkins pipeline for the four-app stack
 - [x] **Root Makefile** — one-command local dev runner for PDF site and CMS services
 

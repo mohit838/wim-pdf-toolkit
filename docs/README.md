@@ -2,7 +2,7 @@
 
 Use these docs as the current source of truth for the four-app platform.
 
-All examples are intentionally non-sensitive and use placeholders for domains, tokens, and secrets.
+All examples are intentionally non-sensitive and use placeholders for domains, tokens, credentials, and secrets.
 
 ## Files
 
@@ -13,7 +13,7 @@ All examples are intentionally non-sensitive and use placeholders for domains, t
 ## Related Readmes
 
 - Root [`README.md`](../README.md)
-- [`frontend/README.md`](../frontend/README.md)
-- [`cms-backend/README.md`](../cms-backend/README.md)
-- [`cms-frontend/README.md`](../cms-frontend/README.md)
+- [`pdf-web/README.md`](../pdf-web/README.md)
+- [`cms-api/README.md`](../cms-api/README.md)
+- [`cms-web/README.md`](../cms-web/README.md)
 - [`infra/README.md`](../infra/README.md)

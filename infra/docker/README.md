@@ -5,11 +5,11 @@ The repo uses a single root Docker orchestration layer instead of scattering com
 ## Active Files
 
 - `docker-compose.yml` — local development stack for:
-  - `backend/`
-  - `frontend/`
-  - `cms-backend/` API
-  - `cms-backend/` worker
-  - `cms-frontend/`
+  - `pdf-api/`
+  - `pdf-web/`
+  - `cms-api/` API
+  - `cms-api/` worker
+  - `cms-web/`
 - `docker-compose.prod.yml` — production-oriented stack with Traefik labels and image tags
 - `Jenkinsfile` — build, deploy, health-check, rollback, and image-retention workflow
 
@@ -19,10 +19,10 @@ You asked to keep one Docker/deploy layer for all services. This folder document
 
 ## Service Exposure Rules
 
-- `backend/` is private and must not be routed publicly.
-- `frontend/` is public at `pdf.mohitul-islam.com`.
-- `cms-frontend/` is public at `cms.mohitul-islam.com`.
-- `cms-backend/` is public at `cms-api.mohitul-islam.com` for:
+- `pdf-api/` is private and must not be routed publicly.
+- `pdf-web/` is public at `https://pdf.example.com`.
+- `cms-web/` is public at `https://cms.example.com`.
+- `cms-api/` is public at `https://cms-api.example.com` for:
   - protected admin routes
   - public published-read runtime config routes
 - PostgreSQL and Redis are external to Compose in both dev and prod.

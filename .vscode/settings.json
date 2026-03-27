@@ -15,24 +15,24 @@
   "files.exclude": {
     "**/.git": true,
     "**/__pycache__": true,
-    "backend/.venv": true,
-    "frontend/node_modules": true,
-    "frontend/dist": true,
-    "backend/app/storage/jobs": true
+    "pdf-api/.venv": true,
+    "pdf-web/node_modules": true,
+    "pdf-web/dist": true,
+    "pdf-api/app/storage/jobs": true
   },
   "search.exclude": {
-    "backend/.venv": true,
-    "frontend/node_modules": true,
-    "frontend/dist": true,
-    "backend/app/storage/jobs": true
+    "pdf-api/.venv": true,
+    "pdf-web/node_modules": true,
+    "pdf-web/dist": true,
+    "pdf-api/app/storage/jobs": true
   },
-  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+  "python.defaultInterpreterPath": "${workspaceFolder}/pdf-api/.venv/bin/python",
   "python.terminal.activateEnvironment": true,
   "python.analysis.extraPaths": [
     "${workspaceFolder}/backend"
   ],
   "python.analysis.typeCheckingMode": "basic",
-  "typescript.tsdk": "frontend/node_modules/typescript/lib",
+  "typescript.tsdk": "pdf-web/node_modules/typescript/lib",
   "eslint.workingDirectories": [
     {
       "directory": "frontend",

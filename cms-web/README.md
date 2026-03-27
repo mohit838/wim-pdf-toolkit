@@ -1,6 +1,8 @@
 # CMS Frontend
 
-`cms-frontend/` is the admin UI for managing runtime SEO, ads, analytics/verification integrations, and publish history.
+`cms-web/` is the admin UI for managing runtime SEO, ads, analytics/verification integrations, and publish history.
+
+Use placeholders only for domains, credentials, and secrets in documentation examples.
 
 ## Commands
 
@@ -15,7 +17,7 @@ pnpm start
 
 - runs on `http://localhost:3100` in local development
 - proxies admin requests through `/api/cms/*`
-- edits draft runtime config from `cms-backend/`
+- edits draft runtime config from `cms-api/`
 - publishes releases without rebuilding the public frontend
 
 ## Scope Clarification

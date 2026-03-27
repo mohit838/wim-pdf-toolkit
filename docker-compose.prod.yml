@@ -1,7 +1,7 @@
 services:
   pdf-toolkit-backend:
     build:
-      context: ./backend
+      context: ./pdf-api
       dockerfile: Dockerfile
     image: ${BACKEND_IMAGE}
     container_name: pdf-toolkit-backend
@@ -66,7 +66,7 @@ services:
       - DEV_REDIS_CMS_PREFIX
       - PROD_REDIS_CMS_PREFIX
     volumes:
-      - ./cms-backend:/app
+      - ./cms-api:/app
     networks:
       - app-internal
     extra_hosts:
@@ -74,7 +74,7 @@ services:
 
   cms-backend-api:
     build:
-      context: ./cms-backend
+      context: ./cms-api
       dockerfile: Dockerfile
     image: ${CMS_BACKEND_IMAGE}
     container_name: cms-backend-api
@@ -239,7 +239,7 @@ services:
 
   pdf-toolkit-frontend:
     build:
-      context: ./frontend
+      context: ./pdf-web
       dockerfile: Dockerfile
       args:
         APP_DEV: "false"
@@ -301,7 +301,7 @@ services:
 
   cms-frontend:
     build:
-      context: ./cms-frontend
+      context: ./cms-web
       dockerfile: Dockerfile
       args:
         APP_DEV: "false"

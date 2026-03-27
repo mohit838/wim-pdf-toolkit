@@ -10,7 +10,7 @@ For coordination, questions, or private reports, email `connect@mohitul-islam.co
 
 - Read the project overview in `README.md`.
 - Keep changes focused. Avoid mixing feature work, refactors, and documentation cleanup in one PR.
-- If you change API behavior, update the docs in `docs/` and any affected frontend copy in `frontend/src/`.
+- If you change API behavior, update the docs in `docs/` and any affected frontend copy in `pdf-web/src/`.
 
 ## Local Setup
 
@@ -19,16 +19,16 @@ For coordination, questions, or private reports, email `connect@mohitul-islam.co
 From the project root:
 
 ```bash
-python3 -m venv backend/.venv
-source backend/.venv/bin/activate
-pip install -r backend/requirements.txt
-uvicorn app.main:app --app-dir backend --reload --reload-dir backend --port 8000
+python3 -m venv pdf-api/.venv
+source pdf-api/.venv/bin/activate
+pip install -r pdf-api/requirements.txt
+uvicorn app.main:app --app-dir pdf-api --reload --reload-dir pdf-api --port 8000
 ```
 
-Or from inside `backend/`:
+Or from inside `pdf-api/`:
 
 ```bash
-cd backend
+cd pdf-api
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -38,7 +38,7 @@ uvicorn app.main:app --reload --port 8000
 ### Frontend
 
 ```bash
-cd frontend
+cd pdf-web
 pnpm install
 pnpm dev
 ```
@@ -47,7 +47,7 @@ pnpm dev
 
 - Prefer small, reviewable pull requests.
 - Preserve the existing project structure unless there is a strong reason to change it.
-- Keep backend routes thin and put transformation logic in `backend/app/services/`.
+- Keep backend routes thin and put transformation logic in `pdf-api/app/services/`.
 - Reuse shared frontend components when possible instead of duplicating page-specific UI.
 - Update `README.md`, `docs/api-notes.md`, and `docs/architecture.md` when behavior or setup changes.
 

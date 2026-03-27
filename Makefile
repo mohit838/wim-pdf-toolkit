@@ -21,17 +21,17 @@ help:
 install: install-backend install-frontend install-cms-backend install-cms-frontend
 
 install-backend:
-	@test -d backend/.venv || python3 -m venv backend/.venv
-	@source backend/.venv/bin/activate && pip install -r backend/requirements.txt
+	@test -d pdf-api/.venv || python3 -m venv pdf-api/.venv
+	@source pdf-api/.venv/bin/activate && pip install -r pdf-api/requirements.txt
 
 install-frontend:
-	@pnpm --dir frontend install
+	@pnpm --dir pdf-web install
 
 install-cms-backend:
-	@pnpm --dir cms-backend install
+	@pnpm --dir cms-api install
 
 install-cms-frontend:
-	@pnpm --dir cms-frontend install
+	@pnpm --dir cms-web install
 
 dev:
 	@bash infra/scripts/run-dev-stack.sh all
@@ -45,19 +45,19 @@ dev-cms:
 build: build-backend build-frontend build-cms-backend build-cms-frontend
 
 build-backend:
-	@source backend/.venv/bin/activate && python -m compileall backend/app
+	@source pdf-api/.venv/bin/activate && python -m compileall pdf-api/app
 
 build-frontend:
-	@pnpm --dir frontend build
+	@pnpm --dir pdf-web build
 
 build-cms-backend:
-	@pnpm --dir cms-backend build
+	@pnpm --dir cms-api build
 
 build-cms-frontend:
-	@pnpm --dir cms-frontend build
+	@pnpm --dir cms-web build
 
 test:
-	@pnpm --dir frontend test
+	@pnpm --dir pdf-web test
 
 docker-up:
 	@docker compose up --build -d
@@ -72,4 +72,4 @@ prod-config:
 	@docker compose -f docker-compose.prod.yml config
 
 clean:
-	@rm -rf frontend/.next frontend/dist cms-backend/dist cms-frontend/.next
+	@rm -rf pdf-web/.next pdf-web/dist cms-api/dist cms-web/.next
