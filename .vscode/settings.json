@@ -1,0 +1,49 @@
+{
+  "cSpell.words": [
+    "aregsrh",
+    "mohitul",
+    "muserio",
+    "pypdf",
+    "tailwindcss",
+    "traefik",
+    "uvicorn"
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/__pycache__": true,
+    "backend/.venv": true,
+    "frontend/node_modules": true,
+    "frontend/dist": true,
+    "backend/app/storage/jobs": true
+  },
+  "search.exclude": {
+    "backend/.venv": true,
+    "frontend/node_modules": true,
+    "frontend/dist": true,
+    "backend/app/storage/jobs": true
+  },
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/backend"
+  ],
+  "python.analysis.typeCheckingMode": "basic",
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
+  "eslint.workingDirectories": [
+    {
+      "directory": "frontend",
+      "changeProcessCWD": true
+    }
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "tailwindCSS.experimental.configFile": null
+}

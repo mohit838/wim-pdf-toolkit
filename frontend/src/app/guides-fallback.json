@@ -1,0 +1,26 @@
+[
+  {
+    "id": "guide-merge-clean-workflow",
+    "slug": "merge-pdfs-with-consistent-order",
+    "title": "Merge PDFs with a consistent order and naming workflow",
+    "excerpt": "A practical sequence for collecting files, validating page order, and exporting one clean final PDF without rework.",
+    "category": "Core Workflow",
+    "body": "Use this process when you need one final combined document for submission, sharing, or archive.\n\n1. Collect and label files before upload\nRename each file so order is obvious before you start. This reduces mistakes during merge.\n\n2. Upload in final order and verify total pages\nAfter upload, compare expected page count with the tool summary.\n\n3. Reorder only once\nDrag pages into final sequence, then do a quick pass from top to bottom to confirm sections are complete.\n\n4. Export and run a quick QA check\nOpen the exported PDF and confirm title page, section breaks, and page continuity.\n\nIf this document is client-facing, keep a versioned naming pattern such as ProjectName_v1_final.pdf."
+  },
+  {
+    "id": "guide-compress-quality-balance",
+    "slug": "compress-pdf-with-quality-control",
+    "title": "Compress PDF with quality control for text and images",
+    "excerpt": "How to reduce file size while keeping text readable and images acceptable for web, email, and documentation portals.",
+    "category": "Optimization",
+    "body": "Compression is most effective when you choose target quality based on destination.\n\n1. Start from a clean source\nIf possible, use an export from the source app instead of a scanned print copy.\n\n2. Pick target context first\nFor email and chat sharing, prioritize smaller size. For policy docs and official records, prioritize readability.\n\n3. Validate at 100 percent zoom\nCheck headings, tables, and small footnotes after compression.\n\n4. Keep two outputs when needed\nStore a lightweight share version and a higher quality archive version.\n\nThis approach avoids sending huge files while protecting document quality where it matters."
+  },
+  {
+    "id": "guide-protect-share-securely",
+    "slug": "protect-and-share-pdf-securely",
+    "title": "Protect and share PDF securely without blocking real users",
+    "excerpt": "A simple security checklist for password usage, sharing channels, and recovery practices when documents are sensitive.",
+    "category": "Security",
+    "body": "Security should be strong but still usable for recipients.\n\n1. Apply password protection only when needed\nUse protection for contracts, personal data, and internal-only documents.\n\n2. Share password and file in separate channels\nSend the file by email or portal and send password by a different channel.\n\n3. Use clear internal naming\nMark protected files with a suffix so your team knows password is required.\n\n4. Keep recovery steps documented\nStore owner-side recovery instructions in internal documentation so teams are not blocked later.\n\n5. Revoke and regenerate for sensitive updates\nIf document scope changes, generate a new protected output and replace old copies where possible."
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "name": "cms-backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "dev:worker": "tsx watch src/worker.ts",
+    "build": "pnpm run prisma:generate && tsup",
+    "start": "node dist/server.js",
+    "start:worker": "node dist/worker.js",
+    "test": "vitest run",
+    "prisma:generate": "tsx src/scripts/run-prisma.ts generate",
+    "prisma:migrate:dev": "tsx src/scripts/run-prisma.ts migrate dev",
+    "prisma:migrate:deploy": "tsx src/scripts/run-prisma.ts migrate deploy",
+    "prisma:studio": "tsx src/scripts/run-prisma.ts studio",
+    "seed": "tsx src/scripts/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.5.0",
+    "@prisma/client": "^7.5.0",
+    "express": "^5.1.0",
+    "nodemailer": "^8.0.4",
+    "payload-sanitizer": "^0.3.0",
+    "pg": "^8.20.0",
+    "redis": "^5.11.0",
+    "sanitize-html": "^2.17.2",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "@types/pg": "^8.20.0",
+    "prisma": "^7.5.0",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.8"
+  }
+}

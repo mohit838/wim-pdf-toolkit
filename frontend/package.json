@@ -1,0 +1,50 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "author": {
+    "name": "Mohitul Islam",
+    "email": "contact@mohitul-islam.com"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "perf:lhci": "pnpm build && lhci autorun --config=./lighthouserc.json",
+    "perf:lhci:collect": "lhci collect --config=./lighthouserc.json",
+    "perf:lhci:assert": "lhci assert --config=./lighthouserc.json"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.95.2",
+    "axios": "^1.13.6",
+    "next": "^16.2.1",
+    "nodemailer": "^8.0.4",
+    "payload-sanitizer": "^0.3.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "redis": "^5.11.0",
+    "sanitize-html": "^2.17.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^24.12.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.4.0",
+    "jsdom": "^29.0.1",
+    "@lhci/cli": "^0.15.1",
+    "tailwindcss": "^4.2.2",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "vitest": "^4.1.1"
+  }
+}

@@ -1,0 +1,849 @@
+{
+  "branding": {
+    "name": "PDF Toolkit",
+    "shortName": "PDF Toolkit",
+    "legalName": "PDF Toolkit",
+    "authorName": "Mohitul Islam"
+  },
+  "contact": {
+    "email": "contact@mohitul-islam.com"
+  },
+  "organization": {
+    "profiles": []
+  },
+  "system": {
+    "loading": {
+      "eyebrow": "System",
+      "title": "Preparing your workspace",
+      "description": "Loading tools, layout, and document workflows. This usually takes just a moment.",
+      "statusLabel": "Loading the site"
+    },
+    "error": {
+      "eyebrow": "Support Redirect",
+      "title": "Something went wrong",
+      "description": "We hit an unexpected problem on this page. Redirecting you to support so you always have a safe fallback.",
+      "redirectLabel": "Redirecting to support…",
+      "retryLabel": "Try again",
+      "supportActionLabel": "Open support",
+      "emailLabel": "Support email"
+    },
+    "support": {
+      "eyebrow": "Support",
+      "title": "Need help with the site?",
+      "description": "If a page fails to load or something looks broken, contact support and include what you were trying to do when it happened.",
+      "emailLabel": "Support email",
+      "emailActionLabel": "Email support",
+      "homeActionLabel": "Back to home"
+    }
+  },
+  "ui": {
+    "backButtonLabel": "Back",
+    "backButtonAriaLabel": "Go back",
+    "fileDropzone": {
+      "dropzoneTitle": "Drag & drop your files here",
+      "dropzoneSubtitle": "or click to browse from your device",
+      "dropzoneHint": "Upload your files from your device",
+      "listTitle": "Selected files",
+      "removeFileLabel": "Remove file",
+      "countSingular": "file",
+      "countPlural": "files"
+    },
+    "toolCard": {
+      "readyLabel": "Ready",
+      "soonLabel": "Soon",
+      "openLabel": "Open tool",
+      "comingSoonLabel": "Coming soon"
+    }
+  },
+  "navigation": {
+    "homeLabel": "Home",
+    "groups": [
+      {
+        "id": "pdf-tools",
+        "label": "PDF Tools",
+        "toolIds": [
+          "merge",
+          "split",
+          "rotate",
+          "extract",
+          "watermark",
+          "rearrange",
+          "imageToPdf",
+          "compress",
+          "addPageNumbers",
+          "repair"
+        ]
+      },
+      {
+        "id": "security",
+        "label": "Security",
+        "toolIds": [
+          "protect",
+          "unlock",
+          "removeMetadata"
+        ]
+      },
+      {
+        "id": "conversions",
+        "label": "Conversions",
+        "toolIds": [
+          "docxToPdf",
+          "pdfToDocx",
+          "pdfToJpg",
+          "pdfToText"
+        ]
+      }
+    ]
+  },
+  "home": {
+    "sectionCountSuffix": "tools",
+    "hero": {
+      "badgeCountSuffix": "Tools Ready",
+      "titleLead": "The complete",
+      "titleHighlight": "PDF toolkit",
+      "emphasisColor": "#8b5cf6",
+      "titleTail": "you need",
+      "description": "Merge, split, rotate, extract, watermark, rearrange, protect, unlock, compress, and convert files in one fast, private workspace.",
+      "pills": [
+        "Fast access to common actions",
+        "Cleaner desktop scanning",
+        "Consistent tool workflow"
+      ],
+      "primaryActionPrefix": "Open",
+      "secondaryActionLabel": "Browse all tools",
+      "readyToolsSuffix": "ready tools across editing, security, and conversion workflows."
+    },
+    "quickStart": {
+      "eyebrow": "Quick start",
+      "title": "Four focused entry points",
+      "countSuffix": "cards",
+      "actionLabel": "Open tool",
+      "toolIds": [
+        "merge",
+        "split",
+        "compress",
+        "repair"
+      ]
+    },
+    "sections": [
+      {
+        "id": "core-tools",
+        "eyebrow": "Core workflow",
+        "accent": "PDF",
+        "titleTail": "Tools",
+        "description": "The everyday PDF actions people reach for most, arranged in a cleaner four-column desktop layout for faster scanning.",
+        "toolIds": [
+          "merge",
+          "rotate",
+          "extract",
+          "split",
+          "imageToPdf",
+          "watermark",
+          "rearrange",
+          "compress",
+          "addPageNumbers",
+          "repair"
+        ]
+      },
+      {
+        "id": "security-tools",
+        "eyebrow": "Document safety",
+        "accent": "PDF",
+        "titleTail": "Security Tools",
+        "description": "The protection and access controls teams use most, presented in the same clear workflow style as core PDF actions.",
+        "toolIds": [
+          "protect",
+          "unlock",
+          "removeMetadata"
+        ]
+      },
+      {
+        "id": "conversion-tools",
+        "eyebrow": "Format switching",
+        "accent": "PDF",
+        "titleTail": "Conversions",
+        "description": "The most-used format conversion actions, aligned with the same card structure and scanning flow as the core tools section.",
+        "toolIds": [
+          "docxToPdf",
+          "pdfToDocx",
+          "pdfToJpg",
+          "pdfToText"
+        ]
+      }
+    ]
+  },
+  "tools": {
+    "merge": {
+      "path": "/merge",
+      "seoPageKey": "merge",
+      "iconKey": "merge",
+      "status": "ready",
+      "nav": {
+        "label": "Merge PDF",
+        "description": "Combine multiple PDFs into one"
+      },
+      "homeCard": {
+        "title": "Merge PDF",
+        "description": "Combine multiple PDF files into one clean output."
+      },
+      "footerLabel": "Merge PDF",
+      "heroCard": {
+        "eyebrow": "Start here",
+        "title": "Merge PDF",
+        "description": "Join reports, invoices, or scans into one polished file.",
+        "accentColor": "#a78bfa",
+        "glow": "radial-gradient(circle at top right, rgba(139, 92, 246, 0.28), transparent 60%)"
+      },
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Merge PDF",
+        "description": "Upload multiple PDF files in the order you want, then generate one merged document.",
+        "fileInput": {
+          "label": "PDF Files",
+          "dropzoneTitle": "Drag & drop your PDF files here",
+          "dropzoneSubtitle": "or click to browse from your device",
+          "dropzoneHint": "Upload at least 2 PDF files • Max 25 MB each",
+          "listTitle": "Selected files",
+          "removeFileLabel": "Remove file",
+          "countSingular": "file",
+          "countPlural": "files"
+        },
+        "summary": {
+          "totalSizeLabel": "Total size"
+        },
+        "statusPanel": {
+          "title": "Status",
+          "filesSelectedLabel": "Files selected",
+          "workflowLabel": "Workflow",
+          "workflowSteps": [
+            "Select PDFs",
+            "Click Merge",
+            "Download result"
+          ]
+        },
+        "actions": {
+          "clearLabel": "Clear all",
+          "primaryLabel": "Merge PDFs",
+          "busyLabel": "Merging…",
+          "downloadLabel": "Download merged PDF"
+        }
+      }
+    },
+    "rotate": {
+      "path": "/rotate",
+      "seoPageKey": "rotate",
+      "iconKey": "rotate",
+      "status": "ready",
+      "nav": {
+        "label": "Rotate PDF",
+        "description": "Rotate pages 90°/180°/270°"
+      },
+      "homeCard": {
+        "title": "Rotate PDF",
+        "description": "Rotate pages by 90°, 180°, or 270°."
+      },
+      "footerLabel": "Rotate PDF",
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Rotate PDF",
+        "description": "Rotate all or specific pages by 90°, 180°, or 270°.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file"
+        },
+        "rotationField": {
+          "label": "Rotation Angle"
+        },
+        "pagesField": {
+          "label": "Pages",
+          "hint": "optional, leave empty for all",
+          "placeholder": "e.g. 1,3,5"
+        },
+        "actions": {
+          "primaryLabel": "Rotate PDF",
+          "busyLabel": "Rotating…",
+          "downloadLabel": "Download rotated PDF"
+        }
+      }
+    },
+    "extract": {
+      "path": "/extract",
+      "seoPageKey": "extract",
+      "iconKey": "extract",
+      "status": "ready",
+      "nav": {
+        "label": "Extract Pages",
+        "description": "Select & export pages"
+      },
+      "homeCard": {
+        "title": "Extract Pages",
+        "description": "Select specific pages and export to a new PDF."
+      },
+      "footerLabel": "Extract Pages",
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Extract Pages",
+        "description": "Select specific pages and export them into a new PDF.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file",
+          "selectedCountLabel": "pages"
+        },
+        "selectionSection": {
+          "label": "Select Pages",
+          "selectedSuffix": "selected",
+          "selectAllLabel": "Select All",
+          "clearLabel": "Clear",
+          "actionPrefix": "Extract",
+          "actionUnitSingular": "Page",
+          "actionUnitPlural": "Pages"
+        },
+        "actions": {
+          "busyLabel": "Extracting…",
+          "downloadLabel": "Download extracted PDF"
+        }
+      }
+    },
+    "split": {
+      "path": "/split",
+      "seoPageKey": "split",
+      "iconKey": "split",
+      "status": "ready",
+      "nav": {
+        "label": "Split PDF",
+        "description": "Split by page ranges"
+      },
+      "homeCard": {
+        "title": "Split PDF",
+        "description": "Split by page ranges into separate files."
+      },
+      "footerLabel": "Split PDF",
+      "heroCard": {
+        "eyebrow": "Page control",
+        "title": "Split PDF",
+        "description": "Break large documents into smaller, shareable parts.",
+        "accentColor": "#8b5cf6",
+        "glow": "radial-gradient(circle at top right, rgba(124, 108, 255, 0.24), transparent 60%)"
+      },
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Split PDF",
+        "description": "Split a PDF into multiple files by page ranges.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file",
+          "selectedCountLabel": "pages"
+        },
+        "rangeSection": {
+          "label": "Page Ranges",
+          "addLabel": "+ Add range",
+          "removeLabel": "Remove range",
+          "partPrefix": "Part",
+          "toLabel": "to"
+        },
+        "actions": {
+          "primaryLabel": "Split PDF",
+          "busyLabel": "Splitting…",
+          "downloadPrefix": "Download"
+        }
+      }
+    },
+    "imageToPdf": {
+      "path": "/image-to-pdf",
+      "seoPageKey": "imageToPdf",
+      "iconKey": "image",
+      "status": "ready",
+      "nav": {
+        "label": "Image → PDF",
+        "description": "Convert images to PDF"
+      },
+      "homeCard": {
+        "title": "Image to PDF",
+        "description": "Convert images into a single PDF document."
+      },
+      "footerLabel": "Image to PDF",
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Image to PDF",
+        "description": "Convert one or more images into a single PDF document.",
+        "fileInput": {
+          "label": "Image Files",
+          "dropzoneTitle": "Drag & drop images here",
+          "dropzoneSubtitle": "or click to browse from your device",
+          "dropzoneHint": "JPG, PNG, GIF, BMP, TIFF, WebP",
+          "removeFileLabel": "Remove image"
+        },
+        "imageList": {
+          "itemLabelSingular": "image",
+          "itemLabelPlural": "images"
+        },
+        "actions": {
+          "clearLabel": "Clear all",
+          "primaryLabel": "Convert to PDF",
+          "busyLabel": "Converting…",
+          "downloadLabel": "Download PDF"
+        }
+      }
+    },
+    "watermark": {
+      "path": "/watermark",
+      "seoPageKey": "watermark",
+      "iconKey": "watermark",
+      "status": "ready",
+      "nav": {
+        "label": "Watermark",
+        "description": "Add text watermark"
+      },
+      "homeCard": {
+        "title": "Watermark PDF",
+        "description": "Apply diagonal text watermark to every page."
+      },
+      "footerLabel": "Watermark PDF",
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Watermark PDF",
+        "description": "Apply a text watermark to your PDF for branding or protection.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file"
+        },
+        "watermarkSection": {
+          "textLabel": "Watermark Text",
+          "textPlaceholder": "e.g. CONFIDENTIAL",
+          "fontSizeLabel": "Font Size",
+          "opacityLabel": "Opacity",
+          "angleLabel": "Angle (°)"
+        },
+        "actions": {
+          "primaryLabel": "Apply Watermark",
+          "busyLabel": "Applying…",
+          "downloadLabel": "Download watermarked PDF"
+        }
+      }
+    },
+    "rearrange": {
+      "path": "/rearrange",
+      "seoPageKey": "rearrange",
+      "iconKey": "rearrange",
+      "status": "ready",
+      "nav": {
+        "label": "Rearrange",
+        "description": "Drag to reorder pages"
+      },
+      "homeCard": {
+        "title": "Rearrange Pages",
+        "description": "Drag and drop to reorder PDF pages."
+      },
+      "footerLabel": "Rearrange Pages",
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Rearrange Pages",
+        "description": "Drag and drop to reorder PDF pages, then download the rearranged document.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file",
+          "selectedCountLabel": "pages"
+        },
+        "orderSection": {
+          "label": "Page Order",
+          "resetLabel": "Reset",
+          "reverseLabel": "Reverse",
+          "helperText": "Drag pages to reorder on desktop, or use the arrow buttons on touch devices.",
+          "currentOrderLabel": "Current order",
+          "moveEarlierLabel": "Move page earlier",
+          "moveLaterLabel": "Move page later"
+        },
+        "actions": {
+          "primaryLabel": "Rearrange PDF",
+          "busyLabel": "Rearranging…",
+          "downloadLabel": "Download rearranged PDF"
+        }
+      }
+    },
+    "compress": {
+      "path": "/compress",
+      "seoPageKey": "compress",
+      "iconKey": "compress",
+      "status": "ready",
+      "nav": {
+        "label": "Compress PDF",
+        "description": "Reduce file size"
+      },
+      "homeCard": {
+        "title": "Compress PDF",
+        "description": "Reduce file size while maintaining maximal quality."
+      },
+      "footerLabel": "Compress PDF",
+      "heroCard": {
+        "eyebrow": "Smaller files",
+        "title": "Compress PDF",
+        "description": "Reduce size for email, upload limits, and faster delivery.",
+        "accentColor": "#38bdf8",
+        "glow": "radial-gradient(circle at top right, rgba(23, 199, 255, 0.22), transparent 60%)"
+      },
+      "page": {
+        "eyebrow": "Optimize PDF",
+        "title": "Compress PDF",
+        "description": "Reduce file size while optimizing for maximal PDF quality.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF to compress"
+        },
+        "actions": {
+          "primaryLabel": "Compress PDF",
+          "busyLabel": "Compressing…",
+          "downloadLabel": "Download compressed PDF"
+        }
+      }
+    },
+    "protect": {
+      "path": "/protect",
+      "seoPageKey": "protect",
+      "iconKey": "protect",
+      "status": "ready",
+      "nav": {
+        "label": "Protect PDF",
+        "description": "Encrypt with password"
+      },
+      "homeCard": {
+        "title": "Protect PDF",
+        "description": "Encrypt your PDF file with a password."
+      },
+      "footerLabel": "Protect PDF",
+      "page": {
+        "eyebrow": "PDF Security",
+        "title": "Protect PDF",
+        "description": "Encrypt your PDF with a password to prevent unauthorized access.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file to encrypt"
+        },
+        "passwordField": {
+          "label": "Password",
+          "placeholder": "Enter a strong password"
+        },
+        "actions": {
+          "primaryLabel": "Protect PDF",
+          "busyLabel": "Encrypting…",
+          "downloadLabel": "Download protected PDF"
+        }
+      }
+    },
+    "unlock": {
+      "path": "/unlock",
+      "seoPageKey": "unlock",
+      "iconKey": "unlock",
+      "status": "ready",
+      "nav": {
+        "label": "Unlock PDF",
+        "description": "Remove encryption"
+      },
+      "homeCard": {
+        "title": "Unlock PDF",
+        "description": "Remove password encryption from your PDF documents."
+      },
+      "footerLabel": "Unlock PDF",
+      "page": {
+        "eyebrow": "PDF Security",
+        "title": "Unlock PDF",
+        "description": "Remove password encryption from your PDF document (you must know the password).",
+        "fileInput": {
+          "label": "Protected PDF File",
+          "placeholder": "Click to select an encrypted PDF file"
+        },
+        "passwordField": {
+          "label": "File Password",
+          "placeholder": "Enter the password"
+        },
+        "actions": {
+          "primaryLabel": "Unlock PDF",
+          "busyLabel": "Decrypting…",
+          "downloadLabel": "Download unlocked PDF"
+        }
+      }
+    },
+    "docxToPdf": {
+      "path": "/docx-to-pdf",
+      "seoPageKey": "docxToPdf",
+      "iconKey": "docxToPdf",
+      "status": "ready",
+      "nav": {
+        "label": "DOCX → PDF",
+        "description": "Word to PDF conversion"
+      },
+      "homeCard": {
+        "title": "DOCX → PDF",
+        "description": "Convert Word documents to PDF with high-fidelity rendering."
+      },
+      "footerLabel": "DOCX to PDF",
+      "page": {
+        "eyebrow": "Conversion",
+        "title": "DOCX to PDF",
+        "description": "Convert Word documents (.docx) to PDF with high-fidelity rendering.",
+        "fileInput": {
+          "label": "Word Document",
+          "placeholder": "Click to select a .docx file",
+          "hint": "Microsoft Word (.docx) files only"
+        },
+        "actions": {
+          "primaryLabel": "Convert to PDF",
+          "busyLabel": "Converting…",
+          "downloadLabel": "Download PDF"
+        }
+      }
+    },
+    "pdfToDocx": {
+      "path": "/pdf-to-docx",
+      "seoPageKey": "pdfToDocx",
+      "iconKey": "pdfToDocx",
+      "status": "ready",
+      "nav": {
+        "label": "PDF → DOCX",
+        "description": "PDF to Word extraction"
+      },
+      "homeCard": {
+        "title": "PDF → DOCX",
+        "description": "Extract text from PDFs into editable Word docs."
+      },
+      "footerLabel": "PDF to DOCX",
+      "heroCard": {
+        "eyebrow": "Editable output",
+        "title": "PDF → DOCX",
+        "description": "Turn PDFs into editable Word documents with one jump.",
+        "accentColor": "#22c55e",
+        "glow": "radial-gradient(circle at top right, rgba(34, 197, 94, 0.2), transparent 60%)"
+      },
+      "page": {
+        "eyebrow": "Conversion",
+        "title": "PDF to DOCX",
+        "description": "Extract text from a PDF and create an editable Word document.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file",
+          "hint": "Text content will be extracted into a Word document"
+        },
+        "actions": {
+          "primaryLabel": "Convert to DOCX",
+          "busyLabel": "Converting…",
+          "downloadLabel": "Download DOCX"
+        }
+      }
+    },
+    "pdfToJpg": {
+      "path": "/pdf-to-jpg",
+      "seoPageKey": "pdfToJpg",
+      "iconKey": "pdfToJpg",
+      "status": "ready",
+      "nav": {
+        "label": "PDF → JPG",
+        "description": "Convert pages to images"
+      },
+      "homeCard": {
+        "title": "PDF → JPG",
+        "description": "Convert each PDF page into a JPG and extract as a ZIP file."
+      },
+      "footerLabel": "PDF to JPG",
+      "page": {
+        "eyebrow": "Conversions",
+        "title": "PDF to JPG",
+        "description": "Convert each PDF page into a JPG image. Extract images packaged in a ZIP file.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF to convert"
+        },
+        "actions": {
+          "primaryLabel": "Convert to JPG",
+          "busyLabel": "Converting…",
+          "downloadLabel": "Download ZIP of JPG images"
+        }
+      }
+    },
+    "pdfToText": {
+      "path": "/pdf-to-text",
+      "seoPageKey": "pdfToText",
+      "iconKey": "pdfToText",
+      "status": "ready",
+      "nav": {
+        "label": "PDF to Text",
+        "description": "Extract text from PDF"
+      },
+      "homeCard": {
+        "title": "PDF to Text",
+        "description": "Extract plain text from every PDF page."
+      },
+      "footerLabel": "PDF to Text",
+      "heroCard": {
+        "eyebrow": "Text export",
+        "title": "PDF to Text",
+        "description": "Extract plain text from PDFs for quick reuse.",
+        "accentColor": "#22d3ee",
+        "glow": "radial-gradient(circle at top right, rgba(34, 211, 238, 0.26), transparent 60%)"
+      },
+      "page": {
+        "eyebrow": "Tool",
+        "title": "PDF to Text",
+        "description": "Extract text from a PDF file into a UTF-8 text document.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file"
+        },
+        "actions": {
+          "primaryLabel": "Extract Text",
+          "busyLabel": "Extracting…",
+          "downloadLabel": "Download text file"
+        }
+      }
+    },
+    "removeMetadata": {
+      "path": "/remove-metadata",
+      "seoPageKey": "removeMetadata",
+      "iconKey": "removeMetadata",
+      "status": "ready",
+      "nav": {
+        "label": "Remove Metadata",
+        "description": "Clean document metadata"
+      },
+      "homeCard": {
+        "title": "Remove Metadata",
+        "description": "Remove metadata from a PDF copy for safer sharing."
+      },
+      "footerLabel": "Remove Metadata",
+      "heroCard": {
+        "eyebrow": "Privacy",
+        "title": "Remove Metadata",
+        "description": "Strip hidden document metadata before sharing.",
+        "accentColor": "#34d399",
+        "glow": "radial-gradient(circle at top right, rgba(52, 211, 153, 0.24), transparent 60%)"
+      },
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Remove Metadata",
+        "description": "Create a clean PDF copy with document metadata removed.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file"
+        },
+        "actions": {
+          "primaryLabel": "Remove Metadata",
+          "busyLabel": "Cleaning…",
+          "downloadLabel": "Download cleaned PDF"
+        }
+      }
+    },
+    "addPageNumbers": {
+      "path": "/add-page-numbers",
+      "seoPageKey": "addPageNumbers",
+      "iconKey": "addPageNumbers",
+      "status": "ready",
+      "nav": {
+        "label": "Add Page Numbers",
+        "description": "Stamp page numbers"
+      },
+      "homeCard": {
+        "title": "Add Page Numbers",
+        "description": "Add page numbers with position and style controls."
+      },
+      "footerLabel": "Add Page Numbers",
+      "heroCard": {
+        "eyebrow": "Document prep",
+        "title": "Add Page Numbers",
+        "description": "Number PDF pages with custom start and placement.",
+        "accentColor": "#60a5fa",
+        "glow": "radial-gradient(circle at top right, rgba(96, 165, 250, 0.24), transparent 60%)"
+      },
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Add Page Numbers",
+        "description": "Stamp page numbers on each PDF page with configurable start, size, and position.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file"
+        },
+        "actions": {
+          "primaryLabel": "Add Page Numbers",
+          "busyLabel": "Applying…",
+          "downloadLabel": "Download numbered PDF"
+        }
+      }
+    },
+    "repair": {
+      "path": "/repair",
+      "seoPageKey": "repair",
+      "iconKey": "repair",
+      "status": "ready",
+      "nav": {
+        "label": "Repair PDF",
+        "description": "Fix broken PDF structure"
+      },
+      "homeCard": {
+        "title": "Repair PDF",
+        "description": "Attempt repair for malformed or problematic PDF files."
+      },
+      "footerLabel": "Repair PDF",
+      "heroCard": {
+        "eyebrow": "Recovery",
+        "title": "Repair PDF",
+        "description": "Recover and clean malformed PDFs in one step.",
+        "accentColor": "#f59e0b",
+        "glow": "radial-gradient(circle at top right, rgba(245, 158, 11, 0.24), transparent 60%)"
+      },
+      "page": {
+        "eyebrow": "Tool",
+        "title": "Repair PDF",
+        "description": "Try to repair corrupted or malformed PDFs and export a clean file.",
+        "fileInput": {
+          "label": "PDF File",
+          "placeholder": "Click to select a PDF file"
+        },
+        "actions": {
+          "primaryLabel": "Repair PDF",
+          "busyLabel": "Repairing…",
+          "downloadLabel": "Download repaired PDF"
+        }
+      }
+    }
+  },
+  "footer": {
+    "eyebrow": "Private PDF workflow",
+    "headline": "PDF tools for clean, focused document work.",
+    "description": "Merge, split, convert, compress, watermark, and secure files in one streamlined workspace.",
+    "sections": [
+      {
+        "title": "Core Tools",
+        "toolIds": [
+          "merge",
+          "split",
+          "compress",
+          "rearrange",
+          "addPageNumbers",
+          "repair"
+        ]
+      },
+      {
+        "title": "Security",
+        "toolIds": [
+          "protect",
+          "unlock",
+          "removeMetadata",
+          "watermark"
+        ]
+      },
+      {
+        "title": "Conversions",
+        "toolIds": [
+          "imageToPdf",
+          "docxToPdf",
+          "pdfToDocx",
+          "pdfToJpg",
+          "pdfToText"
+        ]
+      }
+    ],
+    "support": {
+      "title": "Contact",
+      "description": "Questions, feedback, or issue reports can go directly to the contact below.",
+      "contactLabel": "Email"
+    },
+    "bottomNote": "All rights reserved."
+  }
+}

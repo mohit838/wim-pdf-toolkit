@@ -1,0 +1,182 @@
+{
+  "about": {
+    "slug": "about",
+    "eyebrow": "About",
+    "title": "About PDF Toolkit",
+    "description": "Learn what PDF Toolkit does, how it is operated, and who it is designed for.",
+    "body": "PDF Toolkit is a practical collection of PDF utilities for everyday document work. The platform focuses on the tasks people use most often, including merge, split, rotate, compress, convert, protect, unlock, and watermark operations.",
+    "sections": [
+      {
+        "id": "about-overview",
+        "heading": "What the Service Provides",
+        "body": "The public website gives users a clean interface for common PDF workflows. Each tool is designed to keep the task simple, direct, and understandable without requiring a long setup process."
+      },
+      {
+        "id": "about-processing",
+        "heading": "How Processing Works",
+        "body": "Document processing is handled by the backend service after a user submits a job. Files are retained only for the operational time needed to finish the requested action and are removed by cleanup routines after expiry."
+      },
+      {
+        "id": "about-audience",
+        "heading": "Who It Is For",
+        "body": "PDF Toolkit is intended for freelancers, students, office teams, and anyone who needs dependable document utilities in a browser-based workflow."
+      }
+    ],
+    "cta": {
+      "title": "Need a product or support contact?",
+      "description": "Use the contact page if you need help with the site, advertising, or business questions.",
+      "label": "Contact support",
+      "href": "/contact"
+    }
+  },
+  "contact": {
+    "slug": "contact",
+    "eyebrow": "Contact",
+    "title": "Contact PDF Toolkit",
+    "description": "Get in touch for support, business questions, or policy-related requests.",
+    "body": "Use the configured support email for technical issues, product questions, advertising requests, or general business communication.",
+    "sections": [
+      {
+        "id": "contact-support",
+        "heading": "Support Requests",
+        "body": "If a tool fails, a page does not load correctly, or a result looks unexpected, contact support and include the page you were using and the approximate time of the issue."
+      },
+      {
+        "id": "contact-business",
+        "heading": "Business and Advertising",
+        "body": "The same contact channel may be used for partnership proposals, advertising inquiries, and questions related to site policies or publisher information."
+      }
+    ],
+    "cta": {
+      "title": "Need direct help?",
+      "description": "Use the support address shown on this page to reach the site operator.",
+      "label": "Go to support",
+      "href": "/support"
+    }
+  },
+  "privacy": {
+    "slug": "privacy",
+    "eyebrow": "Privacy",
+    "title": "Privacy Policy",
+    "description": "Understand how PDF Toolkit handles uploaded files, operational data, and service-related measurements.",
+    "body": "PDF Toolkit uses a backend service to process uploaded documents. Files are transmitted to the server only to complete the requested action and are not intended to remain stored longer than the operational retention window.",
+    "sections": [
+      {
+        "id": "privacy-files",
+        "heading": "File Processing",
+        "body": "When a user submits a PDF or related file, the file is processed to complete the requested tool action. This can include merging, splitting, compressing, converting, protecting, or watermarking a document."
+      },
+      {
+        "id": "privacy-retention",
+        "heading": "Temporary Retention and Cleanup",
+        "body": "Uploaded files and generated outputs are stored temporarily while the job is active. Cleanup routines remove expired jobs so temporary document data does not remain available indefinitely."
+      },
+      {
+        "id": "privacy-analytics",
+        "heading": "Operational Analytics",
+        "body": "The site may collect limited operational signals such as page path, request time, approximate location, device category, browser family, and referrer information to understand service usage and improve reliability."
+      },
+      {
+        "id": "privacy-contact",
+        "heading": "Questions and Requests",
+        "body": "If you need clarification about privacy or data handling, contact the support email listed on the site."
+      }
+    ],
+    "cta": {
+      "title": "Privacy question?",
+      "description": "Contact support if you need clarification about how the service handles file processing or operational data.",
+      "label": "Contact support",
+      "href": "/contact"
+    }
+  },
+  "terms": {
+    "slug": "terms",
+    "eyebrow": "Terms",
+    "title": "Terms of Service",
+    "description": "Review the basic usage rules for PDF Toolkit and its document-processing tools.",
+    "body": "By using PDF Toolkit, you agree to use the service for lawful document-processing purposes only and to review output files before relying on them in important workflows.",
+    "sections": [
+      {
+        "id": "terms-use",
+        "heading": "Acceptable Use",
+        "body": "You are responsible for the files you upload and for ensuring you have the right to process them. The service must not be used for unlawful content or abusive activity."
+      },
+      {
+        "id": "terms-availability",
+        "heading": "Availability and Limits",
+        "body": "The service is provided on an as-available basis. Tool behavior, supported formats, limits, and processing safeguards may change as the platform evolves."
+      },
+      {
+        "id": "terms-review",
+        "heading": "Output Review",
+        "body": "Generated files should be reviewed before use in legal, compliance-sensitive, or business-critical workflows. Automated processing is helpful, but it does not replace user review."
+      }
+    ],
+    "cta": {
+      "title": "Need policy clarification?",
+      "description": "Reach out if you have a business or compliance question about using the public tools.",
+      "label": "Contact support",
+      "href": "/contact"
+    }
+  },
+  "cookies": {
+    "slug": "cookies",
+    "eyebrow": "Cookies",
+    "title": "Cookie Notice",
+    "description": "Learn about cookies and related browser storage used for runtime behavior, analytics, and advertising controls.",
+    "body": "PDF Toolkit may use essential browser storage for operational behavior and, where enabled, may also load analytics or advertising-related integrations on approved public routes.",
+    "sections": [
+      {
+        "id": "cookies-essential",
+        "heading": "Essential Use",
+        "body": "Essential cookies or equivalent storage may be used to support application behavior, administrative session handling, and security controls."
+      },
+      {
+        "id": "cookies-measurement",
+        "heading": "Analytics and Advertising",
+        "body": "If analytics, verification, or advertising integrations are enabled, related identifiers or tags may be loaded on the approved pages configured by the site operator."
+      },
+      {
+        "id": "cookies-controls",
+        "heading": "Future Controls",
+        "body": "As the product evolves, additional consent or disclosure controls may be added where required by the audience, region, or integration in use."
+      }
+    ],
+    "cta": {
+      "title": "Need more detail?",
+      "description": "Use the contact page if you need clarification about cookies, analytics, or advertising-related browser behavior.",
+      "label": "Contact support",
+      "href": "/contact"
+    }
+  },
+  "ad-disclosure": {
+    "slug": "ad-disclosure",
+    "eyebrow": "Ad Disclosure",
+    "title": "Advertising Disclosure",
+    "description": "Understand how promotional placements and advertising-enabled areas are separated from the core PDF workflow.",
+    "body": "PDF Toolkit may display advertising or promotional content on selected public pages. Advertising settings are managed separately from the core document workflow to reduce confusion and protect usability.",
+    "sections": [
+      {
+        "id": "ads-placement",
+        "heading": "Where Ads Can Appear",
+        "body": "Advertising may appear on content-oriented areas such as the homepage, guides, or other informational sections. Ads should not appear inside upload dropzones, result panels, or primary document action controls."
+      },
+      {
+        "id": "ads-runtime",
+        "heading": "Runtime Control",
+        "body": "Advertising and marketing integrations are resolved at runtime from the CMS so the operator can update approved settings without requiring a full frontend rebuild."
+      },
+      {
+        "id": "ads-separation",
+        "heading": "Clear Separation",
+        "body": "The site is designed to keep sponsored or promotional placements visually separate from the main tool workflow so users can distinguish product actions from advertising."
+      }
+    ],
+    "cta": {
+      "title": "Advertising or partner inquiry?",
+      "description": "Use the contact page for advertising questions, publisher requests, or sponsorship discussions.",
+      "label": "Contact support",
+      "href": "/contact"
+    }
+  }
+}

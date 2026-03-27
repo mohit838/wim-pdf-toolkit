@@ -1,0 +1,357 @@
+services:
+  pdf-toolkit-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: ${BACKEND_IMAGE}
+    container_name: pdf-toolkit-backend
+    restart: unless-stopped
+    environment:
+      - APP_DEV=false
+      - DEV_ALLOWED_ORIGINS
+      - PROD_ALLOWED_ORIGINS
+      - DEV_ALLOWED_HOSTS
+      - PROD_ALLOWED_HOSTS
+      - DEV_TRUST_PROXY
+      - PROD_TRUST_PROXY
+      - DEV_RATE_LIMIT_MAX_REQUESTS
+      - PROD_RATE_LIMIT_MAX_REQUESTS
+      - DEV_RATE_LIMIT_WINDOW_SECONDS
+      - PROD_RATE_LIMIT_WINDOW_SECONDS
+      - DEV_MAX_UPLOAD_MB
+      - PROD_MAX_UPLOAD_MB
+      - DEV_INTERNAL_API_TOKEN
+      - PROD_INTERNAL_API_TOKEN
+      - DEV_DOCKER_REDIS_URL=${DEV_DOCKER_REDIS_URL}
+      - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
+      - DEV_REDIS_PDF_PREFIX
+      - PROD_REDIS_PDF_PREFIX
+    volumes:
+      - pdf-jobs:/app/app/storage/jobs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - app-internal
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json, urllib.request; response = urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5); data = json.load(response); raise SystemExit(0 if data.get('success') else 1)",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+
+  cms-migrate:
+    image: node:22-alpine
+    restart: "no"
+    working_dir: /app
+    command:
+      - sh
+      - -lc
+      - |
+        corepack enable &&
+        corepack prepare pnpm@latest --activate &&
+        pnpm install --no-frozen-lockfile &&
+        pnpm prisma:migrate:deploy
+    environment:
+      - APP_DEV=false
+      - DEV_DOCKER_POSTGRES_URL=${DEV_DOCKER_POSTGRES_URL}
+      - PROD_DOCKER_POSTGRES_URL=${PROD_DOCKER_POSTGRES_URL}
+      - DEV_DOCKER_REDIS_URL=${DEV_DOCKER_REDIS_URL}
+      - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
+      - DEV_REDIS_CMS_PREFIX
+      - PROD_REDIS_CMS_PREFIX
+    volumes:
+      - ./cms-backend:/app
+    networks:
+      - app-internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  cms-backend-api:
+    build:
+      context: ./cms-backend
+      dockerfile: Dockerfile
+    image: ${CMS_BACKEND_IMAGE}
+    container_name: cms-backend-api
+    restart: unless-stopped
+    depends_on:
+      cms-migrate:
+        condition: service_completed_successfully
+    environment:
+      - APP_DEV=false
+      - DEV_CMS_API_PORT
+      - PROD_CMS_API_PORT
+      - DEV_CMS_WEB_ORIGIN
+      - PROD_CMS_WEB_ORIGIN
+      - DEV_PUBLIC_SITE_ORIGIN
+      - PROD_PUBLIC_SITE_ORIGIN
+      - DEV_PUBLIC_SITE_REVALIDATE_URL=${DEV_DOCKER_PUBLIC_SITE_REVALIDATE_URL}
+      - PROD_PUBLIC_SITE_REVALIDATE_URL=${PROD_DOCKER_PUBLIC_SITE_REVALIDATE_URL}
+      - DEV_CMS_REVALIDATE_SECRET
+      - PROD_CMS_REVALIDATE_SECRET
+      - DEV_CMS_INGEST_SECRET
+      - PROD_CMS_INGEST_SECRET
+      - DEV_CMS_SESSION_SECRET
+      - PROD_CMS_SESSION_SECRET
+      - DEV_CMS_COOKIE_SECURE
+      - PROD_CMS_COOKIE_SECURE
+      - DEV_CMS_COOKIE_DOMAIN
+      - PROD_CMS_COOKIE_DOMAIN
+      - DEV_CMS_SESSION_TTL_SECONDS
+      - PROD_CMS_SESSION_TTL_SECONDS
+      - DEV_CMS_TOTP_ISSUER
+      - PROD_CMS_TOTP_ISSUER
+      - DEV_CMS_SUPERADMIN_EMAIL
+      - PROD_CMS_SUPERADMIN_EMAIL
+      - DEV_CMS_SUPERADMIN_PASSWORD
+      - PROD_CMS_SUPERADMIN_PASSWORD
+      - DEV_CMS_SUPERADMIN_NAME
+      - PROD_CMS_SUPERADMIN_NAME
+      - DEV_CMS_ADMIN_EMAIL
+      - PROD_CMS_ADMIN_EMAIL
+      - DEV_CMS_ADMIN_PASSWORD
+      - PROD_CMS_ADMIN_PASSWORD
+      - DEV_CMS_ADMIN_NAME
+      - PROD_CMS_ADMIN_NAME
+      - DEV_ANALYTICS_ENABLED
+      - PROD_ANALYTICS_ENABLED
+      - DEV_LOG_LEVEL
+      - PROD_LOG_LEVEL
+      - DEV_DOCKER_POSTGRES_URL=${DEV_DOCKER_POSTGRES_URL}
+      - PROD_DOCKER_POSTGRES_URL=${PROD_DOCKER_POSTGRES_URL}
+      - DEV_DOCKER_REDIS_URL=${DEV_DOCKER_REDIS_URL}
+      - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
+      - DEV_REDIS_CMS_PREFIX
+      - PROD_REDIS_CMS_PREFIX
+      - DEV_SMTP_HOST
+      - PROD_SMTP_HOST
+      - DEV_SMTP_PORT
+      - PROD_SMTP_PORT
+      - DEV_SMTP_SECURE
+      - PROD_SMTP_SECURE
+      - DEV_SMTP_USER
+      - PROD_SMTP_USER
+      - DEV_SMTP_PASSWORD
+      - PROD_SMTP_PASSWORD
+      - DEV_SMTP_FROM_ADDRESS
+      - PROD_SMTP_FROM_ADDRESS
+    networks:
+      - proxy
+      - app-internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4100/healthz').then(async (response) => { if (!response.ok) process.exit(1); const data = await response.json(); process.exit(data.ok ? 0 : 1); }).catch(() => process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.cms-backend.rule=Host(`${PROD_CMS_API_HOSTNAME}`)
+      - traefik.http.routers.cms-backend.entrypoints=websecure
+      - traefik.http.routers.cms-backend.tls=true
+      - traefik.http.routers.cms-backend.tls.certresolver=le
+      - traefik.http.services.cms-backend.loadbalancer.server.port=4100
+
+  cms-backend-worker:
+    image: ${CMS_BACKEND_IMAGE}
+    container_name: cms-backend-worker
+    restart: unless-stopped
+    command: ["node", "dist/worker.js"]
+    environment:
+      - APP_DEV=false
+      - DEV_CMS_API_PORT
+      - PROD_CMS_API_PORT
+      - DEV_CMS_WEB_ORIGIN
+      - PROD_CMS_WEB_ORIGIN
+      - DEV_PUBLIC_SITE_ORIGIN
+      - PROD_PUBLIC_SITE_ORIGIN
+      - DEV_PUBLIC_SITE_REVALIDATE_URL=${DEV_DOCKER_PUBLIC_SITE_REVALIDATE_URL}
+      - PROD_PUBLIC_SITE_REVALIDATE_URL=${PROD_DOCKER_PUBLIC_SITE_REVALIDATE_URL}
+      - DEV_CMS_REVALIDATE_SECRET
+      - PROD_CMS_REVALIDATE_SECRET
+      - DEV_CMS_INGEST_SECRET
+      - PROD_CMS_INGEST_SECRET
+      - DEV_CMS_SESSION_SECRET
+      - PROD_CMS_SESSION_SECRET
+      - DEV_CMS_COOKIE_SECURE
+      - PROD_CMS_COOKIE_SECURE
+      - DEV_CMS_COOKIE_DOMAIN
+      - PROD_CMS_COOKIE_DOMAIN
+      - DEV_CMS_SESSION_TTL_SECONDS
+      - PROD_CMS_SESSION_TTL_SECONDS
+      - DEV_CMS_TOTP_ISSUER
+      - PROD_CMS_TOTP_ISSUER
+      - DEV_CMS_SUPERADMIN_EMAIL
+      - PROD_CMS_SUPERADMIN_EMAIL
+      - DEV_CMS_SUPERADMIN_PASSWORD
+      - PROD_CMS_SUPERADMIN_PASSWORD
+      - DEV_CMS_SUPERADMIN_NAME
+      - PROD_CMS_SUPERADMIN_NAME
+      - DEV_CMS_ADMIN_EMAIL
+      - PROD_CMS_ADMIN_EMAIL
+      - DEV_CMS_ADMIN_PASSWORD
+      - PROD_CMS_ADMIN_PASSWORD
+      - DEV_CMS_ADMIN_NAME
+      - PROD_CMS_ADMIN_NAME
+      - DEV_ANALYTICS_ENABLED
+      - PROD_ANALYTICS_ENABLED
+      - DEV_LOG_LEVEL
+      - PROD_LOG_LEVEL
+      - DEV_DOCKER_POSTGRES_URL=${DEV_DOCKER_POSTGRES_URL}
+      - PROD_DOCKER_POSTGRES_URL=${PROD_DOCKER_POSTGRES_URL}
+      - DEV_DOCKER_REDIS_URL=${DEV_DOCKER_REDIS_URL}
+      - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
+      - DEV_REDIS_CMS_PREFIX
+      - PROD_REDIS_CMS_PREFIX
+      - DEV_SMTP_HOST
+      - PROD_SMTP_HOST
+      - DEV_SMTP_PORT
+      - PROD_SMTP_PORT
+      - DEV_SMTP_SECURE
+      - PROD_SMTP_SECURE
+      - DEV_SMTP_USER
+      - PROD_SMTP_USER
+      - DEV_SMTP_PASSWORD
+      - PROD_SMTP_PASSWORD
+      - DEV_SMTP_FROM_ADDRESS
+      - PROD_SMTP_FROM_ADDRESS
+    depends_on:
+      cms-backend-api:
+        condition: service_healthy
+    networks:
+      - app-internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  pdf-toolkit-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        APP_DEV: "false"
+        NEXT_PUBLIC_APP_DEV: "false"
+        DEV_INTERNAL_API_ORIGIN: ${DEV_DOCKER_INTERNAL_API_ORIGIN}
+        PROD_INTERNAL_API_ORIGIN: ${PROD_DOCKER_INTERNAL_API_ORIGIN}
+        NEXT_PUBLIC_DEV_SITE_ORIGIN: ${NEXT_PUBLIC_DEV_SITE_ORIGIN}
+        NEXT_PUBLIC_PROD_SITE_ORIGIN: ${NEXT_PUBLIC_PROD_SITE_ORIGIN}
+    image: ${FRONTEND_IMAGE}
+    container_name: pdf-toolkit-frontend
+    restart: unless-stopped
+    environment:
+      - APP_DEV=false
+      - NEXT_PUBLIC_APP_DEV=false
+      - DEV_INTERNAL_API_ORIGIN=${DEV_DOCKER_INTERNAL_API_ORIGIN}
+      - PROD_INTERNAL_API_ORIGIN=${PROD_DOCKER_INTERNAL_API_ORIGIN}
+      - DEV_INTERNAL_API_TOKEN
+      - PROD_INTERNAL_API_TOKEN
+      - NEXT_PUBLIC_DEV_SITE_ORIGIN
+      - NEXT_PUBLIC_PROD_SITE_ORIGIN
+      - DEV_CMS_API_INTERNAL_ORIGIN=${DEV_DOCKER_CMS_API_INTERNAL_ORIGIN}
+      - PROD_CMS_API_INTERNAL_ORIGIN=${PROD_DOCKER_CMS_API_INTERNAL_ORIGIN}
+      - DEV_CMS_API_ORIGIN
+      - PROD_CMS_API_ORIGIN
+      - DEV_CMS_REVALIDATE_SECRET
+      - PROD_CMS_REVALIDATE_SECRET
+      - HOSTNAME=0.0.0.0
+      - PORT=3000
+    depends_on:
+      pdf-toolkit-backend:
+        condition: service_healthy
+      cms-backend-api:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - proxy
+      - app-internal
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/healthz').then(async (response) => { if (!response.ok) process.exit(1); const data = await response.json(); process.exit(data.ok ? 0 : 1); }).catch(() => process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.pdf-toolkit-frontend.rule=Host(`${PROD_PUBLIC_HOSTNAME}`)
+      - traefik.http.routers.pdf-toolkit-frontend.entrypoints=websecure
+      - traefik.http.routers.pdf-toolkit-frontend.tls=true
+      - traefik.http.routers.pdf-toolkit-frontend.tls.certresolver=le
+      - traefik.http.services.pdf-toolkit-frontend.loadbalancer.server.port=3000
+
+  cms-frontend:
+    build:
+      context: ./cms-frontend
+      dockerfile: Dockerfile
+      args:
+        APP_DEV: "false"
+        NEXT_PUBLIC_APP_DEV: "false"
+    image: ${CMS_FRONTEND_IMAGE}
+    container_name: cms-frontend
+    restart: unless-stopped
+    environment:
+      - APP_DEV=false
+      - NEXT_PUBLIC_APP_DEV=false
+      - DEV_CMS_API_INTERNAL_ORIGIN=${DEV_DOCKER_CMS_API_INTERNAL_ORIGIN}
+      - PROD_CMS_API_INTERNAL_ORIGIN=${PROD_DOCKER_CMS_API_INTERNAL_ORIGIN}
+      - DEV_CMS_API_ORIGIN
+      - PROD_CMS_API_ORIGIN
+      - HOSTNAME=0.0.0.0
+      - PORT=3000
+    depends_on:
+      cms-backend-api:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - proxy
+      - app-internal
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/healthz').then(async (response) => { if (!response.ok) process.exit(1); const data = await response.json(); process.exit(data.ok ? 0 : 1); }).catch(() => process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.cms-frontend.rule=Host(`${PROD_CMS_WEB_HOSTNAME}`)
+      - traefik.http.routers.cms-frontend.entrypoints=websecure
+      - traefik.http.routers.cms-frontend.tls=true
+      - traefik.http.routers.cms-frontend.tls.certresolver=le
+      - traefik.http.services.cms-frontend.loadbalancer.server.port=3000
+
+networks:
+  app-internal:
+    internal: true
+  proxy:
+    external: true
+
+volumes:
+  pdf-jobs:

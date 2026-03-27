@@ -1,0 +1,55 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "pnpm start",
+      "startServerReadyPattern": "Ready",
+      "startServerReadyTimeout": 120000,
+      "url": [
+        "http://localhost:3000/",
+        "http://localhost:3000/merge",
+        "http://localhost:3000/guides",
+        "http://localhost:3000/privacy"
+      ],
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop"
+      }
+    },
+    "assert": {
+      "assertions": {
+        "largest-contentful-paint": [
+          "error",
+          {
+            "maxNumericValue": 2500
+          }
+        ],
+        "cumulative-layout-shift": [
+          "error",
+          {
+            "maxNumericValue": 0.1
+          }
+        ],
+        "categories:seo": [
+          "error",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "categories:performance": [
+          "warn",
+          {
+            "minScore": 0.8
+          }
+        ],
+        "legacy-javascript-insight": "off",
+        "network-dependency-tree-insight": "off",
+        "unused-javascript": "off",
+        "legacy-javascript": "off",
+        "render-blocking-insight": "off"
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}

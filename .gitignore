@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# FastAPI / app storage
+backend/app/storage/jobs/*
+!backend/app/storage/jobs/.gitkeep
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+
+# Env
+.env
+*.env
+.env.prod
+
+# OS/editor
+.DS_Store
+.idea/
+!.vscode/
+
+# Logs
+*.log
+
+# Private local notes
+dev_guide.md

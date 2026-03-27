@@ -1,0 +1,405 @@
+{
+  "site": {
+    "defaultTitle": "Free PDF Tools to Merge, Split, Convert and Secure Files",
+    "titleTemplate": "%s | PDF Toolkit",
+    "description": "Use PDF Toolkit to merge, split, rotate, extract, compress, protect, unlock, watermark, and convert PDF files online with fast, secure processing.",
+    "keywords": [
+      "PDF tools",
+      "free PDF toolkit",
+      "online PDF tools",
+      "PDF editor online",
+      "PDF converter online",
+      "PDF merger online",
+      "PDF splitter online",
+      "PDF compressor online",
+      "secure PDF tools",
+      "private PDF tools",
+      "merge PDF online",
+      "split PDF online",
+      "rotate PDF online",
+      "extract PDF pages",
+      "compress PDF online",
+      "protect PDF with password",
+      "unlock PDF online",
+      "watermark PDF online",
+      "image to PDF converter",
+      "DOCX to PDF converter",
+      "PDF to DOCX converter",
+      "PDF to JPG converter",
+      "PDF to text extractor",
+      "PDF metadata remover",
+      "add page numbers to PDF",
+      "repair PDF online"
+    ],
+    "category": "technology",
+    "language": "en",
+    "locale": "en_US",
+    "fallbackSiteUrl": "http://localhost:3000"
+  },
+  "metadata": {
+    "manifestPath": "/manifest.webmanifest",
+    "icons": {
+      "icon": [
+        { "url": "/icon.svg", "type": "image/svg+xml" },
+        { "url": "/apple-icon", "sizes": "180x180", "type": "image/png" }
+      ],
+      "apple": [
+        { "url": "/apple-icon", "sizes": "180x180", "type": "image/png" }
+      ]
+    }
+  },
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1
+    }
+  },
+  "manifest": {
+    "startUrl": "/",
+    "display": "standalone",
+    "backgroundColor": "#08101D",
+    "themeColor": "#08101D",
+    "icons": [
+      {
+        "src": "/icon.svg",
+        "sizes": "any",
+        "type": "image/svg+xml"
+      },
+      {
+        "src": "/apple-icon",
+        "sizes": "180x180",
+        "type": "image/png"
+      }
+    ]
+  },
+  "social": {
+    "twitterCard": "summary_large_image",
+    "openGraphImagePath": "/opengraph-image",
+    "twitterImagePath": "/twitter-image",
+    "imageAlt": "PDF Toolkit for merging, splitting, converting, and securing PDF files online",
+    "twitterSite": "@pdftoolkit",
+    "twitterCreator": "@pdftoolkit",
+    "ogHeadline": "Fast online PDF tools for everyday document work",
+    "ogFeatureLabels": [
+      "Merge PDF",
+      "Compress PDF",
+      "Protect PDF",
+      "Convert PDF"
+    ]
+  },
+  "structuredData": {
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "pages": {
+    "home": {
+      "path": "/",
+      "title": "Free PDF Tools to Merge, Split, Convert and Secure Files",
+      "description": "Merge, split, rotate, extract, compress, protect, unlock, watermark, and convert PDF files online with fast, reliable tools.",
+      "keywords": [
+        "free PDF tools",
+        "secure PDF tools",
+        "all-in-one PDF tools",
+        "free online PDF tools",
+        "PDF converter toolkit"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "weekly",
+      "priority": 1
+    },
+    "support": {
+      "path": "/support",
+      "title": "PDF Toolkit Support",
+      "description": "Get help if a page fails to load or a PDF tool does not work as expected.",
+      "keywords": [
+        "PDF Toolkit support",
+        "PDF site help",
+        "contact PDF Toolkit support"
+      ],
+      "index": false,
+      "follow": false,
+      "changeFrequency": "monthly",
+      "priority": 0.4
+    },
+    "merge": {
+      "path": "/merge",
+      "title": "Merge PDF Online",
+      "description": "Combine multiple PDF files into one document online and arrange them in the order you want.",
+      "keywords": [
+        "merge PDF",
+        "combine PDF files",
+        "join PDF online",
+        "merge PDF free",
+        "combine PDF online"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.9
+    },
+    "rotate": {
+      "path": "/rotate",
+      "title": "Rotate PDF Online",
+      "description": "Rotate all pages or selected pages in a PDF by 90, 180, or 270 degrees online.",
+      "keywords": [
+        "rotate PDF",
+        "flip PDF pages",
+        "change PDF orientation",
+        "rotate PDF online free",
+        "PDF page rotation tool"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "split": {
+      "path": "/split",
+      "title": "Split PDF Online",
+      "description": "Split a PDF into smaller files by page range or custom sections online.",
+      "keywords": [
+        "split PDF",
+        "separate PDF pages",
+        "divide PDF online",
+        "split PDF free",
+        "PDF splitter tool"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.9
+    },
+    "extract": {
+      "path": "/extract",
+      "title": "Extract PDF Pages Online",
+      "description": "Select specific pages from a PDF and export them into a new document online.",
+      "keywords": [
+        "extract PDF pages",
+        "save PDF pages",
+        "export PDF pages",
+        "extract pages from PDF",
+        "PDF page extractor"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "imageToPdf": {
+      "path": "/image-to-pdf",
+      "title": "Image to PDF Converter",
+      "description": "Convert JPG, PNG, and other images into a single PDF online in a few steps.",
+      "keywords": [
+        "image to PDF",
+        "JPG to PDF",
+        "PNG to PDF",
+        "photos to PDF",
+        "convert images to PDF online"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "watermark": {
+      "path": "/watermark",
+      "title": "Watermark PDF Online",
+      "description": "Add a text watermark to PDF pages online and download the updated file in seconds.",
+      "keywords": [
+        "watermark PDF",
+        "stamp PDF online",
+        "add watermark to PDF",
+        "PDF watermark tool",
+        "text watermark PDF"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "rearrange": {
+      "path": "/rearrange",
+      "title": "Rearrange PDF Pages Online",
+      "description": "Reorder PDF pages visually and export the document in the exact sequence you need.",
+      "keywords": [
+        "rearrange PDF pages",
+        "reorder PDF pages",
+        "organize PDF pages",
+        "move PDF pages online",
+        "PDF page organizer"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "compress": {
+      "path": "/compress",
+      "title": "Compress PDF Online",
+      "description": "Reduce PDF file size online while keeping documents readable and easier to share.",
+      "keywords": [
+        "compress PDF",
+        "reduce PDF size",
+        "optimize PDF online",
+        "compress PDF free",
+        "make PDF smaller"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.9
+    },
+    "protect": {
+      "path": "/protect",
+      "title": "Protect PDF with Password",
+      "description": "Encrypt PDF files with a password online to keep private documents secure.",
+      "keywords": [
+        "protect PDF",
+        "encrypt PDF",
+        "password protect PDF",
+        "secure PDF online",
+        "lock PDF with password"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "unlock": {
+      "path": "/unlock",
+      "title": "Unlock PDF Online",
+      "description": "Remove PDF password protection online when you have authorized access to the document.",
+      "keywords": [
+        "unlock PDF",
+        "remove PDF password",
+        "decrypt PDF",
+        "remove PDF protection",
+        "unlock protected PDF"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "docxToPdf": {
+      "path": "/docx-to-pdf",
+      "title": "DOCX to PDF Converter",
+      "description": "Convert Word DOCX documents to PDF online for sharing, printing, and archiving.",
+      "keywords": [
+        "DOCX to PDF",
+        "Word to PDF",
+        "convert DOCX online",
+        "Word document to PDF",
+        "DOCX converter"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "pdfToDocx": {
+      "path": "/pdf-to-docx",
+      "title": "PDF to DOCX Converter",
+      "description": "Convert PDF files to editable DOCX documents online for easier editing.",
+      "keywords": [
+        "PDF to DOCX",
+        "PDF to Word",
+        "convert PDF to editable DOCX",
+        "PDF to Word online",
+        "editable DOCX from PDF"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "pdfToJpg": {
+      "path": "/pdf-to-jpg",
+      "title": "PDF to JPG Converter",
+      "description": "Convert PDF pages to JPG images online and export each page as a high-quality image.",
+      "keywords": [
+        "PDF to JPG",
+        "PDF to image",
+        "convert PDF pages to JPG",
+        "PDF page to image",
+        "export PDF as JPG"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.8
+    },
+    "pdfToText": {
+      "path": "/pdf-to-text",
+      "title": "PDF to Text Extractor",
+      "description": "Extract plain text from PDF files online for quick copying, reuse, and analysis.",
+      "keywords": [
+        "PDF to text",
+        "extract text from PDF",
+        "PDF text extractor",
+        "copy text from PDF",
+        "PDF text conversion"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.7
+    },
+    "removeMetadata": {
+      "path": "/remove-metadata",
+      "title": "Remove PDF Metadata",
+      "description": "Strip author, producer, and other embedded metadata from PDF files before sharing.",
+      "keywords": [
+        "remove PDF metadata",
+        "strip PDF metadata",
+        "clean PDF properties",
+        "delete PDF author info",
+        "private PDF cleanup"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.7
+    },
+    "addPageNumbers": {
+      "path": "/add-page-numbers",
+      "title": "Add Page Numbers to PDF",
+      "description": "Add page numbers to PDF documents with configurable start number, size, and position.",
+      "keywords": [
+        "add page numbers to PDF",
+        "PDF page numbering",
+        "number PDF pages",
+        "insert page numbers PDF",
+        "paginate PDF online"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.7
+    },
+    "repair": {
+      "path": "/repair",
+      "title": "Repair PDF Files",
+      "description": "Try to repair malformed or problematic PDFs and download a cleaned file.",
+      "keywords": [
+        "repair PDF",
+        "fix corrupted PDF",
+        "recover PDF file",
+        "PDF repair online",
+        "restore broken PDF"
+      ],
+      "index": true,
+      "follow": true,
+      "changeFrequency": "monthly",
+      "priority": 0.7
+    }
+  }
+}
