@@ -3,6 +3,28 @@ import { selectedCmsApiInternalOrigin } from "@/lib/env";
 
 const METHODS_WITHOUT_BODY = new Set(["GET", "HEAD"]);
 const RESPONSE_HEADER_BLACKLIST = new Set(["content-length", "content-encoding", "transfer-encoding", "connection"]);
+const REQUEST_HEADER_ALLOWLIST = new Set([
+  "accept",
+  "accept-language",
+  "content-type",
+  "cookie",
+  "user-agent",
+  "x-request-id",
+  "x-correlation-id",
+]);
+const PROXY_TIMEOUT_MS = 10000;
+
+function buildProxyHeaders(request: NextRequest): Headers {
+  const headers = new Headers();
+
+  for (const [name, value] of request.headers.entries()) {
+    if (REQUEST_HEADER_ALLOWLIST.has(name.toLowerCase())) {
+      headers.set(name, value);
+    }
+  }
+
+  return headers;
+}
 
 async function proxyRequest(
   request: NextRequest,
@@ -13,24 +35,29 @@ async function proxyRequest(
     const targetUrl = new URL(`/${path.join("/")}`, selectedCmsApiInternalOrigin);
     targetUrl.search = request.nextUrl.search;
 
-    const headers = new Headers(request.headers);
-    headers.delete("host");
-    headers.delete("connection");
-    headers.delete("content-length");
+    const headers = buildProxyHeaders(request);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), PROXY_TIMEOUT_MS);
 
-    const init: RequestInit & { duplex?: "half" } = {
-      method: request.method,
-      headers,
-      cache: "no-store",
-      redirect: "manual",
-    };
+    let response: Response;
+    try {
+      const init: RequestInit & { duplex?: "half" } = {
+        method: request.method,
+        headers,
+        cache: "no-store",
+        redirect: "manual",
+        signal: controller.signal,
+      };
 
-    if (!METHODS_WITHOUT_BODY.has(request.method)) {
-      init.body = request.body;
-      init.duplex = "half";
+      if (!METHODS_WITHOUT_BODY.has(request.method)) {
+        init.body = request.body;
+        init.duplex = "half";
+      }
+
+      response = await fetch(targetUrl, init);
+    } finally {
+      clearTimeout(timeout);
     }
-
-    const response = await fetch(targetUrl, init);
     const responseHeaders = new Headers(response.headers);
 
     for (const headerName of RESPONSE_HEADER_BLACKLIST) {
@@ -43,14 +70,17 @@ async function proxyRequest(
     });
   } catch (error) {
     console.error("CMS frontend proxy request failed", error);
+    const isAbort = error instanceof Error && error.name === "AbortError";
 
     return Response.json(
       {
         success: false,
-        message: "CMS backend is temporarily unavailable. Please try again shortly.",
+        message: isAbort
+          ? "CMS backend request timed out. Please try again."
+          : "CMS backend is temporarily unavailable. Please try again shortly.",
       },
       {
-        status: 502,
+        status: isAbort ? 504 : 502,
       },
     );
   }

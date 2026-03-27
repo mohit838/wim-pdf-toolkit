@@ -25,7 +25,6 @@ COPY package.json ./
 RUN pnpm install --prod --no-frozen-lockfile
 
 COPY --from=build /app/dist ./dist
-COPY src/defaults ./src/defaults
 
 EXPOSE 4100
 

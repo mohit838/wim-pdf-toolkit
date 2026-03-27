@@ -5,19 +5,7 @@ import { cmsEnv } from "./lib/env";
 import { closePrisma } from "./lib/prisma";
 import { checkRateLimit, getRedisClient } from "./lib/redis";
 import { ensureCmsStorage, getCmsSystemStatus } from "./lib/storage";
-
-function getClientIp(request: express.Request): string {
-  const forwardedFor = request.headers["x-forwarded-for"];
-  if (Array.isArray(forwardedFor)) {
-    return forwardedFor[0] || request.socket.remoteAddress || "unknown";
-  }
-
-  if (typeof forwardedFor === "string" && forwardedFor.trim()) {
-    return forwardedFor.split(",")[0]?.trim() || request.socket.remoteAddress || "unknown";
-  }
-
-  return request.socket.remoteAddress || "unknown";
-}
+import { getClientIpFromRequest } from "./lib/client-ip";
 
 async function main() {
   await ensureCmsStorage();
@@ -45,7 +33,7 @@ async function main() {
 
     if (request.path !== "/healthz") {
       const rateLimit = await checkRateLimit(
-        getClientIp(request),
+        getClientIpFromRequest(request),
         cmsEnv.rateLimitMaxRequests,
         cmsEnv.rateLimitWindowSeconds,
       );

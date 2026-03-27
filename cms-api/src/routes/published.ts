@@ -2,9 +2,10 @@ import crypto from "node:crypto";
 import type { Transporter } from "nodemailer";
 import nodemailer from "nodemailer";
 import { sanitize } from "payload-sanitizer";
-import { Router, type Request } from "express";
+import { Router } from "express";
 import sanitizeHtml from "sanitize-html";
 import { cmsEnv } from "../lib/env";
+import { getClientIpFromRequest } from "../lib/client-ip";
 import { checkRateLimit } from "../lib/redis";
 import { getPublishedConfig, getPublishedContentLibrary, getPublishedSiteContent } from "../lib/storage";
 
@@ -17,19 +18,6 @@ export const publishedRouter = Router();
 const globalForContactMail = globalThis as typeof globalThis & {
   cmsContactMailTransporter?: Transporter;
 };
-
-function getIpAddress(request: Request): string {
-  const forwardedFor = request.headers["x-forwarded-for"];
-  if (Array.isArray(forwardedFor)) {
-    return forwardedFor[0] || request.socket.remoteAddress || "unknown";
-  }
-
-  if (typeof forwardedFor === "string" && forwardedFor.trim()) {
-    return forwardedFor.split(",")[0]?.trim() || request.socket.remoteAddress || "unknown";
-  }
-
-  return request.socket.remoteAddress || "unknown";
-}
 
 function shouldApplyIpRateLimit(ipAddress: string): boolean {
   const ip = ipAddress.trim().toLowerCase();
@@ -221,7 +209,7 @@ publishedRouter.get("/ads/resolve", async (request, response) => {
 });
 
 publishedRouter.post("/contact", async (request, response) => {
-  const ipAddress = getIpAddress(request);
+  const ipAddress = getClientIpFromRequest(request);
 
   try {
     const cleanedPayload = sanitize(request.body, {

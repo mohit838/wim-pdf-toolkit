@@ -40,6 +40,8 @@ rate_limiter = build_rate_limiter(
     window_seconds=RATE_LIMIT_WINDOW_SECONDS,
 )
 
+HEALTH_PATHS = {"/api/health", "/api/healthz"}
+
 
 def _get_client_ip(request: Request) -> str:
     forwarded_for = request.headers.get("x-forwarded-for", "")
@@ -52,14 +54,14 @@ def _get_client_ip(request: Request) -> str:
 async def security_middleware(request: Request, call_next):
     cleanup_expired_jobs()
 
-    if INTERNAL_API_TOKEN and request.url.path != "/api/health":
+    if INTERNAL_API_TOKEN and request.url.path not in HEALTH_PATHS:
         if request.headers.get("x-internal-api-token") != INTERNAL_API_TOKEN:
             return JSONResponse(
                 status_code=403,
                 content={"detail": "Direct backend access is not allowed."},
             )
 
-    if request.url.path != "/api/health":
+    if request.url.path not in HEALTH_PATHS:
         client_ip = _get_client_ip(request)
         allowed, rate_limit_headers = rate_limiter.check(client_ip)
 

@@ -47,6 +47,7 @@ services:
   cms-migrate:
     image: node:22-alpine
     restart: "no"
+    profiles: ["ops"]
     working_dir: /app
     command:
       - sh
@@ -57,6 +58,7 @@ services:
         pnpm install --no-frozen-lockfile &&
         pnpm prisma:migrate:deploy
     environment:
+      - CI=true
       - APP_DEV=true
       - DEV_DOCKER_POSTGRES_URL=${DEV_DOCKER_POSTGRES_URL}
       - PROD_DOCKER_POSTGRES_URL=${PROD_DOCKER_POSTGRES_URL}
@@ -74,9 +76,6 @@ services:
       context: ./cms-api
       dockerfile: Dockerfile
     container_name: cms-backend-api
-    depends_on:
-      cms-migrate:
-        condition: service_completed_successfully
     ports:
       - "127.0.0.1:4100:4100"
     environment:

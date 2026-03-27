@@ -2,7 +2,7 @@ export type AppMode = "dev" | "prod";
 
 function isTruthy(value: string | undefined): boolean {
   if (value === undefined) {
-    return true;
+    return false;
   }
 
   return ["1", "true", "yes", "on"].includes(value.trim().toLowerCase());
@@ -41,6 +41,19 @@ export const selectedCmsApiInternalOrigin = normalizeOrigin(
   ),
   "http://localhost:4100",
 );
+
+export const selectedInternalApiOrigin = normalizeOrigin(
+  getActiveValue(
+    process.env.DEV_INTERNAL_API_ORIGIN,
+    process.env.PROD_INTERNAL_API_ORIGIN,
+  ),
+  "http://localhost:8000",
+);
+
+export const selectedInternalApiToken = getActiveValue(
+  process.env.DEV_INTERNAL_API_TOKEN,
+  process.env.PROD_INTERNAL_API_TOKEN,
+) || "";
 
 export const cmsRevalidateSecret = getActiveValue(
   process.env.DEV_CMS_REVALIDATE_SECRET,

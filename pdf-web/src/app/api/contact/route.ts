@@ -18,7 +18,7 @@ function getForwardedForHeader(request: Request): string | null {
       continue;
     }
 
-    const trimmed = candidate.trim();
+    const trimmed = candidate.split(",")[0]?.trim() || "";
     if (!trimmed) {
       continue;
     }

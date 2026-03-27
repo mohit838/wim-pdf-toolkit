@@ -48,6 +48,7 @@ services:
   cms-migrate:
     image: node:22-alpine
     restart: "no"
+    profiles: ["ops"]
     working_dir: /app
     command:
       - sh
@@ -58,6 +59,7 @@ services:
         pnpm install --no-frozen-lockfile &&
         pnpm prisma:migrate:deploy
     environment:
+      - CI=true
       - APP_DEV=false
       - DEV_DOCKER_POSTGRES_URL=${DEV_DOCKER_POSTGRES_URL}
       - PROD_DOCKER_POSTGRES_URL=${PROD_DOCKER_POSTGRES_URL}
@@ -79,9 +81,6 @@ services:
     image: ${CMS_BACKEND_IMAGE}
     container_name: cms-backend-api
     restart: unless-stopped
-    depends_on:
-      cms-migrate:
-        condition: service_completed_successfully
     environment:
       - APP_DEV=false
       - DEV_CMS_API_PORT
@@ -141,7 +140,6 @@ services:
       - DEV_SMTP_FROM_ADDRESS
       - PROD_SMTP_FROM_ADDRESS
     networks:
-      - proxy
       - app-internal
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -157,18 +155,6 @@ services:
       timeout: 5s
       retries: 6
       start_period: 20s
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=proxy
-      - traefik.http.routers.cms-backend.rule=Host(`${PROD_CMS_API_HOSTNAME}`)
-      - traefik.http.routers.cms-backend.entrypoints=websecure
-      - traefik.http.routers.cms-backend.tls=true
-      - traefik.http.routers.cms-backend.tls.certresolver=le
-      - traefik.http.services.cms-backend.loadbalancer.server.port=4100
-      - traefik.http.services.cms-backend.loadbalancer.healthcheck.path=/healthz
-      - traefik.http.services.cms-backend.loadbalancer.healthcheck.interval=10s
-      - traefik.http.services.cms-backend.loadbalancer.healthcheck.timeout=3s
-
   cms-backend-worker:
     image: ${CMS_BACKEND_IMAGE}
     container_name: cms-backend-worker
