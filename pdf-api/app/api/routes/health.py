@@ -6,3 +6,8 @@ router = APIRouter(prefix="/api", tags=["Health"])
 @router.get("/health")
 def health_check():
     return {"success": True, "message": "API is healthy"}
+
+
+@router.get("/healthz", tags=["Health"])
+def healthz_check():
+    return {"ok": True, "service": "pdf-api"}

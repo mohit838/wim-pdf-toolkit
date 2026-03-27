@@ -37,12 +37,12 @@ services:
           "CMD",
           "python",
           "-c",
-          "import json, urllib.request; response = urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5); data = json.load(response); raise SystemExit(0 if data.get('success') else 1)",
+          "import json, urllib.request; response = urllib.request.urlopen('http://127.0.0.1:8000/api/healthz', timeout=5); data = json.load(response); raise SystemExit(0 if data.get('ok') else 1)",
         ]
       interval: 15s
       timeout: 5s
       retries: 6
-      start_period: 15s
+      start_period: 20s
 
   cms-migrate:
     image: node:22-alpine
@@ -151,7 +151,7 @@ services:
       interval: 15s
       timeout: 5s
       retries: 6
-      start_period: 15s
+      start_period: 20s
 
   cms-backend-worker:
     build:
@@ -274,7 +274,7 @@ services:
       interval: 15s
       timeout: 5s
       retries: 6
-      start_period: 15s
+      start_period: 20s
 
   cms-frontend:
     build:

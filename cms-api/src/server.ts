@@ -67,13 +67,34 @@ async function main() {
   });
 
   app.get("/healthz", async (_request, response) => {
-    const status = await getCmsSystemStatus();
-    response.json({
-      ok: true,
-      service: "cms-backend",
-      mode: cmsEnv.appMode,
-      status,
-    });
+    try {
+      const status = await getCmsSystemStatus();
+      const databaseOk = status.database === "ok";
+      const redisOk = status.redis === "ok";
+      const ready = databaseOk && redisOk;
+
+      response.status(ready ? 200 : 503).json({
+        ok: ready,
+        service: "cms-api",
+        mode: cmsEnv.appMode,
+        checks: {
+          database: databaseOk ? "ok" : "degraded",
+          redis: redisOk ? "ok" : "degraded",
+        },
+        status,
+      });
+    } catch (error) {
+      response.status(503).json({
+        ok: false,
+        service: "cms-api",
+        mode: cmsEnv.appMode,
+        checks: {
+          database: "unknown",
+          redis: "unknown",
+        },
+        message: error instanceof Error ? error.message : "Health check failed.",
+      });
+    }
   });
 
   app.use("/published/v1", publishedRouter);
@@ -87,7 +108,7 @@ async function main() {
   });
 
   app.use((error: unknown, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
-    console.error("Unhandled cms-backend error", error);
+    console.error("Unhandled cms-api error", error);
 
     if (response.headersSent) {
       return;
@@ -100,7 +121,7 @@ async function main() {
   });
 
   const server = app.listen(cmsEnv.apiPort, () => {
-    console.log(`cms-backend listening on ${cmsEnv.apiPort}`);
+    console.log(`cms-api listening on ${cmsEnv.apiPort}`);
   });
 
   async function shutdown() {
@@ -119,6 +140,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("cms-backend failed to start", error);
+  console.error("cms-api failed to start", error);
   process.exit(1);
 });

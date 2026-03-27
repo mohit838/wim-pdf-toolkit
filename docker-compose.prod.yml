@@ -38,7 +38,7 @@ services:
           "CMD",
           "python",
           "-c",
-          "import json, urllib.request; response = urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5); data = json.load(response); raise SystemExit(0 if data.get('success') else 1)",
+          "import json, urllib.request; response = urllib.request.urlopen('http://127.0.0.1:8000/api/healthz', timeout=5); data = json.load(response); raise SystemExit(0 if data.get('ok') else 1)",
         ]
       interval: 15s
       timeout: 5s
@@ -165,6 +165,9 @@ services:
       - traefik.http.routers.cms-backend.tls=true
       - traefik.http.routers.cms-backend.tls.certresolver=le
       - traefik.http.services.cms-backend.loadbalancer.server.port=4100
+      - traefik.http.services.cms-backend.loadbalancer.healthcheck.path=/healthz
+      - traefik.http.services.cms-backend.loadbalancer.healthcheck.interval=10s
+      - traefik.http.services.cms-backend.loadbalancer.healthcheck.timeout=3s
 
   cms-backend-worker:
     image: ${CMS_BACKEND_IMAGE}
@@ -298,6 +301,9 @@ services:
       - traefik.http.routers.pdf-toolkit-frontend.tls=true
       - traefik.http.routers.pdf-toolkit-frontend.tls.certresolver=le
       - traefik.http.services.pdf-toolkit-frontend.loadbalancer.server.port=3000
+      - traefik.http.services.pdf-toolkit-frontend.loadbalancer.healthcheck.path=/healthz
+      - traefik.http.services.pdf-toolkit-frontend.loadbalancer.healthcheck.interval=10s
+      - traefik.http.services.pdf-toolkit-frontend.loadbalancer.healthcheck.timeout=3s
 
   cms-frontend:
     build:
@@ -346,6 +352,9 @@ services:
       - traefik.http.routers.cms-frontend.tls=true
       - traefik.http.routers.cms-frontend.tls.certresolver=le
       - traefik.http.services.cms-frontend.loadbalancer.server.port=3000
+      - traefik.http.services.cms-frontend.loadbalancer.healthcheck.path=/healthz
+      - traefik.http.services.cms-frontend.loadbalancer.healthcheck.interval=10s
+      - traefik.http.services.cms-frontend.loadbalancer.healthcheck.timeout=3s
 
 networks:
   app-internal:
