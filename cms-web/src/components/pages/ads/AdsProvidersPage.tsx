@@ -70,6 +70,9 @@ export function AdsProvidersPage() {
   const [adsenseForm] = Form.useForm();
   const [gtmForm] = Form.useForm();
   const [adManagerForm] = Form.useForm();
+  const [ezoicForm] = Form.useForm();
+  const [mediavineForm] = Form.useForm();
+  const [adThriveForm] = Form.useForm();
   const [thirdPartyForm] = Form.useForm();
   const [blueprintForm] = Form.useForm();
   const hiddenForms = (
@@ -77,6 +80,9 @@ export function AdsProvidersPage() {
       <Form component={false} form={adsenseForm} />
       <Form component={false} form={gtmForm} />
       <Form component={false} form={adManagerForm} />
+      <Form component={false} form={ezoicForm} />
+      <Form component={false} form={mediavineForm} />
+      <Form component={false} form={adThriveForm} />
       <Form component={false} form={thirdPartyForm} />
       <Form component={false} form={blueprintForm} />
     </>
@@ -99,6 +105,9 @@ export function AdsProvidersPage() {
   const adsense = ensureIntegration(allIntegrations, "adsense");
   const gtm = ensureIntegration(allIntegrations, "google_tag_manager");
   const adManager = ensureIntegration(allIntegrations, "google_ad_manager");
+  const ezoic = ensureIntegration(allIntegrations, "ezoic");
+  const mediavine = ensureIntegration(allIntegrations, "mediavine");
+  const adThrive = ensureIntegration(allIntegrations, "adthrive");
   const thirdParty = ensureIntegration(allIntegrations, "custom_third_party_script");
 
   useEffect(() => {
@@ -117,6 +126,18 @@ export function AdsProvidersPage() {
       enableSingleRequest: Boolean(adManager.config.enableSingleRequest ?? true),
       collapseEmptyDivs: Boolean(adManager.config.collapseEmptyDivs ?? true),
     });
+    ezoicForm.setFieldsValue({
+      ...ezoic,
+      placeholderId: String(ezoic.config.placeholderId || ""),
+    });
+    mediavineForm.setFieldsValue({
+      ...mediavine,
+      siteId: String(mediavine.config.siteId || ""),
+    });
+    adThriveForm.setFieldsValue({
+      ...adThrive,
+      siteId: String(adThrive.config.siteId || ""),
+    });
     thirdPartyForm.setFieldsValue({
       ...thirdParty,
       scriptId: String(thirdParty.config.scriptId || "third-party-script"),
@@ -125,7 +146,7 @@ export function AdsProvidersPage() {
       async: Boolean(thirdParty.config.async ?? true),
       defer: Boolean(thirdParty.config.defer ?? false),
     });
-  }, [adsense, gtm, adManager, thirdParty, adsenseForm, gtmForm, adManagerForm, thirdPartyForm]);
+  }, [adsense, gtm, adManager, ezoic, mediavine, adThrive, thirdParty, adsenseForm, gtmForm, adManagerForm, ezoicForm, mediavineForm, adThriveForm, thirdPartyForm]);
 
   useEffect(() => {
     if (adsDraft.data) {
@@ -255,6 +276,69 @@ export function AdsProvidersPage() {
                     <Col span={24}><Form.Item label="Notes" name="notes"><Input.TextArea autoSize={{ minRows: 2 }} /></Form.Item></Col>
                   </Row>
                   <CmsActionButton htmlType="submit" loading={saveIntegrations.isPending}>Save Ad Manager</CmsActionButton>
+                </Form>
+              ),
+            },
+            {
+              key: "ezoic",
+              label: "Ezoic",
+              children: (
+                <Form
+                  form={ezoicForm}
+                  layout="vertical"
+                  onFinish={(values) => {
+                    void saveOne("ezoic", values, ["placeholderId"]);
+                  }}
+                >
+                  <Row gutter={16}>
+                    <Col md={12} span={24}><Form.Item label="Enabled" name="enabled" valuePropName="checked"><Switch /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Placeholder ID" name="placeholderId" extra="Find this in Ezoic Ads -> Integration."><Input /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Scope" name="scope"><Select options={INTEGRATION_SCOPE_OPTIONS} /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Environment" name="environment"><Select options={ENVIRONMENT_OPTIONS} /></Form.Item></Col>
+                  </Row>
+                  <CmsActionButton htmlType="submit" loading={saveIntegrations.isPending}>Save Ezoic</CmsActionButton>
+                </Form>
+              ),
+            },
+            {
+              key: "mediavine",
+              label: "Mediavine",
+              children: (
+                <Form
+                  form={mediavineForm}
+                  layout="vertical"
+                  onFinish={(values) => {
+                    void saveOne("mediavine", values, ["siteId"]);
+                  }}
+                >
+                  <Row gutter={16}>
+                    <Col md={12} span={24}><Form.Item label="Enabled" name="enabled" valuePropName="checked"><Switch /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Site ID (UUID)" name="siteId" extra="Find this in Mediavine Control Panel."><Input /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Scope" name="scope"><Select options={INTEGRATION_SCOPE_OPTIONS} /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Environment" name="environment"><Select options={ENVIRONMENT_OPTIONS} /></Form.Item></Col>
+                  </Row>
+                  <CmsActionButton htmlType="submit" loading={saveIntegrations.isPending}>Save Mediavine</CmsActionButton>
+                </Form>
+              ),
+            },
+            {
+              key: "adthrive",
+              label: "AdThrive / Raptive",
+              children: (
+                <Form
+                  form={adThriveForm}
+                  layout="vertical"
+                  onFinish={(values) => {
+                    void saveOne("adthrive", values, ["siteId"]);
+                  }}
+                >
+                  <Row gutter={16}>
+                    <Col md={12} span={24}><Form.Item label="Enabled" name="enabled" valuePropName="checked"><Switch /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Site ID" name="siteId" extra="Find this in AdThrive/Raptive Dashboard."><Input /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Scope" name="scope"><Select options={INTEGRATION_SCOPE_OPTIONS} /></Form.Item></Col>
+                    <Col md={12} span={24}><Form.Item label="Environment" name="environment"><Select options={ENVIRONMENT_OPTIONS} /></Form.Item></Col>
+                  </Row>
+                  <CmsActionButton htmlType="submit" loading={saveIntegrations.isPending}>Save AdThrive</CmsActionButton>
                 </Form>
               ),
             },

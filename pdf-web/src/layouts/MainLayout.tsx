@@ -66,14 +66,14 @@ export default async function MainLayout({ children }: PropsWithChildren) {
         }}
       >
         <div className="app-shell py-8">
-          <AdSlot
-            slotId="footer_promo"
-            scope="footer"
-            categories={["footer"]}
-            className="mb-6 mx-auto w-full max-w-[728px]"
-          />
-
           <div className="mx-auto w-full max-w-[84rem]">
+            <AdSlot
+              slotId="footer_promo"
+              scope="footer"
+              categories={["footer"]}
+              className="mb-6 cms-ad-slot-center-narrow"
+            />
+
             <div className="grid items-start gap-8 lg:grid-cols-12">
               <section className="lg:col-span-4">
               <div className="flex items-center gap-3">

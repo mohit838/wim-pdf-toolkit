@@ -1,6 +1,7 @@
 "use client";
 
-import { App as AntdApp, Button, Descriptions, Form, Input, Modal, Select, Space, Tag } from "antd";
+import { App as AntdApp, Button, Descriptions, Form, Input, Modal, Select, Space, Tag, Typography } from "antd";
+const { Text } = Typography;
 import { useState } from "react";
 import {
   CmsCard,
@@ -14,6 +15,7 @@ import {
   usePermissionsCatalog,
   useSaveAdminPermissions,
 } from "@/lib/cms-api";
+import { PermissionMatrix } from "../PermissionMatrix";
 import { LoadingPanel, ErrorPanel } from "./shared";
 
 export function AdminsPage() {
@@ -89,9 +91,9 @@ export function AdminsPage() {
   return (
     <Space orientation="vertical" size={20} style={{ width: "100%" }}>
       <CmsPageHeader
-        eyebrow="Operations"
-        title="Admins and Permissions"
-        description="Superadmin controls admin users, role visibility, and available permission scopes."
+        eyebrow="System"
+        title="Users & Permissions"
+        description="Manage administrative accounts and granular module-level access. Superadmins have full system visibility."
         extra={(
           <Input.Search
             allowClear
@@ -124,15 +126,18 @@ export function AdminsPage() {
             {
               title: "Permissions",
               key: "permissions",
-              render: (_, row) => row.permissions.length
-                ? (
-                  <Space size={[4, 4]} wrap>
-                    {row.permissions.map((permission: string) => (
-                      <Tag key={`${row.id}-${permission}`} color="blue">{permission}</Tag>
-                    ))}
-                  </Space>
-                )
-                : "Full role access",
+              render: (_, row) => {
+                if (row.role === "SUPERADMIN") return <Tag color="gold">FULL ACCESS</Tag>;
+                return row.permissions.length
+                  ? (
+                    <Space size={[4, 4]} wrap>
+                      {row.permissions.map((permission: string) => (
+                        <Tag key={`${row.id}-${permission}`} color="blue">{permission}</Tag>
+                      ))}
+                    </Space>
+                  )
+                  : <Text type="secondary">No specific permissions</Text>;
+              },
             },
             {
               title: "Actions",
@@ -212,13 +217,14 @@ export function AdminsPage() {
           }}
         >
           <Form.Item
-            label="Permissions"
+            label="Module Access Control"
             name="permissions"
+            extra="Check the boxes to grant specific module-level actions."
           >
-            <Select
-              mode="multiple"
-              options={permissionOptions}
-              placeholder="Select permissions"
+            <PermissionMatrix
+              catalog={catalog.data}
+              value={form.getFieldValue("permissions") || []}
+              onChange={(next) => form.setFieldsValue({ permissions: next })}
             />
           </Form.Item>
         </Form>

@@ -15,6 +15,11 @@ export type IntegrationKind =
   | "meta_pixel"
   | "adsense"
   | "google_ad_manager"
+  | "ezoic"
+  | "mediavine"
+  | "adthrive"
+  | "monetizemore"
+  | "setupad"
   | "custom_third_party_script"
   | "custom_verification_meta";
 export type AdProvider =

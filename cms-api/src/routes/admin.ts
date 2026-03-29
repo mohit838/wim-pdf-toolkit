@@ -1012,10 +1012,25 @@ adminRouter.get("/audit-logs", async (request, response) => {
   }
 
   const q = parseQueryString(request.query.q);
+  const module = parseQueryString(request.query.module);
+  const action = parseQueryString(request.query.action);
+  const actorId = parseQueryString(request.query.actorId);
+  const dateFrom = parseQueryString(request.query.dateFrom);
+  const dateTo = parseQueryString(request.query.dateTo);
   const page = parseQueryNumber(request.query.page, 1);
   const pageSize = parseQueryNumber(request.query.pageSize, 20);
+
   response.json({
     success: true,
-    data: await getAuditLogPaged({ q, page, pageSize }),
+    data: await getAuditLogPaged({
+      q,
+      module,
+      action,
+      actorId,
+      dateFrom,
+      dateTo,
+      page,
+      pageSize,
+    }),
   });
 });

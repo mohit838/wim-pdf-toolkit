@@ -16,6 +16,11 @@ export type IntegrationKind =
   | "meta_pixel"
   | "adsense"
   | "google_ad_manager"
+  | "ezoic"
+  | "mediavine"
+  | "adthrive"
+  | "monetizemore"
+  | "setupad"
   | "custom_third_party_script"
   | "custom_verification_meta";
 export type AdProvider =
@@ -100,6 +105,11 @@ export interface AuditLogEntry {
   target: string;
   result: string;
   actorEmail: string | null;
+  actorId: string | null;
+  ipAddress?: string;
+  userAgent?: string;
+  requestId?: string;
+  details?: Record<string, unknown>;
 }
 
 export interface AdminUser {

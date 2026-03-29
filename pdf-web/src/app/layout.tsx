@@ -132,21 +132,27 @@ export default async function RootLayout({ children }: PropsWithChildren) {
     <html lang={siteLanguage}>
       <head>
         <RuntimeHeadTags />
-      </head>
-      <body suppressHydrationWarning>
-        <AnalyticsTags />
         <script
+          id="structured-data-organization"
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <script
+          id="structured-data-website"
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         <script
+          id="structured-data-application"
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(applicationJsonLd) }}
         />
+      </head>
+      <body suppressHydrationWarning>
+        <AnalyticsTags />
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -698,12 +698,29 @@ export async function getAuditLog(): Promise<AuditLogEntry[]> {
   }));
 }
 
-export async function getAuditLogPaged(params: { q?: string; page?: number; pageSize?: number }): Promise<PagedResult<AuditLogEntry>> {
+export async function getAuditLogPaged(params: {
+  q?: string;
+  module?: string;
+  action?: string;
+  actorId?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  page?: number;
+  pageSize?: number;
+}): Promise<PagedResult<AuditLogEntry>> {
   const page = clampPage(params.page || 1);
   const pageSize = clampPageSize(params.pageSize || 20);
   const q = (params.q || "").trim();
-  const where = q
-    ? {
+  const module = (params.module || "").trim();
+  const action = (params.action || "").trim();
+  const actorId = (params.actorId || "").trim();
+  const dateFrom = (params.dateFrom || "").trim();
+  const dateTo = (params.dateTo || "").trim();
+
+  const where: any = { AND: [] };
+
+  if (q) {
+    where.AND.push({
       OR: [
         { actorEmail: { contains: q, mode: "insensitive" as const } },
         { action: { contains: q, mode: "insensitive" as const } },
@@ -711,8 +728,43 @@ export async function getAuditLogPaged(params: { q?: string; page?: number; page
         { target: { contains: q, mode: "insensitive" as const } },
         { result: { contains: q, mode: "insensitive" as const } },
       ],
+    });
+  }
+
+  if (module) {
+    where.AND.push({ module: { equals: module } });
+  }
+
+  if (action) {
+    where.AND.push({ action: { equals: action } });
+  }
+
+  if (actorId) {
+    where.AND.push({ actorId: { equals: actorId } });
+  }
+
+  if (dateFrom || dateTo) {
+    const createdAt: any = {};
+    if (dateFrom) {
+      const from = new Date(dateFrom);
+      if (!Number.isNaN(from.getTime())) {
+        createdAt.gte = from;
+      }
     }
-    : undefined;
+    if (dateTo) {
+      const to = new Date(dateTo);
+      if (!Number.isNaN(to.getTime())) {
+        createdAt.lte = to;
+      }
+    }
+    if (Object.keys(createdAt).length > 0) {
+      where.AND.push({ createdAt });
+    }
+  }
+
+  if (where.AND.length === 0) {
+    delete where.AND;
+  }
 
   const [total, rows] = await Promise.all([
     prisma.auditLog.count({ where }),

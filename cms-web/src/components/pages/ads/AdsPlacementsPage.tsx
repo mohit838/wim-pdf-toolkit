@@ -228,38 +228,78 @@ export function AdsPlacementsPage() {
   };
 
 
-  const renderConfigHelper = () => {
-    if (selectedProvider === "google_ad_manager") {
-      return (
-        <div className="cms-form-helper-box">
-          <Text strong>GAM Config Example:</Text>
-          <pre style={{ fontSize: 11, background: "#f5f5f5", padding: 8, marginTop: 4 }}>
-            {"unitPath=/12345/home_top\nsizes=[728, 90]\n// Or fluid:\nsizes=fluid"}
-          </pre>
-        </div>
-      );
-    }
+  const renderProviderFields = () => {
     if (selectedProvider?.startsWith("adsense")) {
       return (
-        <div className="cms-form-helper-box">
-          <Text strong>AdSense Config Example:</Text>
-          <pre style={{ fontSize: 11, background: "#f5f5f5", padding: 8, marginTop: 4 }}>
-            {"publisherId=ca-pub-1234\nadSlot=5678\n// Optional:\nformat=auto\nfullWidthResponsive=true"}
-          </pre>
-        </div>
+        <Row gutter={8}>
+          <Col span={12}>
+            <Form.Item label="Publisher ID" name={["config", "publisherId"]} extra="ca-pub-XXXX">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Ad Slot" name={["config", "adSlot"]}>
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Format" name={["config", "format"]} initialValue="auto">
+              <Select options={[{ label: "Auto", value: "auto" }, { label: "Fluid", value: "fluid" }, { label: "Rectangle", value: "rectangle" }]} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Full Width Responsive" name={["config", "fullWidthResponsive"]} valuePropName="checked" initialValue={true}>
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
       );
     }
+
+    if (selectedProvider === "google_ad_manager") {
+      return (
+        <Row gutter={8}>
+          <Col span={24}>
+            <Form.Item label="Unit Path" name={["config", "unitPath"]} extra="/12345/home_top">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item label="Sizes" name={["config", "sizes"]} extra="e.g. [728, 90] or fluid">
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+      );
+    }
+
     if (selectedProvider?.startsWith("custom_")) {
       return (
-        <div className="cms-form-helper-box">
-          <Text strong>Custom Ad Config Example:</Text>
-          <pre style={{ fontSize: 11, background: "#f5f5f5", padding: 8, marginTop: 4 }}>
-            {"href=https://example.com/partner\ntitle=Join our Partner\nctaLabel=Learn more"}
-          </pre>
-        </div>
+        <Row gutter={8}>
+          <Col span={24}>
+            <Form.Item label="Destination URL" name={["config", "href"]}>
+              <Input placeholder="https://..." />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Title" name={["config", "title"]}>
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="CTA Label" name={["config", "ctaLabel"]}>
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
       );
     }
-    return null;
+
+    return (
+      <Form.Item label="Raw Config (key=value per line)" name="configText" extra="Use this for advanced or unsupported providers.">
+        <Input.TextArea autoSize={{ minRows: 4 }} />
+      </Form.Item>
+    );
   };
 
   return (
@@ -488,6 +528,7 @@ export function AdsPlacementsPage() {
                         ...row,
                         categoriesText: row.categories.join(", "),
                         configText: Object.entries(row.config).map(([key, value]) => `${key}=${String(value)}`).join("\n"),
+                        config: row.config,
                       });
                       setOpen(true);
                     }}
@@ -542,12 +583,15 @@ export function AdsPlacementsPage() {
               environment: values.environment,
               notes: values.notes || "",
               lastPublishedAt: values.lastPublishedAt || null,
-              config: Object.fromEntries(
-                splitLines(values.configText || "").map((line) => {
-                  const [key, ...rest] = line.split("=");
-                  return [key.trim(), rest.join("=").trim()];
-                }).filter(([key]) => key),
-              ),
+              config: {
+                ...Object.fromEntries(
+                  splitLines(values.configText || "").map((line) => {
+                    const [key, ...rest] = line.split("=");
+                    return [key.trim(), rest.join("=").trim()];
+                  }).filter(([key]) => key),
+                ),
+                ...(values.config || {}),
+              },
             };
 
             const next = placements.some((item) => item.id === payload.id)
@@ -600,10 +644,10 @@ export function AdsPlacementsPage() {
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item label="Config (key=value per line)" name="configText">
-                <Input.TextArea autoSize={{ minRows: 6 }} />
-              </Form.Item>
-              {renderConfigHelper()}
+              <div className="cms-form-provider-fields">
+                <Text strong style={{ display: "block", marginBottom: 12 }}>Provider-specific Configuration</Text>
+                {renderProviderFields()}
+              </div>
             </Col>
             <Col span={24}>
               <Form.Item label="Notes" name="notes">

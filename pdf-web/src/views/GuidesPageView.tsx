@@ -53,7 +53,7 @@ export default function GuidesPageView({
               <h2>{featured.title}</h2>
               <p>{featured.excerpt}</p>
               <div className="guide-featured-actions">
-                <Link href={`/guides/${featured.slug}`} className="btn-accent text-xs px-3 py-1.5">
+                <Link href={`/guides/${featured.slug}`} className="btn-accent guide-cta-link guide-cta-link-featured">
                   Read featured guide
                 </Link>
                 <Link href="#guides-sections" className="btn-secondary text-sm">
@@ -78,7 +78,7 @@ export default function GuidesPageView({
                       <p className="content-guide-category">{guide.category}</p>
                       <h3>{guide.title}</h3>
                       <p>{guide.excerpt}</p>
-                      <Link href={`/guides/${guide.slug}`} className="btn-accent text-xs px-3 py-1.5">
+                      <Link href={`/guides/${guide.slug}`} className="btn-accent guide-cta-link">
                         Read guide
                       </Link>
                     </div>

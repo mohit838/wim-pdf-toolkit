@@ -13,10 +13,12 @@ import {
   SettingOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
-import { Avatar, Breadcrumb, Button, Drawer, Grid, Layout, Menu, Space, Spin, Typography } from "antd";
+import { Avatar, Breadcrumb, Button, Drawer, Dropdown, Grid, Layout, Menu, Space, Spin, Typography } from "antd";
 import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCmsSession, useLogout } from "@/lib/cms-api";
+import { useTimezone, TIMEZONE_OPTIONS } from "@/lib/timezone";
+import { GlobalOutlined as TimezoneIcon } from "@ant-design/icons";
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -33,22 +35,47 @@ const ADS_GROUP_KEY = "group:ads";
 
 const navigation: NavEntry[] = [
   { key: "/", label: "Dashboard", icon: <DashboardOutlined />, href: "/" },
-  { key: "/seo", label: "SEO", icon: <GlobalOutlined />, href: "/seo" },
+  {
+    key: "group:content",
+    label: "Content Management",
+    icon: <SafetyCertificateOutlined />,
+    children: [
+      { key: "/legal-pages", label: "Legal Pages", icon: <SafetyCertificateOutlined />, href: "/legal-pages" },
+      { key: "/faq", label: "FAQ", icon: <ContainerOutlined />, href: "/faq" },
+      { key: "/guides", label: "Guides", icon: <ContainerOutlined />, href: "/guides" },
+    ],
+  },
   {
     key: ADS_GROUP_KEY,
-    label: "Ads",
+    label: "Advertising",
     icon: <NotificationOutlined />,
-    href: "/ads",
     children: [
-      { key: "/ads/placements", label: "Placements", icon: <PicRightOutlined />, href: "/ads/placements" },
-      { key: "/ads/providers", label: "Providers", icon: <SettingOutlined />, href: "/ads/providers" },
+      { key: "/ads/placements", label: "Ad Placements", icon: <PicRightOutlined />, href: "/ads/placements" },
+      { key: "/ads/providers", label: "Ad Providers", icon: <SettingOutlined />, href: "/ads/providers" },
       { key: "/ads/ads-txt", label: "Ads.txt", icon: <ContainerOutlined />, href: "/ads/ads-txt" },
     ],
   },
-  { key: "/legal-pages", label: "Legal Pages", icon: <SafetyCertificateOutlined />, href: "/legal-pages" },
-  { key: "/publish", label: "Publish", icon: <FireOutlined />, href: "/publish" },
-  { key: "/admins", label: "Admins", icon: <TeamOutlined />, href: "/admins" },
-  { key: "/settings", label: "Settings", icon: <SettingOutlined />, href: "/settings" },
+  {
+    key: "group:config",
+    label: "Configuration",
+    icon: <SettingOutlined />,
+    children: [
+      { key: "/settings", label: "Site Settings", icon: <SettingOutlined />, href: "/settings" },
+      { key: "/seo", label: "SEO Config", icon: <GlobalOutlined />, href: "/seo" },
+      { key: "/integrations", label: "Integrations", icon: <SettingOutlined />, href: "/integrations" },
+    ],
+  },
+  {
+    key: "group:system",
+    label: "System & Security",
+    icon: <SafetyCertificateOutlined />,
+    children: [
+      { key: "/admins", label: "Users & Permissions", icon: <TeamOutlined />, href: "/admins" },
+      { key: "/audit-logs", label: "Activity History", icon: <ContainerOutlined />, href: "/audit-logs" },
+      { key: "/system/status", label: "System Status", icon: <DashboardOutlined />, href: "/system/status" },
+    ],
+  },
+  { key: "/publish", label: "Publish Center", icon: <FireOutlined />, href: "/publish" },
 ];
 
 function flattenItems(items: NavEntry[]): NavEntry[] {
@@ -62,6 +89,7 @@ export default function CmsShell({ children }: PropsWithChildren) {
   const router = useRouter();
   const { data: user, isPending, isError } = useCmsSession();
   const logout = useLogout();
+  const { mode, setMode } = useTimezone();
   const [collapsed, setCollapsed] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMenuKeys, setOpenMenuKeys] = useState<string[]>([]);
@@ -100,7 +128,17 @@ export default function CmsShell({ children }: PropsWithChildren) {
   }, [visibleNavigation]);
 
   useEffect(() => {
-    setOpenMenuKeys(pathname.startsWith("/ads") ? [ADS_GROUP_KEY] : []);
+    const isAds = pathname.startsWith("/ads");
+    const isContent = pathname.startsWith("/legal-pages") || pathname.startsWith("/faq") || pathname.startsWith("/guides");
+    const isConfig = pathname.startsWith("/settings") || pathname.startsWith("/seo") || pathname.startsWith("/integrations");
+    const isSystem = pathname.startsWith("/admins") || pathname.startsWith("/audit-logs") || pathname.startsWith("/system");
+    
+    setOpenMenuKeys([
+      ...(isAds ? [ADS_GROUP_KEY] : []),
+      ...(isContent ? ["group:content"] : []),
+      ...(isConfig ? ["group:config"] : []),
+      ...(isSystem ? ["group:system"] : []),
+    ]);
   }, [pathname]);
 
   useEffect(() => {
@@ -209,7 +247,22 @@ export default function CmsShell({ children }: PropsWithChildren) {
             />
             <Breadcrumb items={breadcrumbItems} />
           </Space>
-          <Space align="center">
+          <Space align="center" size="middle">
+            <Dropdown
+              menu={{
+                items: TIMEZONE_OPTIONS.map((opt) => ({ label: opt.label, key: opt.value })),
+                selectable: true,
+                selectedKeys: [mode],
+                onSelect: ({ key }) => setMode(key as any),
+              }}
+              placement="bottomRight"
+              trigger={["click"]}
+            >
+              <Button icon={<TimezoneIcon />} type="text">
+                {TIMEZONE_OPTIONS.find((opt) => opt.value === mode)?.label}
+              </Button>
+            </Dropdown>
+            
             <div className="cms-header-user">
               <Text strong>{user.name}</Text>
               <Text type="secondary">{user.email}</Text>

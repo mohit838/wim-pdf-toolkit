@@ -204,6 +204,27 @@ body {
   gap: 1.1rem;
 }
 
+.guide-cta-link {
+  justify-self: start;
+  align-self: start;
+  min-height: 2.25rem;
+  padding: 0.48rem 0.9rem;
+  border-radius: 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  box-shadow: 0 9px 22px rgba(99, 102, 241, 0.28);
+}
+
+.guide-cta-link:hover {
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.35);
+}
+
+.guide-cta-link-featured {
+  padding-inline: 1rem;
+}
+
 .content-page-header {
   max-width: 48rem;
   margin-bottom: clamp(1.5rem, 3vw, 2.4rem);
@@ -1036,6 +1057,15 @@ body {
   .contact-form-actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .guide-featured-actions {
+    gap: 0.6rem;
+  }
+
+  .guide-featured-actions > a {
+    width: 100%;
+    justify-content: center;
   }
 }
 

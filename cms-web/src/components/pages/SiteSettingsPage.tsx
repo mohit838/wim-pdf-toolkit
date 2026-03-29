@@ -77,34 +77,6 @@ export function SiteSettingsPage() {
     }
   }, [homepage.data, homepageForm]);
 
-  if (siteShell.isPending || homepage.isPending || tools.isPending) {
-    return (
-      <>
-        <div style={{ display: "none" }}>
-          <Form form={brandingForm} />
-          <Form form={homepageForm} />
-          <Form form={footerForm} />
-          <Form form={scriptsForm} />
-        </div>
-        <LoadingPanel />
-      </>
-    );
-  }
-
-  if (siteShell.isError || homepage.isError || tools.isError) {
-    return (
-      <>
-        <div style={{ display: "none" }}>
-          <Form form={brandingForm} />
-          <Form form={homepageForm} />
-          <Form form={footerForm} />
-          <Form form={scriptsForm} />
-        </div>
-        <ErrorPanel message="Could not load site settings." />
-      </>
-    );
-  }
-
   const items = [
     {
       key: "identity",
@@ -386,7 +358,7 @@ export function SiteSettingsPage() {
     },
   ];
 
-  return (
+  const content = (
     <Space orientation="vertical" size={20} style={{ width: "100%" }}>
       <CmsPageHeader
         eyebrow="Configuration"
@@ -396,4 +368,24 @@ export function SiteSettingsPage() {
       <Tabs items={items} type="card" />
     </Space>
   );
+
+  if (siteShell.isPending || homepage.isPending || tools.isPending) {
+    return (
+      <>
+        <div style={{ display: "none" }}>{content}</div>
+        <LoadingPanel />
+      </>
+    );
+  }
+
+  if (siteShell.isError || homepage.isError || tools.isError) {
+    return (
+      <>
+        <div style={{ display: "none" }}>{content}</div>
+        <ErrorPanel message="Could not load site settings." />
+      </>
+    );
+  }
+
+  return content;
 }

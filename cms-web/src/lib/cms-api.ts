@@ -277,7 +277,16 @@ async function getPublishReadiness(): Promise<PublishReadiness> {
   return extractData(response, "Could not load publish readiness.");
 }
 
-async function getAuditLogs(params: { q?: string; page?: number; pageSize?: number }): Promise<PagedResult<AuditLogEntry>> {
+async function getAuditLogs(params: {
+  q?: string;
+  module?: string;
+  action?: string;
+  actorId?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  page?: number;
+  pageSize?: number;
+}): Promise<PagedResult<AuditLogEntry>> {
   const response = await cmsApi.get<CmsResponse<PagedResult<AuditLogEntry>>>("/admin/v1/audit-logs", { params });
   return extractData(response, "Could not load the audit logs.");
 }
@@ -480,8 +489,20 @@ export function usePublishReadiness() {
   return useQuery({ queryKey: cmsQueryKeys.publishReadiness, queryFn: getPublishReadiness });
 }
 
-export function useAuditLogs(params: { q?: string; page?: number; pageSize?: number }) {
-  return useQuery({ queryKey: cmsQueryKeys.auditLogsList(params), queryFn: () => getAuditLogs(params) });
+export function useAuditLogs(params: {
+  q?: string;
+  module?: string;
+  action?: string;
+  actorId?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  page?: number;
+  pageSize?: number;
+}) {
+  return useQuery({
+    queryKey: cmsQueryKeys.auditLogsList(params),
+    queryFn: () => getAuditLogs(params),
+  });
 }
 
 export function useAdmins(params: { q?: string; page?: number; pageSize?: number }, enabled = true) {
@@ -530,15 +551,19 @@ export function useLogout() {
   });
 }
 
-export function useRefreshRuntimeCaches() {
+export function useRefreshRuntimeCaches(
+  options?: UseMutationOptions<CacheRefreshResult, Error, { clearCmsCache: boolean; revalidateFrontend: boolean }>,
+) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: refreshRuntimeCaches,
-    onSuccess: async () => {
+    ...options,
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: cmsQueryKeys.systemStatus }),
         queryClient.invalidateQueries({ queryKey: cmsQueryKeys.publishReadiness }),
       ]);
+      await options?.onSuccess?.(data, variables, onMutateResult, context);
     },
   });
 }
