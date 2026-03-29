@@ -14,7 +14,12 @@ import BackButton from "../components/BackButton";
 import BrandMark from "../components/BrandMark";
 import Navbar from "../components/Navbar";
 
-export default async function MainLayout({ children }: PropsWithChildren) {
+interface MainLayoutProps extends PropsWithChildren {
+  showFooterPromo?: boolean;
+  mainClassName?: string;
+}
+
+export default async function MainLayout({ children, showFooterPromo = true, mainClassName }: MainLayoutProps) {
   const currentYear = new Date().getFullYear();
   const [
     branding,
@@ -52,7 +57,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
       }}
     >
       <Navbar navGroups={navGroups} homeLabel={homeLabel} siteName={branding.name} />
-      <main className="flex-1">
+      <main className={`flex-1${mainClassName ? ` ${mainClassName}` : ""}`}>
         <BackButton label={backButtonCopy.label} ariaLabel={backButtonCopy.ariaLabel} />
         {children}
       </main>
@@ -67,14 +72,16 @@ export default async function MainLayout({ children }: PropsWithChildren) {
       >
         <div className="app-shell py-8">
           <div className="mx-auto w-full max-w-[84rem]">
-            <AdSlot
-              slotId="footer_promo"
-              scope="footer"
-              categories={["footer"]}
-              className="mb-6 cms-ad-slot-center-narrow"
-            />
+            {showFooterPromo ? (
+              <AdSlot
+                slotId="footer_promo"
+                scope="footer"
+                categories={["footer"]}
+                className="mb-6 cms-ad-slot-center-narrow"
+              />
+            ) : null}
 
-            <div className="grid items-start gap-8 lg:grid-cols-12">
+            <div className="grid items-start gap-8 lg:grid-cols-12 defer-render">
               <section className="lg:col-span-4">
               <div className="flex items-center gap-3">
                 <BrandMark size={42} />
@@ -177,7 +184,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-[84rem]">
+          <div className="mx-auto w-full max-w-[84rem] defer-render">
             {resourceLinks.length ? (
               <div
                 className="mt-7 border-t pt-5"

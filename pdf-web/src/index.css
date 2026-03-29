@@ -64,6 +64,10 @@ body {
   padding-bottom: clamp(3.5rem, 5vw, 5.5rem);
 }
 
+.page-solid-bg {
+  background: var(--bg-body);
+}
+
 .tool-page-back-row {
   max-width: 72rem;
   margin-inline: auto;
@@ -862,9 +866,11 @@ body {
 .orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(90px);
+  filter: blur(72px);
   opacity: 0.22;
   pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform, opacity;
 }
 .orb-violet {
   background: rgba(124, 108, 255, 0.85);
@@ -877,6 +883,18 @@ body {
 }
 
 /* ── System States ── */
+.status-screen-shell {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-top: clamp(1.5rem, 2vw + 0.75rem, 2.5rem);
+  padding-bottom: clamp(3rem, 5vw, 4.75rem);
+}
+
+.defer-render {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
+
 .status-screen-wrap {
   max-width: 56rem;
   margin-inline: auto;
@@ -1008,6 +1026,35 @@ body {
   margin-top: 1.5rem;
 }
 
+.status-screen-links-card {
+  margin-top: 2rem;
+  padding: clamp(1rem, 1.3vw, 1.4rem);
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.status-screen-links-label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+}
+
+.status-screen-tool-links {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.35rem;
+}
+
+.status-screen-tool-links .link-standard {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 .status-screen-redirect {
   margin: 1.5rem 0 0;
   color: var(--text-tertiary);
@@ -1044,6 +1091,30 @@ body {
   }
 }
 
+@media (max-width: 1024px) {
+  #navbar {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 6px 20px rgba(2, 8, 23, 0.16) !important;
+  }
+
+  .orb {
+    filter: blur(56px);
+    opacity: 0.16;
+  }
+
+  .glass,
+  .glass-card {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-card-premium {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+}
+
 @media (max-width: 640px) {
   .status-screen-brand {
     align-items: flex-start;
@@ -1052,6 +1123,20 @@ body {
 
   .status-screen-actions {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .status-screen-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .status-screen-links-card {
+    margin-top: 1.5rem;
+  }
+
+  .status-screen-tool-links {
+    gap: 0.75rem 1rem;
   }
 
   .contact-form-actions {
@@ -1066,6 +1151,28 @@ body {
   .guide-featured-actions > a {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  .animate-fade-in-up,
+  .animate-fade-in-up-delay-1,
+  .animate-fade-in-up-delay-2,
+  .animate-fade-in-up-delay-3,
+  .animate-float,
+  .animate-pulse-glow {
+    animation: none !important;
+  }
+
+  .glass-card:hover,
+  .btn-accent:hover,
+  .tool-page-back:hover,
+  .status-screen-title-premium:hover {
+    transform: none !important;
   }
 }
 

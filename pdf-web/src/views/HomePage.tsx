@@ -264,7 +264,7 @@ export default async function HomePage() {
             />
           </div>
 
-          <div id="tool-sections" className="mt-12 space-y-14 lg:mt-16 lg:space-y-16">
+          <div id="tool-sections" className="defer-render mt-12 space-y-14 lg:mt-16 lg:space-y-16">
             {homeSections.map((section, index) => (
               <div
                 id={section.id}
@@ -342,12 +342,14 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <AdSlot
-            slotId="home_mid"
-            scope="home"
-            categories={["homepage"]}
-            className="mt-12 cms-ad-slot-center"
-          />
+          <div className="defer-render">
+            <AdSlot
+              slotId="home_mid"
+              scope="home"
+              categories={["homepage"]}
+              className="mt-12 cms-ad-slot-center"
+            />
+          </div>
         </div>
       </section>
     </MainLayout>

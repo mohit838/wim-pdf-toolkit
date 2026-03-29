@@ -37,7 +37,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <MainLayout>
+    <MainLayout showFooterPromo={false}>
       <SiteStatusScreen
         eyebrow="System Error"
         title={copy.title}
