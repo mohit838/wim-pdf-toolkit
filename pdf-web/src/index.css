@@ -710,6 +710,20 @@ body {
   background-clip: text;
 }
 
+.text-gradient-404 {
+  background: linear-gradient(135deg, #f472b6 0%, #8b5cf6 50%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-error {
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* ── Accent button ── */
 .btn-accent {
   background: var(--accent-gradient);
@@ -848,106 +862,104 @@ body {
 }
 
 .status-screen-panel {
-  padding: clamp(1.35rem, 1.1rem + 1.2vw, 2.3rem);
+  padding: 0;
   overflow: hidden;
+  border-radius: var(--radius-2xl);
 }
 
-.status-screen-brand {
+.glass-card-premium {
+  background: rgba(16, 23, 45, 0.65);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 25px 60px -12px rgba(2, 8, 23, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.status-screen-content {
+  padding: clamp(2rem, 3.5vw, 4.5rem);
+  position: relative;
+  z-index: 2;
+}
+
+.status-screen-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-.status-screen-eyebrow {
+.status-screen-brand-box {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.status-screen-separator {
+  width: 1px;
+  height: 4rem;
+  background: linear-gradient(to bottom, transparent, rgba(124, 108, 255, 0.3), transparent);
+}
+
+.status-screen-eyebrow-premium {
   margin: 0;
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--accent-from);
+  letter-spacing: 0.3em;
+  color: var(--accent-via);
+  opacity: 0.9;
 }
 
-.status-screen-title {
-  margin: 0.55rem 0 0;
-  font-size: clamp(2rem, 5vw, 3.35rem);
-  line-height: 0.98;
-  letter-spacing: -0.045em;
-  color: var(--text-primary);
+.status-screen-title-premium {
+  margin: 0.65rem 0 0;
+  font-size: clamp(2.25rem, 6vw, 4.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  font-weight: 900;
+  color: #fff;
+  filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.2));
+  transition: transform 0.3s ease;
 }
 
-.status-screen-description {
-  margin: 1.5rem 0 0;
-  max-width: 40rem;
+.status-screen-title-premium:hover {
+  transform: scale(1.02);
+}
+
+.status-screen-description-premium {
+  margin: 2rem 0 0;
+  max-width: 42rem;
   color: var(--text-secondary);
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: clamp(1rem, 1.15vw, 1.125rem);
+  line-height: 1.85;
+  font-weight: 500;
 }
 
-.status-screen-body {
-  margin-top: 2rem;
+.status-screen-body-premium {
+  margin-top: 2.5rem;
 }
 
-.status-loader {
-  display: grid;
-  justify-items: center;
-  gap: 1rem;
-  padding: 1rem 0 0.5rem;
-}
-
-.status-loader-art {
-  position: relative;
-  width: 7.5rem;
-  height: 7.5rem;
-}
-
-.status-loader-ring,
-.status-loader-core {
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-}
-
-.status-loader-ring-outer {
-  border: 2px solid rgba(23, 199, 255, 0.14);
-  border-top-color: rgba(23, 199, 255, 0.9);
-  animation: loader-spin 1.15s linear infinite;
-}
-
-.status-loader-ring-inner {
-  inset: 0.9rem;
-  border: 2px solid rgba(124, 108, 255, 0.12);
-  border-bottom-color: rgba(124, 108, 255, 0.92);
-  animation: loader-reverse-spin 0.95s linear infinite;
-}
-
-.status-loader-core {
-  inset: 1.9rem;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.92), rgba(124, 108, 255, 0.78) 45%, rgba(23, 199, 255, 0.85) 100%);
-  box-shadow: 0 16px 32px rgba(7, 11, 22, 0.28);
-  animation: loader-core-pulse 1.8s ease-in-out infinite;
-}
-
-.status-loader-label {
-  margin: 0;
-  font-size: 0.76rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--text-muted);
-}
-
+/* Existing Status Screen specific items updated */
 .status-screen-contact-card {
   max-width: 32rem;
-  border-radius: 1.5rem;
-  padding: 1.1rem 1.2rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-subtle);
+  border-radius: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.3s ease;
+}
+
+.status-screen-contact-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(124, 108, 255, 0.2);
 }
 
 .status-screen-contact-label {
   margin: 0;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.18em;
   color: var(--text-muted);
@@ -955,27 +967,60 @@ body {
 
 .status-screen-contact-value {
   display: inline-block;
-  margin-top: 0.7rem;
-  color: var(--text-primary);
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  font-weight: 700;
-  line-height: 1.6;
+  margin-top: 0.75rem;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
   text-decoration: none;
-  word-break: break-word;
+  transition: color 0.2s ease;
+}
+
+.status-screen-contact-value:hover {
+  color: var(--accent-via);
 }
 
 .status-screen-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem;
-  margin-top: 1.2rem;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
 }
 
 .status-screen-redirect {
-  margin: 1rem 0 0;
-  color: var(--text-muted);
-  font-size: 0.84rem;
-  line-height: 1.6;
+  margin: 1.5rem 0 0;
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-screen-redirect::before {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-via);
+  border-radius: 999px;
+  animation: pulse-glow 2s infinite;
+}
+
+@media (max-width: 768px) {
+  .status-screen-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .status-screen-brand-box {
+    gap: 1rem;
+  }
+  .status-screen-separator {
+    display: none;
+  }
+  .status-screen-content {
+    padding: 2.25rem 1.75rem;
+  }
 }
 
 @media (max-width: 640px) {

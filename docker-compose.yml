@@ -26,6 +26,7 @@ services:
       - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
       - DEV_REDIS_PDF_PREFIX
       - PROD_REDIS_PDF_PREFIX
+      - DOCKER_CONTAINER=true
     volumes:
       - pdf-jobs:/app/app/storage/jobs
     extra_hosts:
@@ -66,6 +67,7 @@ services:
       - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
       - DEV_REDIS_CMS_PREFIX
       - PROD_REDIS_CMS_PREFIX
+      - DOCKER_CONTAINER=true
     volumes:
       - ./cms-api:/app
     extra_hosts:
@@ -124,6 +126,7 @@ services:
       - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
       - DEV_REDIS_CMS_PREFIX
       - PROD_REDIS_CMS_PREFIX
+      - DOCKER_CONTAINER=true
       - DEV_SMTP_HOST
       - PROD_SMTP_HOST
       - DEV_SMTP_PORT
@@ -204,6 +207,7 @@ services:
       - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
       - DEV_REDIS_CMS_PREFIX
       - PROD_REDIS_CMS_PREFIX
+      - DOCKER_CONTAINER=true
       - DEV_SMTP_HOST
       - PROD_SMTP_HOST
       - DEV_SMTP_PORT
@@ -254,6 +258,7 @@ services:
       - PROD_CMS_REVALIDATE_SECRET
       - HOSTNAME=0.0.0.0
       - PORT=3000
+      - DOCKER_CONTAINER=true
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -294,6 +299,7 @@ services:
       - PROD_CMS_API_ORIGIN
       - HOSTNAME=0.0.0.0
       - PORT=3000
+      - DOCKER_CONTAINER=true
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:

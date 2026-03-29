@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { AdPlacement } from "@/lib/cms-runtime";
 import { getSlotBlueprint } from "@/lib/ad-blueprint";
 import AdsenseSlotClient from "./AdsenseSlotClient";
+import GAMSlotClient from "./GAMSlotClient";
 
 interface AdPlacementRendererProps {
   placement: AdPlacement | null;
@@ -35,6 +36,11 @@ export function hasRenderableAdPlacement(placement: AdPlacement | null): boolean
     const publisherId = String(placement.config.publisherId || "").trim();
     const adSlot = String(placement.config.adSlot || "").trim();
     return publisherId.startsWith("ca-pub-") && adSlot.length >= 6 && adSlot.length <= 20 && !Number.isNaN(Number(adSlot));
+  }
+
+  if (placement.provider === "google_ad_manager") {
+    const unitPath = String(placement.config.unitPath || "").trim();
+    return unitPath.startsWith("/");
   }
 
   if (placement.provider === "custom_banner" || placement.provider === "custom_card") {
@@ -79,6 +85,44 @@ export default function AdPlacementRenderer({
             adSlot={adSlot}
             format={String(activePlacement.config.format || "auto")}
             fullWidthResponsive={Boolean(activePlacement.config.fullWidthResponsive ?? true)}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (activePlacement.provider === "google_ad_manager") {
+    const unitPath = String(activePlacement.config.unitPath || "").trim();
+    if (!unitPath.startsWith("/")) {
+      return null;
+    }
+
+    const sizesRaw = String(activePlacement.config.sizes || "fluid").trim();
+    let sizes: any = "fluid";
+    
+    try {
+      if (sizesRaw.startsWith("[")) {
+        sizes = JSON.parse(sizesRaw);
+      }
+    } catch {
+      sizes = "fluid";
+    }
+
+    const profile = getSlotBlueprint(activePlacement.slotId);
+    const reservedStyle = {
+      "--ad-h-mobile": `${profile.mobile.height}px`,
+      "--ad-h-tablet": `${profile.tablet.height}px`,
+      "--ad-h-desktop": `${profile.desktop.height}px`,
+    } as CSSProperties;
+
+    return (
+      <div className={wrapperClassName}>
+        {title ? <div className="cms-ad-slot-label">{title}</div> : null}
+        <div className="runtime-ad-card runtime-ad-card-gam" style={reservedStyle}>
+          <GAMSlotClient
+            unitPath={unitPath}
+            sizes={sizes}
+            slotId={`gam-div-${activePlacement.id}`}
           />
         </div>
       </div>

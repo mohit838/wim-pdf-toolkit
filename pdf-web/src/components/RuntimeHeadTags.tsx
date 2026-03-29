@@ -1,10 +1,19 @@
-import { getRuntimeIntegrations } from "@/lib/cms-runtime";
+import { getRuntimeIntegrations, getRuntimeSiteContent } from "@/lib/cms-runtime";
+import { getResolvedSiteConfig } from "@/app/site";
 
 export default async function RuntimeHeadTags() {
-  const integrations = await getRuntimeIntegrations("all_public_routes");
+  const [integrations, siteConfig] = await Promise.all([
+    getRuntimeIntegrations("all_public_routes"),
+    getResolvedSiteConfig(),
+  ]);
+
+  const customHeadHtml = String(siteConfig.system.customHeadHtml || "").trim();
 
   return (
     <>
+      {customHeadHtml ? (
+        <div dangerouslySetInnerHTML={{ __html: customHeadHtml }} style={{ display: "none" }} />
+      ) : null}
       {integrations.map((integration) => {
         if (integration.kind === "google_search_console") {
           const content = String(integration.config.verificationToken || "").trim();

@@ -127,6 +127,11 @@ function hasRenderablePlacementConfig(placement: RuntimeAdPlacement): boolean {
     return Boolean(publisherId && adSlot);
   }
 
+  if (placement.provider === "google_ad_manager") {
+    const unitPath = String(placement.config.unitPath || "").trim();
+    return unitPath.startsWith("/");
+  }
+
   if (placement.provider === "custom_banner" || placement.provider === "custom_card") {
     const href = String(placement.config.href || "").trim();
     return Boolean(href);
@@ -164,6 +169,8 @@ export function AdsPlacementsPage() {
     onSuccess: () => message.success("Ads draft saved."),
     onError: (error) => message.error(getCmsErrorMessage(error, "Could not save the ads draft.")),
   });
+
+  const selectedProvider = Form.useWatch("provider", form);
 
   if (draft.isPending || placementsList.isPending) {
     return (
@@ -218,6 +225,41 @@ export function AdsPlacementsPage() {
     await saveDraft.mutateAsync(sanitizeAdsDraft({ ...draft.data, adPlacements: next }));
     await placementsList.refetch();
     message.success("Placement deleted.");
+  };
+
+
+  const renderConfigHelper = () => {
+    if (selectedProvider === "google_ad_manager") {
+      return (
+        <div className="cms-form-helper-box">
+          <Text strong>GAM Config Example:</Text>
+          <pre style={{ fontSize: 11, background: "#f5f5f5", padding: 8, marginTop: 4 }}>
+            {"unitPath=/12345/home_top\nsizes=[728, 90]\n// Or fluid:\nsizes=fluid"}
+          </pre>
+        </div>
+      );
+    }
+    if (selectedProvider?.startsWith("adsense")) {
+      return (
+        <div className="cms-form-helper-box">
+          <Text strong>AdSense Config Example:</Text>
+          <pre style={{ fontSize: 11, background: "#f5f5f5", padding: 8, marginTop: 4 }}>
+            {"publisherId=ca-pub-1234\nadSlot=5678\n// Optional:\nformat=auto\nfullWidthResponsive=true"}
+          </pre>
+        </div>
+      );
+    }
+    if (selectedProvider?.startsWith("custom_")) {
+      return (
+        <div className="cms-form-helper-box">
+          <Text strong>Custom Ad Config Example:</Text>
+          <pre style={{ fontSize: 11, background: "#f5f5f5", padding: 8, marginTop: 4 }}>
+            {"href=https://example.com/partner\ntitle=Join our Partner\nctaLabel=Learn more"}
+          </pre>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -561,6 +603,7 @@ export function AdsPlacementsPage() {
               <Form.Item label="Config (key=value per line)" name="configText">
                 <Input.TextArea autoSize={{ minRows: 6 }} />
               </Form.Item>
+              {renderConfigHelper()}
             </Col>
             <Col span={24}>
               <Form.Item label="Notes" name="notes">

@@ -21,6 +21,7 @@ export type IntegrationKind =
 export type AdProvider =
   | "adsense_display"
   | "adsense_in_article"
+  | "google_ad_manager"
   | "custom_banner"
   | "custom_card"
   | "placeholder";
@@ -152,7 +153,10 @@ export interface SiteShellDraft {
   organization: {
     profiles: string[];
   };
-  system: Record<string, unknown>;
+  system: {
+    customHeadHtml?: string;
+    customBodyHtml?: string;
+  };
   ui: Record<string, unknown>;
   navigation: {
     homeLabel: string;

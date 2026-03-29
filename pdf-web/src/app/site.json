@@ -34,7 +34,9 @@
       "emailLabel": "Support email",
       "emailActionLabel": "Email support",
       "homeActionLabel": "Back to home"
-    }
+    },
+    "customHeadHtml": "",
+    "customBodyHtml": ""
   },
   "ui": {
     "backButtonLabel": "Back",

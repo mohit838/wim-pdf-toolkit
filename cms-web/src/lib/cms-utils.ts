@@ -285,6 +285,7 @@ export function sanitizeSiteShellDraft(value: unknown): SiteShellDraft {
   const navigation = asRecord(candidate.navigation);
   const footer = asRecord(candidate.footer);
   const footerSupport = asRecord(footer.support);
+  const system = asRecord(candidate.system);
 
   return {
     branding: {
@@ -299,7 +300,10 @@ export function sanitizeSiteShellDraft(value: unknown): SiteShellDraft {
     organization: {
       profiles: asStringArray(organization.profiles),
     },
-    system: asRecord(candidate.system),
+    system: {
+      customHeadHtml: asString(system.customHeadHtml),
+      customBodyHtml: asString(system.customBodyHtml),
+    },
     ui: asRecord(candidate.ui),
     navigation: {
       homeLabel: asString(navigation.homeLabel, "Home"),

@@ -14,6 +14,7 @@ import {
   setCachedJson,
 } from "./redis";
 import { checkPublicSiteRevalidateHealth, revalidatePublicSite } from "./revalidate";
+import { syncFallbacksToFrontend } from "./fallbacks";
 import { contentLibraryStateSchema, runtimeSiteConfigSchema, siteContentStateSchema } from "./schemas";
 import type {
   AdPlacement,
@@ -1685,6 +1686,12 @@ export async function publishAllDraftContent(actorId: string, actorEmail: string
       const message = error instanceof Error ? error.message : "Unknown revalidation error";
       await markReleaseRevalidationResult(release.id, false, message);
       await enqueueRevalidation(release.id);
+    }
+
+    try {
+      await syncFallbacksToFrontend();
+    } catch (error) {
+      console.warn("[Storage] Fallback sync failure (continuing):", error);
     }
 
     return {

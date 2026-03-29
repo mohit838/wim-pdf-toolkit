@@ -19,8 +19,6 @@ import {
 } from "../CmsUi";
 import {
   getCmsErrorMessage,
-  useHomepageHeroDraft,
-  useSaveHomepageHeroDraft,
   useSaveSeoDraft,
   useSeoDraft,
 } from "@/lib/cms-api";
@@ -30,19 +28,14 @@ import { LoadingPanel, ErrorPanel } from "./shared";
 export function SeoPage() {
   const { message } = AntdApp.useApp();
   const [form] = Form.useForm();
-  const [heroForm] = Form.useForm();
   const [pageModalOpen, setPageModalOpen] = useState(false);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [pageForm] = Form.useForm();
+  
   const draft = useSeoDraft();
-  const homepageHeroDraft = useHomepageHeroDraft();
   const saveDraft = useSaveSeoDraft({
     onSuccess: () => message.success("SEO draft saved."),
     onError: (error) => message.error(getCmsErrorMessage(error, "Could not save the SEO draft.")),
-  });
-  const saveHomepageHeroDraft = useSaveHomepageHeroDraft({
-    onSuccess: () => message.success("Homepage hero draft saved."),
-    onError: (error) => message.error(getCmsErrorMessage(error, "Could not save homepage hero draft.")),
   });
 
   useEffect(() => {
@@ -51,33 +44,22 @@ export function SeoPage() {
     }
   }, [draft.data, form]);
 
-  useEffect(() => {
-    if (homepageHeroDraft.data) {
-      heroForm.setFieldsValue({
-        hero: homepageHeroDraft.data.hero,
-        pillsText: homepageHeroDraft.data.hero.pills.join("\n"),
-      });
-    }
-  }, [homepageHeroDraft.data, heroForm]);
-
-  if (draft.isPending || homepageHeroDraft.isPending) {
+  if (draft.isPending) {
     return (
       <>
         <Form component={false} form={form} />
-        <Form component={false} form={heroForm} />
         <Form component={false} form={pageForm} />
         <LoadingPanel />
       </>
     );
   }
 
-  if (draft.isError || homepageHeroDraft.isError) {
+  if (draft.isError) {
     return (
       <>
         <Form component={false} form={form} />
-        <Form component={false} form={heroForm} />
         <Form component={false} form={pageForm} />
-        <ErrorPanel message="Could not load SEO or homepage draft." />
+        <ErrorPanel message="Could not load SEO draft." />
       </>
     );
   }
@@ -97,76 +79,7 @@ export function SeoPage() {
         }
       />
 
-      <CmsCard title="Homepage Hero Copy">
-        <Form
-          form={heroForm}
-          layout="vertical"
-          onFinish={(values) => {
-            const pills = splitLines(values.pillsText || "");
-            const next = {
-              hero: {
-                ...homepageHeroDraft.data!.hero,
-                ...values.hero,
-                pills,
-              },
-            };
-            void saveHomepageHeroDraft.mutateAsync(next);
-          }}
-        >
-          <Row gutter={16}>
-            <Col md={8} span={24}>
-              <Form.Item label="Badge suffix" name={["hero", "badgeCountSuffix"]}>
-                <Input placeholder="TOOLS READY" />
-              </Form.Item>
-            </Col>
-            <Col md={8} span={24}>
-              <Form.Item label="Title lead" name={["hero", "titleLead"]}>
-                <Input placeholder="The complete" />
-              </Form.Item>
-            </Col>
-            <Col md={8} span={24}>
-              <Form.Item label="Title highlight" name={["hero", "titleHighlight"]}>
-                <Input placeholder="PDF toolkit" />
-              </Form.Item>
-            </Col>
-            <Col md={8} span={24}>
-              <Form.Item label="Title tail" name={["hero", "titleTail"]}>
-                <Input placeholder="you need" />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item label="Hero description" name={["hero", "description"]}>
-                <Input.TextArea autoSize={{ minRows: 3 }} />
-              </Form.Item>
-            </Col>
-            <Col md={12} span={24}>
-              <Form.Item label="Primary action prefix" name={["hero", "primaryActionPrefix"]}>
-                <Input placeholder="Open" />
-              </Form.Item>
-            </Col>
-            <Col md={12} span={24}>
-              <Form.Item label="Secondary action label" name={["hero", "secondaryActionLabel"]}>
-                <Input placeholder="Browse all tools" />
-              </Form.Item>
-            </Col>
-            <Col md={12} span={24}>
-              <Form.Item label="Ready tools suffix" name={["hero", "readyToolsSuffix"]}>
-                <Input placeholder="ready tools across editing, security, and conversion workflows." />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item label="Hero chips (one per line)" name="pillsText">
-                <Input.TextArea autoSize={{ minRows: 4 }} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <CmsActionButton htmlType="submit" loading={saveHomepageHeroDraft.isPending}>
-            Save hero copy
-          </CmsActionButton>
-        </Form>
-      </CmsCard>
-
-      <CmsCard>
+      <CmsCard title="Global SEO Strategy">
         <Form
           form={form}
           layout="vertical"
@@ -201,11 +114,14 @@ export function SeoPage() {
                 {
                   title: "Actions",
                   key: "actions",
-                  render: (_, row) => (
+                  render: (_, row: any) => (
                     <Button
                       onClick={() => {
                         setEditingKey(row.key);
-                        pageForm.setFieldsValue(row);
+                        pageForm.setFieldsValue({
+                          ...row,
+                          keywords: (row.keywords || []).join("\n"),
+                        });
                         setPageModalOpen(true);
                       }}
                       type="link"
@@ -216,6 +132,7 @@ export function SeoPage() {
                 },
               ]}
               dataSource={pages}
+              pagination={false}
             />
           </CmsCard>
         </Form>

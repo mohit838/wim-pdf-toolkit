@@ -1055,3 +1055,147 @@ a {
     font-size: 1.35rem !important;
   }
 }
+
+/* ─── Rich Text Editor ─── */
+.cms-rich-editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cms-rich-header {
+  margin-bottom: 0.25rem;
+}
+
+.cms-field-label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cms-field-help {
+  display: block;
+  color: var(--cms-text-muted);
+  font-size: 0.82rem;
+  margin: 0 !important;
+}
+
+.cms-tiptap-shell {
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-md);
+  background: #fff;
+  overflow: hidden;
+  transition: border-color var(--cms-transition-base), box-shadow var(--cms-transition-base);
+}
+
+.cms-tiptap-shell:focus-within {
+  border-color: var(--cms-primary);
+  box-shadow: 0 0 0 3px var(--cms-primary-soft);
+}
+
+.cms-tiptap-toolbar {
+  padding: 0.5rem;
+  background: var(--cms-surface-soft);
+  border-bottom: 1px solid var(--cms-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.cms-toolbar-group {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.cms-toolbar-btn {
+  border-color: transparent !important;
+  background: transparent !important;
+  color: var(--cms-text-soft) !important;
+}
+
+.cms-toolbar-btn:hover {
+  background: var(--cms-surface-hover) !important;
+  color: var(--cms-primary) !important;
+}
+
+.cms-toolbar-btn-active {
+  background: var(--cms-primary-soft) !important;
+  border-color: var(--cms-primary) !important;
+  color: var(--cms-primary) !important;
+}
+
+.cms-icon-head {
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-family: 'Inter', sans-serif;
+}
+
+.cms-editor-content-wrapper {
+  padding: 1rem 1.25rem;
+}
+
+.cms-tiptap-editor {
+  min-height: 200px;
+  outline: none;
+}
+
+/* Prose-like styles for the editor */
+.cms-tiptap-editor p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.cms-tiptap-editor h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.cms-tiptap-editor h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.cms-tiptap-editor ul, .cms-tiptap-editor ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.cms-tiptap-editor li {
+  margin-bottom: 0.25rem;
+}
+
+.cms-tiptap-editor a {
+  color: var(--cms-primary);
+  text-decoration: underline;
+}
+
+.cms-tiptap-editor code {
+  background: var(--cms-surface-soft);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.cms-tiptap-editor blockquote {
+  border-left: 4px solid var(--cms-border-strong);
+  padding-left: 1rem;
+  color: var(--cms-text-soft);
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+.cms-tiptap-editor.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--cms-text-muted);
+  pointer-events: none;
+  height: 0;
+}

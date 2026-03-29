@@ -59,6 +59,7 @@ export const ENVIRONMENT_OPTIONS: Array<{ value: RuntimeEnvironment; label: stri
 export const AD_PROVIDER_OPTIONS: Array<{ value: AdProvider; label: string }> = [
   { value: "adsense_display", label: "AdSense display" },
   { value: "adsense_in_article", label: "AdSense in-article" },
+  { value: "google_ad_manager", label: "Google Ad Manager" },
   { value: "custom_banner", label: "Custom banner" },
   { value: "custom_card", label: "Custom card" },
   { value: "placeholder", label: "Placeholder only" },

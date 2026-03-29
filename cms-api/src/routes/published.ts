@@ -234,13 +234,13 @@ publishedRouter.post("/contact", async (request, response) => {
       return;
     }
 
-    if (subject.length < 3 || subject.length > 180) {
-      response.status(400).json({ success: false, message: "Please enter a short subject line." });
+    if (subject.length < 1 || subject.length > 180) {
+      response.status(400).json({ success: false, message: "Please enter a subject line." });
       return;
     }
 
-    if (message.length < 20 || message.length > 5000) {
-      response.status(400).json({ success: false, message: "Please enter a message with a bit more detail." });
+    if (message.length < 5 || message.length > 5000) {
+      response.status(400).json({ success: false, message: "Please enter a message." });
       return;
     }
 
@@ -304,7 +304,8 @@ publishedRouter.post("/contact", async (request, response) => {
     }
 
     const siteContent = await getPublishedSiteContent();
-    const supportEmail = toPlainText(siteContent.site.contact?.email).toLowerCase();
+    const siteData = siteContent.site as any;
+    const supportEmail = toPlainText(siteData.contact?.email).toLowerCase();
     const fallbackSupportEmail = cmsEnv.smtpFromAddress.trim().toLowerCase();
     const deliveryEmail = supportEmail || fallbackSupportEmail;
 

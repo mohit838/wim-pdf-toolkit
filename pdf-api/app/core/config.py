@@ -32,6 +32,10 @@ def _is_truthy(value: str | None, *, default: bool) -> bool:
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _is_running_in_docker() -> bool:
+    return os.getenv("DOCKER_CONTAINER") == "true"
+
+
 _load_root_env_file()
 
 APP_DEV = _is_truthy(os.getenv("APP_DEV"), default=True)
@@ -39,11 +43,13 @@ ENV_PREFIX = "DEV" if APP_DEV else "PROD"
 
 
 def _get_scoped_env(name: str, *, default: str) -> str:
-    return (
-        os.getenv(f"{ENV_PREFIX}_{name}")
-        or os.getenv(f"{ENV_PREFIX}_DOCKER_{name}")
-        or default
-    )
+    if _is_running_in_docker():
+        return (
+            os.getenv(f"{ENV_PREFIX}_DOCKER_{name}")
+            or os.getenv(f"{ENV_PREFIX}_{name}")
+            or default
+        )
+    return os.getenv(f"{ENV_PREFIX}_{name}") or default
 
 
 def _get_scoped_bool_env(name: str, *, default: bool) -> bool:

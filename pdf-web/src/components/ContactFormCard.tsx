@@ -16,12 +16,13 @@ export default function ContactFormCard({ supportEmail }: ContactFormCardProps) 
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [feedback, setFeedback] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [website, setWebsite] = useState("");
 
   const canSubmit = useMemo(() => (
     name.trim().length >= 2 &&
     email.trim().length > 0 &&
-    subject.trim().length >= 3 &&
-    message.trim().length >= 20
+    subject.trim().length >= 1 &&
+    message.trim().length >= 5
   ), [email, message, name, subject]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -41,6 +42,7 @@ export default function ContactFormCard({ supportEmail }: ContactFormCardProps) 
           email,
           subject,
           message,
+          website,
         }),
       });
 
@@ -122,6 +124,18 @@ export default function ContactFormCard({ supportEmail }: ContactFormCardProps) 
           />
         </label>
 
+        {/* Honeypot field - hidden from users but visible to bots */}
+        <label style={{ display: "none" }}>
+          <span>Leave this empty</span>
+          <input
+            autoComplete="off"
+            onChange={(event) => setWebsite(event.target.value)}
+            tabIndex={-1}
+            type="text"
+            value={website}
+          />
+        </label>
+
         <div className="contact-form-actions">
           <button className="btn-accent" disabled={!canSubmit || submitting} type="submit">
             {submitting ? "Sending message..." : "Send message"}
@@ -130,6 +144,12 @@ export default function ContactFormCard({ supportEmail }: ContactFormCardProps) 
             Email instead
           </a>
         </div>
+
+        {message.trim().length > 0 && message.trim().length < 5 ? (
+          <p style={{ fontSize: "12px", color: "var(--color-text-dim)", marginTop: "4px" }}>
+            Message must be at least 5 characters.
+          </p>
+        ) : null}
 
         {feedback ? (
           <div

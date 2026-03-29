@@ -25,6 +25,7 @@ export type RuntimeEnvironment = "all" | "dev" | "prod";
 export type AdProvider =
   | "adsense_display"
   | "adsense_in_article"
+  | "google_ad_manager"
   | "custom_banner"
   | "custom_card"
   | "placeholder";
@@ -319,10 +320,35 @@ async function fetchCmsPayload(path: string, tags: string[]): Promise<unknown> {
   });
 }
 
+async function readFallbackDiskSnapshot<T>(filename: string): Promise<T | null> {
+  const isServer = typeof window === "undefined";
+  if (!isServer) return null;
+
+  try {
+    const { join } = await import("node:path");
+    const { readFile } = await import("node:fs/promises");
+    const { existsSync } = await import("node:fs");
+
+    const filePath = join(process.cwd(), "src", "lib", "cms-fallbacks", filename);
+    if (!existsSync(filePath)) return null;
+    const content = await readFile(filePath, "utf8");
+    return JSON.parse(content) as T;
+  } catch (error) {
+    console.warn(`[CMS] Could not read disk fallback for ${filename}:`, error);
+    return null;
+  }
+}
+
 async function fetchRuntimeConfig(): Promise<RuntimeSiteConfigDocument> {
   try {
     return normalizeRuntimeConfig(await fetchCmsPayload("/published/v1/site-runtime-config", [CMS_RUNTIME_CONFIG_TAG]));
-  } catch {
+  } catch (error) {
+    const diskFallback = await readFallbackDiskSnapshot<RuntimeSiteConfigDocument>("runtime-config.json");
+    if (diskFallback) {
+      console.info("[CMS] Using disk fallback for runtime-config");
+      return normalizeRuntimeConfig(diskFallback);
+    }
+    console.warn("[CMS] Using build-time fallback for runtime-config");
     return fallbackRuntimeConfig;
   }
 }
@@ -335,6 +361,12 @@ async function fetchSiteContent(): Promise<SiteContentState> {
   try {
     return normalizeSiteContent(await fetchCmsPayload("/published/v1/site-content", [CMS_SITE_CONTENT_TAG]));
   } catch {
+    const diskFallback = await readFallbackDiskSnapshot<SiteContentState>("site-content.json");
+    if (diskFallback) {
+      console.info("[CMS] Using disk fallback for site-content");
+      return normalizeSiteContent(diskFallback);
+    }
+    console.warn("[CMS] Using build-time fallback for site-content");
     return fallbackSiteContent;
   }
 }
@@ -347,6 +379,12 @@ async function fetchContentLibrary(): Promise<ContentLibraryState> {
   try {
     return normalizeContentLibrary(await fetchCmsPayload("/published/v1/content-library", [CMS_CONTENT_LIBRARY_TAG]));
   } catch {
+    const diskFallback = await readFallbackDiskSnapshot<ContentLibraryState>("content-library.json");
+    if (diskFallback) {
+      console.info("[CMS] Using disk fallback for content-library");
+      return normalizeContentLibrary(diskFallback);
+    }
+    console.warn("[CMS] Using build-time fallback for content-library");
     return fallbackContentLibrary;
   }
 }

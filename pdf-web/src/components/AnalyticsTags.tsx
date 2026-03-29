@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Script from "next/script";
 import { getRuntimeIntegrations, getRuntimeSiteConfig } from "@/lib/cms-runtime";
+import { getResolvedSiteConfig } from "@/app/site";
 
 function resolveAdsensePublisherId(
   integrations: Awaited<ReturnType<typeof getRuntimeIntegrations>>,
@@ -21,9 +22,10 @@ function resolveAdsensePublisherId(
 }
 
 export default async function AnalyticsTags() {
-  const [integrations, runtimeConfig] = await Promise.all([
+  const [integrations, runtimeConfig, siteConfig] = await Promise.all([
     getRuntimeIntegrations("all_public_routes"),
     getRuntimeSiteConfig(),
+    getResolvedSiteConfig(),
   ]);
   const ga4 = integrations.find((integration) => integration.kind === "google_analytics_ga4");
   const gtm = integrations.find((integration) => integration.kind === "google_tag_manager");
@@ -46,8 +48,14 @@ export default async function AnalyticsTags() {
   const thirdPartyAsync = Boolean(thirdPartyScript?.config.async ?? true);
   const thirdPartyDefer = Boolean(thirdPartyScript?.config.defer ?? false);
 
+  const customBodyHtml = String(siteConfig.system.customBodyHtml || "").trim();
+
   return (
     <>
+      {customBodyHtml ? (
+        <div dangerouslySetInnerHTML={{ __html: customBodyHtml }} />
+      ) : null}
+
       {gtmContainerId ? (
         <>
           <Script id="gtm-loader" strategy="afterInteractive">

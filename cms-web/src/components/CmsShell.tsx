@@ -48,6 +48,7 @@ const navigation: NavEntry[] = [
   { key: "/legal-pages", label: "Legal Pages", icon: <SafetyCertificateOutlined />, href: "/legal-pages" },
   { key: "/publish", label: "Publish", icon: <FireOutlined />, href: "/publish" },
   { key: "/admins", label: "Admins", icon: <TeamOutlined />, href: "/admins" },
+  { key: "/settings", label: "Settings", icon: <SettingOutlined />, href: "/settings" },
 ];
 
 function flattenItems(items: NavEntry[]): NavEntry[] {

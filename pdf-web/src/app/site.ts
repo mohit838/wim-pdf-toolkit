@@ -286,6 +286,8 @@ interface SiteConfig {
     loading: LoadingScreenCopy;
     error: ErrorScreenCopy;
     support: SupportScreenCopy;
+    customHeadHtml?: string;
+    customBodyHtml?: string;
   };
   ui: {
     backButtonLabel: string;

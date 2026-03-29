@@ -137,7 +137,7 @@ export function LegalPageEditor({ slug }: { slug: string }) {
             </Col>
             <Col span={24}>
               <Form.Item label="Lead body" name="body">
-                <RichTextEditor label="Lead body" onChange={(next) => form.setFieldValue("body", next)} value={form.getFieldValue("body") || ""} />
+                <RichTextEditor placeholder="Start writing the lead content..." />
               </Form.Item>
             </Col>
           </Row>
@@ -160,18 +160,8 @@ export function LegalPageEditor({ slug }: { slug: string }) {
                           </Form.Item>
                         </Col>
                         <Col span={24}>
-                          <Form.Item noStyle shouldUpdate>
-                            {() => (
-                              <RichTextEditor
-                                label="Body"
-                                onChange={(next) => {
-                                  const sections = [...(form.getFieldValue("sections") || [])];
-                                  sections[field.name] = { ...sections[field.name], body: next };
-                                  form.setFieldValue("sections", sections);
-                                }}
-                                value={form.getFieldValue(["sections", field.name, "body"]) || ""}
-                              />
-                            )}
+                          <Form.Item label="Body" name={[field.name, "body"]}>
+                            <RichTextEditor placeholder="Enter section body..." />
                           </Form.Item>
                         </Col>
                       </Row>

@@ -19,13 +19,25 @@ async function postRevalidateRequest(dryRun: boolean): Promise<void> {
       body: JSON.stringify({
         source: dryRun ? "cms-backend-readiness" : "cms-backend",
         dryRun,
+        timestamp: new Date().toISOString(),
       }),
       signal: controller.signal,
     });
 
     if (!response.ok) {
-      throw new Error(`Frontend revalidation failed with status ${response.status}`);
+      const errorText = await response.text().catch(() => "No response body");
+      console.error(`[Revalidate] Failed: Status ${response.status}, URL: ${cmsEnv.publicSiteRevalidateUrl}, Body: ${errorText}`);
+      throw new Error(`Frontend revalidation failed (${response.status}): ${errorText.slice(0, 100)}`);
     }
+
+    console.log(`[Revalidate] Success: ${cmsEnv.publicSiteRevalidateUrl}`);
+  } catch (error: any) {
+    if (error.name === "AbortError") {
+      console.error(`[Revalidate] Timeout: ${cmsEnv.publicSiteRevalidateUrl}`);
+      throw new Error("Frontend revalidation timed out after 5s.");
+    }
+    console.error(`[Revalidate] Unexpected Error: ${error.message}`);
+    throw error;
   } finally {
     clearTimeout(timeout);
   }

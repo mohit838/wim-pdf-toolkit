@@ -49,9 +49,9 @@ export async function POST(request: Request) {
     });
   }
 
-  revalidateTag(CMS_RUNTIME_CONFIG_TAG, "max");
-  revalidateTag(CMS_SITE_CONTENT_TAG, "max");
-  revalidateTag(CMS_CONTENT_LIBRARY_TAG, "max");
+  revalidateTag(CMS_RUNTIME_CONFIG_TAG, "default");
+  revalidateTag(CMS_SITE_CONTENT_TAG, "default");
+  revalidateTag(CMS_CONTENT_LIBRARY_TAG, "default");
 
   return Response.json({
     ok: true,

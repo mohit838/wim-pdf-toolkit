@@ -59,6 +59,10 @@ function getScopedBoolean(name: string, fallback: boolean): boolean {
   return isTruthy(getActiveValue(process.env[`DEV_${name}`], process.env[`PROD_${name}`]), fallback);
 }
 
+function isRunningInDocker(): boolean {
+  return process.env.DOCKER_CONTAINER === "true";
+}
+
 function getScopedNumber(name: string, fallback: number): number {
   const value = Number(getScopedValue(name, String(fallback)));
   return Number.isFinite(value) ? value : fallback;
@@ -140,14 +144,12 @@ export const cmsEnv: CmsEnv = {
   adminName: getScopedValue("CMS_ADMIN_NAME", "Admin"),
   analyticsEnabled: getScopedBoolean("ANALYTICS_ENABLED", true),
   logLevel: getScopedValue("LOG_LEVEL", "info"),
-  postgresUrl: getScopedDockerValue(
-    "POSTGRES_URL",
-    getScopedValue("POSTGRES_URL", "postgresql://postgres:postgres@127.0.0.1:5432/pdf_cms_db?schema=public"),
-  ),
-  redisUrl: getScopedDockerValue(
-    "REDIS_URL",
-    getScopedValue("REDIS_URL", "redis://:mypassword@127.0.0.1:6379/0"),
-  ),
+  postgresUrl: (isRunningInDocker() ? getScopedDockerValue("POSTGRES_URL") : "") ||
+    getScopedValue("POSTGRES_URL") ||
+    "postgresql://postgres:postgres@127.0.0.1:5432/pdf_cms_db?schema=public",
+  redisUrl: (isRunningInDocker() ? getScopedDockerValue("REDIS_URL") : "") ||
+    getScopedValue("REDIS_URL") ||
+    "redis://:mypassword@127.0.0.1:6379/0",
   redisPrefix: cmsRedisPrefix,
   redisSessionPrefix: `${cmsRedisPrefix}:session`,
   redisCachePrefix: `${cmsRedisPrefix}:cache`,

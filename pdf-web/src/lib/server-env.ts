@@ -1,3 +1,7 @@
+import { ensureRootEnvLoaded } from "./root-env";
+
+ensureRootEnvLoaded();
+
 export type AppMode = "dev" | "prod";
 
 function isTruthy(value: string | undefined): boolean {
