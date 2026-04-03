@@ -125,20 +125,10 @@ docker compose -f docker-compose.yml logs --tail=120
 
 ### CMS Migration Workflow (Important)
 
-`cms-migrate` is now an ops-only one-off job (Compose profile: `ops`).  
-It does not run during normal `docker compose up -d`.
+CMS Prisma migrations are handled manually (outside Docker Compose).
+Compose files no longer include a `cms-migrate` one-off job.
 
-First time on a server (or any time new Prisma migrations are added), run:
-
-```bash
-# Dev compose migration
-docker compose -f docker-compose.yml --profile ops run --rm cms-migrate
-
-# Prod compose migration
-docker compose -f docker-compose.prod.yml --profile ops run --rm cms-migrate
-```
-
-Then start services normally (without migrate):
+After completing manual migrations, start services normally:
 
 ```bash
 # Dev
@@ -151,8 +141,7 @@ docker compose -f docker-compose.prod.yml up -d
 If `cms-backend-api` is unhealthy because DB schema is missing/outdated:
 
 ```bash
-# 1) Run migration
-docker compose -f docker-compose.yml --profile ops run --rm cms-migrate
+# 1) Run your manual migration process
 
 # 2) Restart cms API + worker
 docker compose -f docker-compose.yml up -d cms-backend-api cms-backend-worker
@@ -160,12 +149,6 @@ docker compose -f docker-compose.yml up -d cms-backend-api cms-backend-worker
 # 3) Verify
 docker compose -f docker-compose.yml ps
 docker compose -f docker-compose.yml logs --tail=120 cms-backend-api
-```
-
-Alternative prod migration command (helper script):
-
-```bash
-./scripts/migrate-cms-prod.sh .env
 ```
 
 If `cms-api` is unhealthy with `Can't reach database server`, verify that:

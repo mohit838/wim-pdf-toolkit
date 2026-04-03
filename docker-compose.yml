@@ -45,34 +45,6 @@ services:
       retries: 6
       start_period: 20s
 
-  cms-migrate:
-    image: node:22-alpine
-    restart: "no"
-    profiles: ["ops"]
-    working_dir: /app
-    command:
-      - sh
-      - -lc
-      - |
-        corepack enable &&
-        corepack prepare pnpm@latest --activate &&
-        pnpm install --no-frozen-lockfile &&
-        pnpm prisma:migrate:deploy
-    environment:
-      - CI=true
-      - APP_DEV=true
-      - DEV_DOCKER_POSTGRES_URL=${DEV_DOCKER_POSTGRES_URL}
-      - PROD_DOCKER_POSTGRES_URL=${PROD_DOCKER_POSTGRES_URL}
-      - DEV_DOCKER_REDIS_URL=${DEV_DOCKER_REDIS_URL}
-      - PROD_DOCKER_REDIS_URL=${PROD_DOCKER_REDIS_URL}
-      - DEV_REDIS_CMS_PREFIX
-      - PROD_REDIS_CMS_PREFIX
-      - DOCKER_CONTAINER=true
-    volumes:
-      - ./cms-api:/app
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
   cms-backend-api:
     build:
       context: ./cms-api
