@@ -61,6 +61,9 @@ services:
     environment:
       - CI=true
       - APP_DEV=false
+      - DOCKER_CONTAINER=true
+      - PROD_POSTGRES_URL=${PROD_POSTGRES_URL}
+      - PROD_REDIS_URL=${PROD_REDIS_URL}
       - DEV_DOCKER_POSTGRES_URL=${DEV_DOCKER_POSTGRES_URL}
       - PROD_DOCKER_POSTGRES_URL=${PROD_DOCKER_POSTGRES_URL}
       - DEV_DOCKER_REDIS_URL=${DEV_DOCKER_REDIS_URL}
@@ -83,6 +86,9 @@ services:
     restart: unless-stopped
     environment:
       - APP_DEV=false
+      - DOCKER_CONTAINER=true
+      - PROD_POSTGRES_URL=${PROD_POSTGRES_URL}
+      - PROD_REDIS_URL=${PROD_REDIS_URL}
       - DEV_CMS_API_PORT
       - PROD_CMS_API_PORT
       - DEV_CMS_WEB_ORIGIN
@@ -162,6 +168,9 @@ services:
     command: ["node", "dist/worker.js"]
     environment:
       - APP_DEV=false
+      - DOCKER_CONTAINER=true
+      - PROD_POSTGRES_URL=${PROD_POSTGRES_URL}
+      - PROD_REDIS_URL=${PROD_REDIS_URL}
       - DEV_CMS_API_PORT
       - PROD_CMS_API_PORT
       - DEV_CMS_WEB_ORIGIN
